@@ -14,6 +14,14 @@ public class Library {
         return Collections.unmodifiableList(books);
     }
 
+    public List<Reader> getReaders() {
+        return Collections.unmodifiableList(readers);
+    }
+
+    public List<Rent> getRents() {
+        return Collections.unmodifiableList(rents);
+    }
+
     public Library() {
         books = new ArrayList<>();
         readers = new ArrayList<>();
@@ -27,8 +35,22 @@ public class Library {
     }
 
     public void addBook(final Book book) {
-        if (book.getIsbn() != null && book.getTitle() != null && book.getAuthor() != null && !books.contains(book))
-            books.add(book);
+        books.add(book);
+    }
+
+    public void addReader(final Reader reader) {
+        readers.add(reader);
+    }
+
+    public void addRent(final Rent rent) {
+        rents.add(rent);
+    }
+
+    public boolean removeBook(final Book book){
+        if(books.remove(book))
+            return true;
+
+        return false;
     }
 
     public Book getBook(int index) {
@@ -44,9 +66,12 @@ public class Library {
 
     @Override
     public String toString() {
-        return "Library{" +
-                "books=" + books +
-                '}';
+        final StringBuilder sb = new StringBuilder("Library{");
+        sb.append("books=").append(books);
+        sb.append(", readers=").append(readers);
+        sb.append(", rents=").append(rents);
+        sb.append('}');
+        return sb.toString();
     }
 
     static class titleComparator implements Comparator<Book>{

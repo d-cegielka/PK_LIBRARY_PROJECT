@@ -1,16 +1,19 @@
 package org.pk.library.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Reader {
     private String name;
     private String lastName;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private String phoneNumber;
     private String emailAddress;
+    private final String readerID;
 
-    public Reader(String name, String lastName, Date dateOfBirth, String phoneNumber, String emailAddress) {
+    public Reader(String name, String lastName, LocalDate dateOfBirth, String phoneNumber, String emailAddress) {
+        this.readerID = UUID.randomUUID().toString();
         this.name = name;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -26,6 +29,7 @@ public class Reader {
         sb.append(", dateOfBirth=").append(dateOfBirth);
         sb.append(", phoneNumber='").append(phoneNumber).append('\'');
         sb.append(", emailAddress='").append(emailAddress).append('\'');
+        sb.append(", readerID='").append(readerID).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -63,11 +67,11 @@ public class Reader {
         this.lastName = lastName;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -85,5 +89,9 @@ public class Reader {
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
+    }
+
+    public String getReaderID() {
+        return readerID;
     }
 }

@@ -2,60 +2,33 @@ package org.pk.library.model;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Book implements Comparable<Book>, Serializable {
     private String isbn;
     private String title;
     private String author;
     private String publisher;
+    private final String bookID;
 
     public Book(String isbn, String title, String author, String publisher) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
+        this.bookID = UUID.randomUUID().toString();
     }
 
     @Override
     public String toString() {
-        return "Book{" +
-                "ISBN: " + isbn +
-                ", Title: '" + title + '\'' +
-                ", Author: '" + author + '\'' +
-                ", Publisher: '" + author + '\'' +
-                '}';
+        final StringBuilder sb = new StringBuilder("Book{");
+        sb.append("isbn='").append(isbn).append('\'');
+        sb.append(", title='").append(title).append('\'');
+        sb.append(", author='").append(author).append('\'');
+        sb.append(", publisher='").append(publisher).append('\'');
+        sb.append(", bookID='").append(bookID).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 
     @Override
@@ -79,6 +52,43 @@ public class Book implements Comparable<Book>, Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(isbn, title, author, publisher);
+    }
+
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public String getBookID() {
+        return bookID;
     }
 
 }
