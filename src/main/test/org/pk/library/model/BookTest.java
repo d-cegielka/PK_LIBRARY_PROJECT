@@ -69,8 +69,4 @@ class BookTest {
         assertEquals("Helion",testBook.getPublisher());
     }
 
-    @Test
-    void getBookID() {
-        assertThat(testBook.toString()).contains("bookID");
-    }
 }

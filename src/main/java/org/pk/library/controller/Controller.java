@@ -1,19 +1,14 @@
 package org.pk.library.controller;
 
-import java.io.IOException;
-import javafx.fxml.FXML;
+import org.pk.library.model.Library;
 
 public class Controller {
+    Library library;
 
-    @FXML
-    private void switchToSecondary() throws IOException {
-        App.setRoot("secondary");
-    }
+    public void addBook(String isbn, String title, String author, String publisher) throws Exception {
+        if(isbn.isEmpty() || title.isEmpty() || author.isEmpty() || publisher.isEmpty()) {
+            throw new Exception("Uzupełnij wszystkie pola!");
+        }
 
-    @FXML
-    private void switchToPrimary() throws IOException {
-        App.setRoot("primary");
     }
 }
-
-
