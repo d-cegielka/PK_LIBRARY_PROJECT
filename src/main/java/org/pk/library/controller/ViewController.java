@@ -1,20 +1,22 @@
 package org.pk.library.controller;
 
 import com.jfoenix.controls.*;
+import com.jfoenix.controls.events.JFXDialogEvent;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
+import javafx.fxml.FXML;
+import javafx.scene.control.TabPane;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+
 //Usunieto @FXML i FXML w razie problemow dodac
-import javafx.fxml.FXML;
-import javafx.stage.Stage;
 
 public class ViewController {
     public AnchorPane roots;
+    public TabPane tabPane;
     Controller controller;
+    public StackPane mainStackPane;
     public JFXTextField findBookField;
     public JFXTreeTableView<?> booksTableView;
     public JFXTextField bookTitleAddField;
@@ -34,13 +36,13 @@ public class ViewController {
     @FXML
     public void addBook(ActionEvent actionEvent) {
         try {
-            controller.addBook(bookIsbnAddField.getText(),
-                    bookTitleAddField.getText(),
-                    bookAuthorAddField.getText(),
-                    bookPublisherAddField.getText());
-            showInfoDialog("Test","DIX");
+            controller.addBook(bookIsbnAddField.getText().trim(),
+                    bookTitleAddField.getText().trim(),
+                    bookAuthorAddField.getText().trim(),
+                    bookPublisherAddField.getText().trim());
+            showInfoDialog("Informacja", "Książka została dodana pomyślnie!");
         } catch (Exception e) {
-            showInfoDialog("Test",e.toString());
+            showInfoDialog("Sprawdzenie formularza",e.getMessage());
         }
     }
 
@@ -57,30 +59,37 @@ public class ViewController {
     public void clearUpdateBookForm(ActionEvent actionEvent) {
     }
 
+/*    public void addReader(ActionEvent actionEvent) {
+        try {
+            controller.addReader(bookIsbnAddField.getText(),
+                    bookTitleAddField.getText(),
+                    bookAuthorAddField.getText(),
+                    bookPublisherAddField.getText());
+            showInfoDialog("Informacja", "Czytelnik został dodany pomyślnie!");
+        } catch (Exception e) {
+            showInfoDialog("Sprawdzenie formularza",e.getMessage());
+        }
+    }*/
+
     @FXML
     public void showInfoDialog(String header, String message){
+        BoxBlur blur = new BoxBlur(4, 4, 4);
         JFXDialogLayout dialogLayout = new JFXDialogLayout();
         dialogLayout.setHeading(new Text(header));
         dialogLayout.setBody(new Text(message));
-        StackPane stackPane = new StackPane();
-        stackPane.autosize();
-        JFXDialog dialog = new JFXDialog(stackPane, dialogLayout, JFXDialog.DialogTransition.CENTER);
+        JFXDialog dialog = new JFXDialog(mainStackPane, dialogLayout, JFXDialog.DialogTransition.TOP);
         JFXButton button = new JFXButton("Okay");
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                dialog.close();
-            }
-        });
+        //button.setStyle("-fx-background-color: green; -fx-text-fill: white");
+        //button.getStyleClass().add("dialog-button");
+        button.setOnAction(
+                event -> dialog.close());
+        button.setButtonType(com.jfoenix.controls.JFXButton.ButtonType.RAISED);
         dialogLayout.setActions(button);
-        Scene scene = new Scene(roots,300,250);
-        Stage tempstage = (Stage) roots.getScene().getWindow();
-        tempstage.setScene(scene);
         dialog.show();
-        tempstage.show();
-
-       BoxBlur boxBlur = new BoxBlur(3,3,3);
-
+        dialog.setOnDialogClosed((JFXDialogEvent event1) -> {
+            tabPane.setEffect(null);
+        });
+        tabPane.setEffect(blur);
 
     }
 }

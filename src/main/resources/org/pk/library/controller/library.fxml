@@ -23,12 +23,13 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="roots" minHeight="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pk.library.controller.ViewController">
    <children>
-      <MenuBar layoutY="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0">
+      <MenuBar layoutY="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <menus>
             <Menu mnemonicParsing="false" text="Plik">
                <items>
@@ -50,7 +51,8 @@
             </Menu>
          </menus>
       </MenuBar>
-      <TabPane layoutX="14.0" layoutY="27.0" prefHeight="383.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="27.0">
+      <StackPane fx:id="mainStackPane" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0" stylesheets="@addbook.css">
+         <TabPane fx:id="tabPane" layoutX="14.0" layoutY="27.0" prefHeight="383.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
          <tabs>
             <Tab text="Książki">
                <content>
@@ -80,8 +82,10 @@
                                     <JFXTreeTableView fx:id="booksTableView" layoutX="134.0" layoutY="154.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="63.0">
                                        <effect>
                                           <DropShadow />
-                                       </effect></JFXTreeTableView>
-                                 </children></AnchorPane>
+                                       </effect>
+                                    </JFXTreeTableView>
+                                 </children>
+                              </AnchorPane>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                  <children>
                                     <VBox alignment="TOP_CENTER" layoutY="-1.0" prefHeight="707.0" prefWidth="636.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -217,7 +221,8 @@
                                           </HBox>
                                        </children>
                                     </VBox>
-                                 </children></AnchorPane>
+                                 </children>
+                              </AnchorPane>
                            </items>
                         </SplitPane>
                      </children>
@@ -252,7 +257,8 @@
                                     <JFXTreeTableView layoutX="134.0" layoutY="154.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="63.0">
                                        <effect>
                                           <DropShadow />
-                                       </effect></JFXTreeTableView>
+                                       </effect>
+                                    </JFXTreeTableView>
                                  </children>
                               </AnchorPane>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
@@ -436,7 +442,8 @@
                                     <JFXTreeTableView layoutX="134.0" layoutY="154.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="63.0">
                                        <effect>
                                           <DropShadow />
-                                       </effect></JFXTreeTableView>
+                                       </effect>
+                                    </JFXTreeTableView>
                                  </children>
                               </AnchorPane>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
@@ -782,7 +789,8 @@
                                           </JFXButton>
                                        </children>
                                     </VBox>
-                                 </children></AnchorPane>
+                                 </children>
+                              </AnchorPane>
                            </items>
                         </SplitPane>
                      </children>
@@ -898,6 +906,7 @@
             </Tab>
          </tabs>
       </TabPane>
-      <HBox layoutX="14.0" layoutY="700.0" prefHeight="35.0" prefWidth="1280.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+      </StackPane>
+      <HBox layoutX="14.0" layoutY="700.0" prefHeight="30.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
    </children>
 </AnchorPane>

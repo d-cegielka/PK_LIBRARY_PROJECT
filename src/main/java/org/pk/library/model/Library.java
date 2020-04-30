@@ -34,23 +34,20 @@ public class Library {
         this.rents = rents;
     }
 
-    public void addBook(final Book book) {
-        books.add(book);
+    public boolean addBook(final Book book) {
+        return books.add(book);
     }
 
-    public void addReader(final Reader reader) {
-        readers.add(reader);
+    public boolean addReader(final Reader reader) {
+        return readers.add(reader);
     }
 
-    public void addRent(final Rent rent) {
-        rents.add(rent);
+    public boolean addRent(final Rent rent) {
+        return rents.add(rent);
     }
 
     public boolean removeBook(final Book book){
-        if(books.remove(book))
-            return true;
-
-        return false;
+        return books.remove(book);
     }
 
     public Book getBook(int index) {
