@@ -1,22 +1,26 @@
 package org.pk.library.model;
 
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Book implements Comparable<Book>, Serializable {
-    private String isbn;
-    private String title;
-    private String author;
-    private String publisher;
-    private final String bookID;
+public class Book extends RecursiveTreeObject<Book> implements Comparable<Book>, Serializable {
+    private StringProperty isbn;
+    private StringProperty title;
+    private StringProperty author;
+    private StringProperty publisher;
+    private final StringProperty bookID;
 
     public Book(String isbn, String title, String author, String publisher) {
-        this.isbn = isbn;
-        this.title = title;
-        this.author = author;
-        this.publisher = publisher;
-        this.bookID = UUID.randomUUID().toString();
+        this.isbn = new SimpleStringProperty(isbn);
+        this.title = new SimpleStringProperty(title);
+        this.author = new SimpleStringProperty(author);
+        this.publisher = new SimpleStringProperty(publisher);
+        this.bookID = new SimpleStringProperty(UUID.randomUUID().toString());
     }
 
     @Override
@@ -33,7 +37,7 @@ public class Book implements Comparable<Book>, Serializable {
 
     @Override
     public int compareTo(Book o) {
-        int result = this.title.compareTo(o.title);
+        int result = this.title.toString().compareTo(o.title.toString());
         return Integer.compare(result, 0);
     }
 
@@ -55,7 +59,7 @@ public class Book implements Comparable<Book>, Serializable {
     }
 
 
-    public String getIsbn() {
+   /* public String getIsbn() {
         return isbn;
     }
 
@@ -89,6 +93,65 @@ public class Book implements Comparable<Book>, Serializable {
 
     public String getBookID() {
         return bookID;
+    }*/
+
+    public String getIsbn() {
+        return isbn.get();
     }
 
+    public StringProperty isbnProperty() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn.set(isbn);
+    }
+
+    public String getTitle() {
+        return title.get();
+    }
+
+    public StringProperty titleProperty() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title.set(title);
+    }
+
+    public String getAuthor() {
+        return author.get();
+    }
+
+    public StringProperty authorProperty() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author.set(author);
+    }
+
+    public String getPublisher() {
+        return publisher.get();
+    }
+
+    public StringProperty publisherProperty() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher.set(publisher);
+    }
+
+    public String getBookID() {
+        return bookID.get();
+    }
+
+    public StringProperty bookIDProperty() {
+        return bookID;
+    }
+
+    public void setBookID(String bookID) {
+        this.bookID.set(bookID);
+    }
 }

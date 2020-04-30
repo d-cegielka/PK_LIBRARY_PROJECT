@@ -2,61 +2,35 @@ package org.pk.library.controller;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.events.JFXDialogEvent;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TabPane;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import org.pk.library.model.Book;
+import org.pk.library.model.Library;
 
 //Usunieto @FXML i FXML w razie problemow dodac
 
-public class ViewController {
+public class MainController {
     public AnchorPane roots;
     public TabPane tabPane;
-    Controller controller;
     public StackPane mainStackPane;
-    public JFXTextField findBookField;
-    public JFXTreeTableView<?> booksTableView;
-    public JFXTextField bookTitleAddField;
-    public JFXTextField bookIsbnAddField;
-    public JFXTextField bookAuthorAddField;
-    public JFXTextField bookPublisherAddField;
-    public JFXTextField bookTitleUpdateField;
-    public JFXTextField bookIsbnUpdateField;
-    public JFXTextField bookAuthorUpdateField;
-    public JFXTextField bookPublisherUpdateField;
+    Library library;
+
 
     @FXML
-    public void initialize() {
-        controller = new Controller();
-    }
+    private BookController bookController;
 
     @FXML
-    public void addBook(ActionEvent actionEvent) {
-        try {
-            controller.addBook(bookIsbnAddField.getText().trim(),
-                    bookTitleAddField.getText().trim(),
-                    bookAuthorAddField.getText().trim(),
-                    bookPublisherAddField.getText().trim());
-            showInfoDialog("Informacja", "Książka została dodana pomyślnie!");
-        } catch (Exception e) {
-            showInfoDialog("Sprawdzenie formularza",e.getMessage());
-        }
-    }
-
-    public void clearAddBookForm(ActionEvent actionEvent) {
-        bookTitleAddField.clear();
-        bookIsbnAddField.clear();
-        bookAuthorAddField.clear();
-        bookPublisherAddField.clear();
-    }
-
-    public void updateBook(ActionEvent actionEvent) {
-    }
-
-    public void clearUpdateBookForm(ActionEvent actionEvent) {
+    private void initialize() {
+        bookController.injectMainController(this);
+        library = new Library();
+        Book book1;
+        book1 = new Book("5869782","Harry Potter", "J.K Rowling","Bloomsbury Publishing");
+        library.addBook(book1);
+        bookController.initializeBookTableViewColumn();
     }
 
 /*    public void addReader(ActionEvent actionEvent) {

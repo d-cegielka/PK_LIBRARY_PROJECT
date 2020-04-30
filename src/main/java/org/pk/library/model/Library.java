@@ -1,34 +1,24 @@
 package org.pk.library.model;
 
-import java.util.ArrayList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class Library {
-    private final List<Book> books;
-    private final List<Reader> readers;
-    private final List<Rent> rents;
-
-    public List<Book> getBooks() {
-        return Collections.unmodifiableList(books);
-    }
-
-    public List<Reader> getReaders() {
-        return Collections.unmodifiableList(readers);
-    }
-
-    public List<Rent> getRents() {
-        return Collections.unmodifiableList(rents);
-    }
+    private ObservableList<Book> books;
+    private ObservableList<Reader> readers;
+    private ObservableList<Rent> rents;
 
     public Library() {
-        books = new ArrayList<>();
-        readers = new ArrayList<>();
-        rents = new ArrayList<>();
+        books = FXCollections.observableArrayList();
+        readers = FXCollections.observableArrayList();
+        rents = FXCollections.observableArrayList();
     }
 
-    public Library(List<Book> books, List<Reader> readers, List<Rent> rents) {
+    public Library(ObservableList<Book> books, ObservableList<Reader> readers, ObservableList<Rent> rents) {
         this.books = books;
         this.readers = readers;
         this.rents = rents;
@@ -50,6 +40,14 @@ public class Library {
         return books.remove(book);
     }
 
+    public boolean removeReader(final Reader reader){
+        return readers.remove(reader);
+    }
+
+    public boolean removeRent(final Rent rent){
+        return rents.remove(rent);
+    }
+
     public Book getBook(int index) {
         if(index >= books.size())
             return null;
@@ -59,6 +57,31 @@ public class Library {
 
     public int getNumberOfBooks() {
         return books.size();
+    }
+
+    /*public List<Book> getBooks() {
+        return Collections.unmodifiableList(books);
+    }
+
+    public List<Reader> getReaders() {
+        return Collections.unmodifiableList(readers);
+    }
+
+    public List<Rent> getRents() {
+        return Collections.unmodifiableList(rents);
+    }*/
+
+    public ObservableList<Book> getBooks() {
+       // return FXCollections.unmodifiableObservableList(books);
+        return books;
+    }
+
+    public ObservableList<Reader> getReaders() {
+        return FXCollections.unmodifiableObservableList(readers);
+    }
+
+    public ObservableList<Rent> getRents() {
+        return FXCollections.unmodifiableObservableList(rents);
     }
 
     @Override
