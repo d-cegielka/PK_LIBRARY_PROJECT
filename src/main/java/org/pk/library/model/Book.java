@@ -23,6 +23,14 @@ public class Book extends RecursiveTreeObject<Book> implements Comparable<Book>,
         this.bookID = new SimpleStringProperty(UUID.randomUUID().toString());
     }
 
+    public Book(String isbn, String title, String author, String publisher, String bookID) {
+        this.isbn = new SimpleStringProperty(isbn);
+        this.title = new SimpleStringProperty(title);
+        this.author = new SimpleStringProperty(author);
+        this.publisher = new SimpleStringProperty(publisher);
+        this.bookID = new SimpleStringProperty(bookID);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Book{");

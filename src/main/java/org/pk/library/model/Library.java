@@ -72,8 +72,8 @@ public class Library {
     }*/
 
     public ObservableList<Book> getBooks() {
-       // return FXCollections.unmodifiableObservableList(books);
-        return books;
+       return FXCollections.unmodifiableObservableList(books);
+       // return books;
     }
 
     public ObservableList<Reader> getReaders() {
