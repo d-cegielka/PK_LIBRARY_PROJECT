@@ -4,14 +4,12 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import org.pk.library.model.Book;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
@@ -29,24 +27,20 @@ public class BookController {
     public JFXTextField bookPublisherUpdateField;
     public Label listBookLabel;
     Pattern isbnPattern;
-    Pattern phoneNumberPattern;
+
     @FXML
     JFXTreeTableView<Book> booksTableView;
-    TreeItem<Book> booksTreeItem;
     JFXTreeTableColumn<Book,String> titleCol;
     JFXTreeTableColumn<Book,String> isbnCol;
     JFXTreeTableColumn<Book,String> publisherCol;
     JFXTreeTableColumn<Book,String> authorCol;
-    JFXTreeTableColumn<Book,String> id;
 
     public void injectMainController(MainController mainController) {
         this.mainController = mainController;
-        //initializeBookTableView();
     }
 
     public void initialize() {
        isbnPattern = Pattern.compile("^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$");
-       phoneNumberPattern = Pattern.compile("^\\+[0-9]{1,3}[0-9]{4,14}(?:x.+)?$");
     }
 
     public void initializeBookTableView(){
@@ -83,30 +77,13 @@ public class BookController {
             else return publisherCol.getComputedValue(param);
         });
 
-    /*    id = new JFXTreeTableColumn<>("id");
-        id.setPrefWidth(150);
-        id.setCellValueFactory((TreeTableColumn.CellDataFeatures<Book, String> param) ->{
-            if(id.validateValue(param)) return param.getValue().getValue().bookIDProperty();
-            else return id.getComputedValue(param);
-        });*/
-
-        //ObservableList<Book> books = mainController.library.getBooks();
-        booksTreeItem = new RecursiveTreeItem<>(mainController.library.getBooks(), RecursiveTreeObject::getChildren);
-
+        TreeItem<Book> booksTreeItem = new RecursiveTreeItem<>(mainController.library.getBooks(), RecursiveTreeObject::getChildren);
         booksTableView.setRoot(booksTreeItem);
 
         booksTableView.setShowRoot(false);
         booksTableView.setEditable(true);
         booksTableView.getColumns().setAll(titleCol,isbnCol,authorCol,publisherCol);
 
-        /*JFXButton groupButton = new JFXButton("Group");
-        groupButton.setOnAction((action) -> new Thread(() -> booksTableView.group(titleCol)).start());
-        main.getChildren().add(groupButton);
-
-        JFXButton unGroupButton = new JFXButton("unGroup");
-        unGroupButton.setOnAction((action) -> booksTableView.unGroup(titleCol));
-        main.getChildren().add(unGroupButton);
-*/
         findBookField.textProperty().addListener((o, oldVal, newVal) -> {
             booksTableView.setPredicate(bookProp -> {
                 final Book book = bookProp.getValue();
@@ -126,17 +103,13 @@ public class BookController {
                 changeUpdateBookForm();
             }
         });
-
-        /*listBookLabel.textProperty()
-                .bind(Bindings.createStringBinding(() -> String.valueOf(booksTableView.getCurrentItemsCount()),
-                        booksTableView.currentItemsCountProperty()));*/
 }
 
     /**
      * Aktualizacja listy książęk
      */
-    private void watchBookTableView(){
-        booksTreeItem = new RecursiveTreeItem<>(mainController.library.getBooks(), RecursiveTreeObject::getChildren);
+    private void reloadBookTableView(){
+        TreeItem<Book> booksTreeItem = new RecursiveTreeItem<>(mainController.library.getBooks(), RecursiveTreeObject::getChildren);
         booksTableView.setRoot(booksTreeItem);
     }
 
@@ -174,7 +147,7 @@ public class BookController {
         } catch (Exception e) {
             mainController.showInfoDialog("Informacja",e.getMessage());
         }
-        watchBookTableView();
+        reloadBookTableView();
     }
 
     /**
@@ -243,7 +216,7 @@ public class BookController {
         } catch (SQLException se) {
             mainController.showInfoDialog("Informacja SQL",se.getMessage());
         }
-        watchBookTableView();
+        reloadBookTableView();
     }
 
     /**
@@ -290,7 +263,7 @@ public class BookController {
             book1 = new Book("5869782"+i,"Harry Potter", "J.K Rowling","Bloomsbury Publishing");
             mainController.library.addBook(book1);
         }
-        watchBookTableView();
+        reloadBookTableView();
     }
 
 }

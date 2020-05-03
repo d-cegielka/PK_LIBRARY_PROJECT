@@ -13,7 +13,6 @@ import javafx.scene.text.Text;
 import org.pk.library.model.*;
 
 import java.sql.SQLException;
-import java.util.List;
 
 //Usunieto @FXML i FXML w razie problemow dodac
 
@@ -28,9 +27,13 @@ public class MainController {
     private BookController bookController;
 
     @FXML
+    private ReaderController readerController;
+
+    @FXML
     private void initialize() {
         library = new Library();
         bookController.injectMainController(this);
+        readerController.injectMainController(this);
         try{
             libraryDB = new LibraryDB();
             ObservableList<Book> books = FXCollections.observableArrayList(libraryDB.getBooksFromDB());
@@ -41,27 +44,11 @@ public class MainController {
             throwables.printStackTrace();
         }
         bookController.initializeBookTableView();
-        /*for(int i=0; i< 10;i++) {
-            Book book1;
-            book1 = new Book("5869782" + i, "Harry Potter", "J.K Rowling", "Bloomsbury Publishing");
-            library.addBook(book1);
-        }*/
+        readerController.initializeReaderTableView();
 
         //books = library.getBooks();
         //bookController.initializeBookTableViewColumn();
     }
-
-/*    public void addReader(ActionEvent actionEvent) {
-        try {
-            controller.addReader(bookIsbnAddField.getText(),
-                    bookTitleAddField.getText(),
-                    bookAuthorAddField.getText(),
-                    bookPublisherAddField.getText());
-            showInfoDialog("Informacja", "Czytelnik został dodany pomyślnie!");
-        } catch (Exception e) {
-            showInfoDialog("Sprawdzenie formularza",e.getMessage());
-        }
-    }*/
 
     @FXML
     public void showInfoDialog(String header, String message){
@@ -84,8 +71,6 @@ public class MainController {
             tabPane.setDisable(false);
         });
         tabPane.setEffect(blur);
-
-
     }
 }
 

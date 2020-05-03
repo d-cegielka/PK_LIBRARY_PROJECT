@@ -1,30 +1,41 @@
 package org.pk.library.model;
 
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Reader {
-    private String name;
+public class Reader extends RecursiveTreeObject<Reader> {
+    private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
     private String phoneNumber;
     private String emailAddress;
     private final String readerID;
 
-    public Reader(String name, String lastName, LocalDate dateOfBirth, String phoneNumber, String emailAddress) {
+    public Reader(String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber, String emailAddress) {
         this.readerID = UUID.randomUUID().toString();
-        this.name = name;
+        this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
         this.emailAddress = emailAddress;
     }
 
+    public Reader(String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber, String emailAddress, String readerID) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.phoneNumber = phoneNumber;
+        this.emailAddress = emailAddress;
+        this.readerID = readerID;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Reader{");
-        sb.append("name='").append(name).append('\'');
+        sb.append("firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", dateOfBirth=").append(dateOfBirth);
         sb.append(", phoneNumber='").append(phoneNumber).append('\'');
@@ -39,7 +50,7 @@ public class Reader {
         if (this == o) return true;
         if (!(o instanceof Reader)) return false;
         Reader reader = (Reader) o;
-        return Objects.equals(name, reader.name) &&
+        return Objects.equals(firstName, reader.firstName) &&
                 Objects.equals(lastName, reader.lastName) &&
                 Objects.equals(dateOfBirth, reader.dateOfBirth) &&
                 Objects.equals(phoneNumber, reader.phoneNumber) &&
@@ -48,15 +59,15 @@ public class Reader {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, lastName, dateOfBirth, phoneNumber, emailAddress);
+        return Objects.hash(firstName, lastName, dateOfBirth, phoneNumber, emailAddress);
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
