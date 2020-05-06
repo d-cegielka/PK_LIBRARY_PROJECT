@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
@@ -17,83 +16,78 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pk.library.controller.ReaderController">
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pk.library.view.BookController">
     <children>
         <SplitPane dividerPositions="0.5" layoutX="174.0" layoutY="93.0" prefHeight="709.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-               <children>
-                  <VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <HBox prefHeight="53.0" prefWidth="636.0">
-                           <children>
-                              <Label fx:id="listReaderLabel" alignment="CENTER" prefWidth="363.0" text="Lista czytelników">
-                                 <font>
-                                    <Font name="System Bold" size="24.0" />
-                                 </font>
-                                 <HBox.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <JFXTextField fx:id="findReaderField" promptText="Szukaj..." HBox.hgrow="SOMETIMES">
-                                 <HBox.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
-                                 </HBox.margin>
-                              </JFXTextField>
-                           </children>
-                        </HBox>
-                        <JFXTreeTableView fx:id="readersTableView" stylesheets="@addbook.css" VBox.vgrow="SOMETIMES">
-                           <effect>
-                              <DropShadow />
-                           </effect>
+                              <HBox prefHeight="53.0" prefWidth="636.0">
+                                  <children>
+                                      <Label fx:id="listBookLabel" alignment="CENTER" prefWidth="363.0" text="Lista książek">
+                                          <font>
+                                              <Font name="System Bold" size="24.0" />
+                                          </font>
+                                          <HBox.margin>
+                                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                          </HBox.margin>
+                                      </Label>
+                                      <JFXTextField fx:id="findBookField" promptText="Szukaj..." HBox.hgrow="SOMETIMES">
+                                          <HBox.margin>
+                                              <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
+                                          </HBox.margin>
+                                      </JFXTextField>
+                                  </children>
+                              </HBox>
+                              <JFXTreeTableView fx:id="booksTableView" stylesheets="@addbook.css" VBox.vgrow="SOMETIMES">
+                                  <effect>
+                                      <DropShadow />
+                                  </effect>
                            <VBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
                            </VBox.margin>
-                        </JFXTreeTableView>
-                        <JFXButton alignment="CENTER" contentDisplay="TOP" defaultButton="true" prefHeight="35.0" prefWidth="230.0" stylesheets="@addbook.css" text="Usuń wybranego czytelnika" textAlignment="CENTER">
+                              </JFXTreeTableView>
+                        <JFXButton alignment="CENTER" contentDisplay="TOP" defaultButton="true" onAction="#deleteBook" prefHeight="35.0" prefWidth="230.0" stylesheets="@addbook.css" text="Usuń wybraną książkę" textAlignment="CENTER">
                            <VBox.margin>
                               <Insets bottom="10.0" top="5.0" />
                            </VBox.margin>
                         </JFXButton>
                      </children>
                   </VBox>
-               </children>
+                    </children>
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                     <children>
                         <VBox alignment="TOP_CENTER" layoutY="-1.0" prefHeight="707.0" prefWidth="636.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
-                                <Label alignment="CENTER" prefHeight="16.0" text="Dodaj czytelnika" textAlignment="CENTER">
+                                <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="16.0" text="Dodaj książkę" textAlignment="CENTER">
                                     <font>
                                         <Font name="System Bold" size="24.0" />
                                     </font>
                                     <VBox.margin>
-                                        <Insets left="30.0" right="30.0" top="15.0" />
+                                        <Insets bottom="10.0" left="30.0" right="30.0" top="15.0" />
                                     </VBox.margin>
                                 </Label>
-                                <JFXTextField fx:id="firstNameAddField" labelFloat="true" promptText="Imię">
+                                <JFXTextField fx:id="bookTitleAddField" labelFloat="true" promptText="Tytuł książki">
                                     <VBox.margin>
-                                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                                        <Insets bottom="15.0" left="30.0" right="30.0" top="10.0" />
                                     </VBox.margin>
                                 </JFXTextField>
-                                <JFXTextField fx:id="lastNameAddField" labelFloat="true" layoutX="10.0" layoutY="10.0" promptText="Nazwisko">
+                                <JFXTextField fx:id="bookIsbnAddField" labelFloat="true" layoutX="10.0" layoutY="10.0" promptText="ISBN" text="978-0-596-52068-7">
                                     <VBox.margin>
-                                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                                        <Insets bottom="15.0" left="30.0" right="30.0" top="10.0" />
                                     </VBox.margin>
                                 </JFXTextField>
-                                <JFXDatePicker fx:id="dateOfBirthAddField" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="28.0" promptText="Data urodzenia">
+                                <JFXTextField fx:id="bookAuthorAddField" labelFloat="true" layoutX="10.0" layoutY="10.0" promptText="Autor">
                                     <VBox.margin>
-                                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
-                                    </VBox.margin>
-                                </JFXDatePicker>
-                                <JFXTextField fx:id="phoneNumberAddField" labelFloat="true" layoutX="10.0" layoutY="10.0" promptText="Numer telefonu">
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                                        <Insets bottom="15.0" left="30.0" right="30.0" top="10.0" />
                                     </VBox.margin>
                                 </JFXTextField>
-                                <JFXTextField fx:id="emailAddressAddField" labelFloat="true" layoutX="10.0" layoutY="35.0" promptText="Adres e-mail">
+                                <JFXTextField fx:id="bookPublisherAddField" labelFloat="true" layoutX="10.0" layoutY="35.0" promptText="Wydawnictwo">
                                     <VBox.margin>
-                                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                                        <Insets bottom="15.0" left="30.0" right="30.0" top="10.0" />
                                     </VBox.margin>
                                 </JFXTextField>
                                 <HBox alignment="TOP_CENTER" prefHeight="56.0" prefWidth="636.0">
@@ -107,12 +101,12 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                             <children>
-                                                <JFXButton alignment="CENTER" contentDisplay="TOP" defaultButton="true" prefHeight="35.0" prefWidth="230.0" stylesheets="@addbook.css" text="Dodaj" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <JFXButton fx:id="addBookButton" alignment="CENTER" contentDisplay="TOP" defaultButton="true" onAction="#addBook" prefHeight="35.0" prefWidth="230.0" stylesheets="@addbook.css" text="Dodaj" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                                     <GridPane.margin>
                                                         <Insets />
                                                     </GridPane.margin>
                                                 </JFXButton>
-                                                <JFXButton cancelButton="true" onAction="#clearAddReaderForm" prefHeight="35.0" prefWidth="230.0" ripplerFill="#664444" stylesheets="@addbook.css" text="Wyczyść" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <JFXButton cancelButton="true" onAction="#clearAddBookForm" prefHeight="35.0" prefWidth="230.0" ripplerFill="#664444" stylesheets="@addbook.css" text="Wyczyść" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                                     <GridPane.margin>
                                                         <Insets />
                                                     </GridPane.margin>
@@ -132,43 +126,38 @@
                                 </HBox>
                                 <Separator prefHeight="10.0" prefWidth="636.0">
                                     <VBox.margin>
-                                        <Insets bottom="5.0" top="5.0" />
+                                        <Insets bottom="10.0" top="10.0" />
                                     </VBox.margin>
                                 </Separator>
-                                <Label alignment="CENTER" layoutX="40.0" layoutY="30.0" prefHeight="16.0" text="Aktualizuj dane czytelnika" textAlignment="CENTER">
+                                <Label alignment="CENTER" layoutX="40.0" layoutY="20.0" prefHeight="16.0" prefWidth="636.0" text="Aktualizuj dane książki" textAlignment="CENTER">
                                     <font>
                                         <Font name="System Bold" size="24.0" />
                                     </font>
                                     <VBox.margin>
-                                        <Insets left="30.0" right="30.0" top="10.0" />
+                                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
                                     </VBox.margin>
                                 </Label>
-                                <JFXTextField fx:id="firstNameUpdateField" labelFloat="true" layoutX="40.0" layoutY="75.0" promptText="Imię">
+                                <JFXTextField fx:id="bookTitleUpdateField" labelFloat="true" layoutX="40.0" layoutY="65.0" promptText="Tytuł książki">
                                     <VBox.margin>
-                                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                                        <Insets bottom="15.0" left="30.0" right="30.0" top="10.0" />
                                     </VBox.margin>
                                 </JFXTextField>
-                                <JFXTextField fx:id="lastNameUpdateField" labelFloat="true" layoutX="40.0" layoutY="120.0" promptText="Nazwisko">
+                                <JFXTextField fx:id="bookIsbnUpdateField" labelFloat="true" layoutX="40.0" layoutY="110.0" promptText="ISBN">
                                     <VBox.margin>
-                                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                                        <Insets bottom="15.0" left="30.0" right="30.0" top="10.0" />
                                     </VBox.margin>
                                 </JFXTextField>
-                                <JFXDatePicker fx:id="dateOfBirthUpdateField" layoutX="40.0" layoutY="165.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" promptText="Data urodzenia">
+                                <JFXTextField fx:id="bookAuthorUpdateField" labelFloat="true" layoutX="40.0" layoutY="155.0" promptText="Autor">
                                     <VBox.margin>
-                                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
-                                    </VBox.margin>
-                                </JFXDatePicker>
-                                <JFXTextField fx:id="phoneNumberUpdateField" labelFloat="true" layoutX="40.0" layoutY="213.0" promptText="Numer telefonu">
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                                        <Insets bottom="15.0" left="30.0" right="30.0" top="10.0" />
                                     </VBox.margin>
                                 </JFXTextField>
-                                <JFXTextField fx:id="emailAddressUpdateField" labelFloat="true" layoutX="40.0" layoutY="258.0" promptText="Adres e-mail">
+                                <JFXTextField fx:id="bookPublisherUpdateField" labelFloat="true" layoutX="40.0" layoutY="200.0" promptText="Wydawnictwo">
                                     <VBox.margin>
-                                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                                        <Insets bottom="15.0" left="30.0" right="30.0" top="10.0" />
                                     </VBox.margin>
                                 </JFXTextField>
-                                <HBox alignment="TOP_CENTER" prefHeight="56.0" prefWidth="636.0">
+                                <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="245.0" prefHeight="56.0" prefWidth="636.0">
                                     <children>
                                         <GridPane alignment="TOP_CENTER" prefHeight="85.0" HBox.hgrow="SOMETIMES">
                                             <columnConstraints>
@@ -179,12 +168,12 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                             <children>
-                                                <JFXButton alignment="CENTER" contentDisplay="TOP" defaultButton="true" prefHeight="35.0" prefWidth="230.0" stylesheets="@addbook.css" text="Zapisz" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <JFXButton alignment="CENTER" contentDisplay="TOP" defaultButton="true" onAction="#updateBook" prefHeight="35.0" prefWidth="230.0" stylesheets="@addbook.css" text="Zapisz" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                                     <GridPane.margin>
                                                         <Insets />
                                                     </GridPane.margin>
                                                 </JFXButton>
-                                                <JFXButton cancelButton="true" onAction="#clearUpdateReaderForm" prefHeight="35.0" prefWidth="230.0" ripplerFill="#664444" stylesheets="@addbook.css" text="Wyczyść" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <JFXButton cancelButton="true" onAction="#clearUpdateBookForm" prefHeight="35.0" prefWidth="230.0" ripplerFill="#664444" stylesheets="@addbook.css" text="Wyczyść" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                                     <GridPane.margin>
                                                         <Insets />
                                                     </GridPane.margin>

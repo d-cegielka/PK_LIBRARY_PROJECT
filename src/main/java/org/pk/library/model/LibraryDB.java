@@ -32,7 +32,7 @@ public class LibraryDB {
         preparedStatement.setString(2,book.getTitle());
         preparedStatement.setString(3,book.getAuthor());
         preparedStatement.setString(4,book.getPublisher());
-        preparedStatement.setString(5,book.getBookID());
+        preparedStatement.setString(5,book.getBOOK_ID());
         preparedStatement.executeUpdate();
     }
 
@@ -47,7 +47,7 @@ public class LibraryDB {
         preparedStatement.setString(2,book.getTitle());
         preparedStatement.setString(3,book.getAuthor());
         preparedStatement.setString(4,book.getPublisher());
-        preparedStatement.setString(5,book.getBookID());
+        preparedStatement.setString(5,book.getBOOK_ID());
         preparedStatement.executeUpdate();
     }
 
@@ -75,7 +75,7 @@ public class LibraryDB {
         preparedStatement.setDate(3, Date.valueOf(reader.getDateOfBirth()));
         preparedStatement.setString(4,reader.getPhoneNumber());
         preparedStatement.setString(5,reader.getEmailAddress());
-        preparedStatement.setString(6,reader.getReaderID());
+        preparedStatement.setString(6,reader.getREADER_ID());
         preparedStatement.executeUpdate();
     }
 
@@ -91,7 +91,7 @@ public class LibraryDB {
         preparedStatement.setDate(3, Date.valueOf(reader.getDateOfBirth()));
         preparedStatement.setString(4,reader.getPhoneNumber());
         preparedStatement.setString(5,reader.getEmailAddress());
-        preparedStatement.setString(6,reader.getReaderID());
+        preparedStatement.setString(6,reader.getREADER_ID());
         preparedStatement.executeUpdate();
     }
 

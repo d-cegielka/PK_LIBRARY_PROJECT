@@ -6,7 +6,7 @@ module org.pk.library {
     requires org.controlsfx.controls;
     requires java.sql;
 
-    opens org.pk.library.controller to javafx.fxml;
-    exports org.pk.library.controller;
+    opens org.pk.library.view to javafx.fxml;
+    exports org.pk.library.view;
 
 }

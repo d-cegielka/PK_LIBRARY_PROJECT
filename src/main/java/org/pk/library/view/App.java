@@ -1,4 +1,4 @@
-package org.pk.library.controller;
+package org.pk.library.view;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

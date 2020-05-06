@@ -1,7 +1,6 @@
 package org.pk.library.model;
 
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
@@ -12,10 +11,10 @@ public class Reader extends RecursiveTreeObject<Reader> {
     private LocalDate dateOfBirth;
     private String phoneNumber;
     private String emailAddress;
-    private final String readerID;
+    private final String READER_ID;
 
     public Reader(String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber, String emailAddress) {
-        this.readerID = UUID.randomUUID().toString();
+        this.READER_ID = UUID.randomUUID().toString();
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -23,13 +22,13 @@ public class Reader extends RecursiveTreeObject<Reader> {
         this.emailAddress = emailAddress;
     }
 
-    public Reader(String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber, String emailAddress, String readerID) {
+    public Reader(String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber, String emailAddress, String READER_ID) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
         this.emailAddress = emailAddress;
-        this.readerID = readerID;
+        this.READER_ID = READER_ID;
     }
 
     @Override
@@ -40,7 +39,7 @@ public class Reader extends RecursiveTreeObject<Reader> {
         sb.append(", dateOfBirth=").append(dateOfBirth);
         sb.append(", phoneNumber='").append(phoneNumber).append('\'');
         sb.append(", emailAddress='").append(emailAddress).append('\'');
-        sb.append(", readerID='").append(readerID).append('\'');
+        sb.append(", readerID='").append(READER_ID).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -102,7 +101,7 @@ public class Reader extends RecursiveTreeObject<Reader> {
         this.emailAddress = emailAddress;
     }
 
-    public String getReaderID() {
-        return readerID;
+    public String getREADER_ID() {
+        return READER_ID;
     }
 }

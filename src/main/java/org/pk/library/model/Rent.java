@@ -5,17 +5,17 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class Rent {
-    private final Book book;
-    private final Reader reader;
+    private final Book BOOK;
+    private final Reader READER;
     private LocalDate dateOfRent;
     private LocalDate dateOfReturn;
     private boolean returned;
-    private final String rentID;
+    private final String RENT_ID;
 
-    public Rent(Book book, Reader reader, LocalDate dateOfRent, LocalDate dateOfReturn, boolean returned) {
-        this.rentID = UUID.randomUUID().toString();
-        this.book = book;
-        this.reader = reader;
+    public Rent(Book BOOK, Reader READER, LocalDate dateOfRent, LocalDate dateOfReturn, boolean returned) {
+        this.RENT_ID = UUID.randomUUID().toString();
+        this.BOOK = BOOK;
+        this.READER = READER;
         this.dateOfRent = dateOfRent;
         this.dateOfReturn = dateOfReturn;
         this.returned = returned;
@@ -26,34 +26,34 @@ public class Rent {
         if (this == o) return true;
         if (!(o instanceof Rent)) return false;
         Rent rent = (Rent) o;
-        return Objects.equals(book, rent.book) &&
-                Objects.equals(reader, rent.reader);
+        return Objects.equals(BOOK, rent.BOOK) &&
+                Objects.equals(READER, rent.READER);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(book, reader);
+        return Objects.hash(BOOK, READER);
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Rent{");
-        sb.append("book=").append(book);
-        sb.append(", reader=").append(reader);
+        sb.append("book=").append(BOOK);
+        sb.append(", reader=").append(READER);
         sb.append(", dateOfRent=").append(dateOfRent);
         sb.append(", dateOfReturn=").append(dateOfReturn);
         sb.append(", returned=").append(returned);
-        sb.append(", rentID='").append(rentID).append('\'');
+        sb.append(", rentID='").append(RENT_ID).append('\'');
         sb.append('}');
         return sb.toString();
     }
 
-    public Book getBook() {
-        return book;
+    public Book getBOOK() {
+        return BOOK;
     }
 
-    public Reader getReader() {
-        return reader;
+    public Reader getREADER() {
+        return READER;
     }
 
     public LocalDate getDateOfRent() {
@@ -80,7 +80,7 @@ public class Rent {
         this.returned = returned;
     }
 
-    public String getRentID() {
-        return rentID;
+    public String getRENT_ID() {
+        return RENT_ID;
     }
 }

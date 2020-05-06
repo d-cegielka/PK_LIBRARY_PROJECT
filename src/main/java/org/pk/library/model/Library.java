@@ -3,22 +3,23 @@ package org.pk.library.model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class Library {
-    private ObservableList<Book> books;
+    private List<Book> books;
     private ObservableList<Reader> readers;
     private ObservableList<Rent> rents;
 
     public Library() {
-        books = FXCollections.observableArrayList();
+        books = new ArrayList<>();
         readers = FXCollections.observableArrayList();
         rents = FXCollections.observableArrayList();
     }
 
-    public Library(ObservableList<Book> books, ObservableList<Reader> readers, ObservableList<Rent> rents) {
+    public Library(List<Book> books, ObservableList<Reader> readers, ObservableList<Rent> rents) {
         this.books = books;
         this.readers = readers;
         this.rents = rents;
@@ -71,8 +72,8 @@ public class Library {
         return Collections.unmodifiableList(rents);
     }*/
 
-    public ObservableList<Book> getBooks() {
-       return FXCollections.unmodifiableObservableList(books);
+    public List<Book> getBooks() {
+       return books;
        // return books;
     }
 

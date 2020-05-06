@@ -85,7 +85,7 @@
                         <option>--add-exports</option>
                         <option>javafx.base/com.sun.javafx.event=com.jfoenix</option>
                     </options>
-                    <mainClass>org.pk.library.controller.App</mainClass>
+                    <mainClass>org.pk.library.view.App</mainClass>
                 </configuration>
             </plugin>
         </plugins>

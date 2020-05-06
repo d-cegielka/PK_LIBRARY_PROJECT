@@ -10,19 +10,15 @@
 	-fx-background-color: #607D8B
 }
 
-/*.dialogHeading {
-    -fx-text-fill: #2196F3;
-}*/
-
-/*.jfx-layout-heading {
-    -fx-background-color: #000;
-    -fx-text-fill: #2196F3;
-}*/
 .table-column {
     -fx-alignment: center;
 }
 
-/*Dialog styling*/
+/*.jfx-dialog-layout {
+    -fx-background-color:silver;
+}*/
+
+/*!*Dialog styling*!
 .dialog-button{
     -fx-border-color: -fx-color-1;
     -fx-text-fill: white;
@@ -39,4 +35,4 @@
 .jfx-layout-actions
 {
     -fx-hgap:8;
-}
+}*/
