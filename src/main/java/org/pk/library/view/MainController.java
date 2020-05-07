@@ -12,6 +12,7 @@ import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import org.pk.library.controller.Controller;
 import org.pk.library.model.*;
 
 import java.sql.SQLException;
@@ -19,44 +20,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-//Usunieto @FXML i FXML w razie problemow dodac
-
 public class MainController {
-    public AnchorPane roots;
-    public TabPane tabPane;
-    public StackPane mainStackPane;
-    Library library;
-    LibraryDB libraryDB;
-
+    Controller libraryController;
     @FXML
     private BookController bookController;
-
     @FXML
     private ReaderController readerController;
+    @FXML
+    private TabPane tabPane;
+    @FXML
+    private StackPane mainStackPane;
 
     @FXML
     private void initialize() {
-        library = new Library();
+        try {
+            libraryController = new Controller();
+        } catch (SQLException se) {
+            showInfoDialog("Inicjalizacja kontrolera biblioteki",se.getMessage());
+        }
+
         bookController.injectMainController(this);
         readerController.injectMainController(this);
-        try{
-            libraryDB = new LibraryDB();
-            List<Book> books = new ArrayList<>(libraryDB.getBooksFromDB());
-            ObservableList<Reader> readers = FXCollections.observableArrayList(libraryDB.getReadersFromDB());
-            ObservableList<Rent> rents = FXCollections.observableArrayList(libraryDB.getRentsFromDB());
-            library = new Library(books,readers,rents);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+
         bookController.initializeBookTableView();
         readerController.initializeReaderTableView();
-
-        //books = library.getBooks();
-        //bookController.initializeBookTableViewColumn();
     }
 
+    /**
+     * Metoda wypisująca inforamcję w oknie dialogowym w przypadku powodzenia lub niepowodzenia
+     * @param header nagłówek informacji
+     * @param message treść informacji
+     */
     @FXML
-    public void showInfoDialog(String header, String message){
+    void showInfoDialog(String header, String message){
         BoxBlur blur = new BoxBlur(4, 4, 4);
         JFXDialogLayout dialogLayout = new JFXDialogLayout();
         dialogLayout.setHeading(new Text(header));
@@ -84,12 +80,7 @@ public class MainController {
         alert.setTitle("Potwierdź wybór");
         alert.setHeaderText("Czy na pewno chcesz usunąć książkę pt. \"" + title + "\" ?");
         Optional<ButtonType> result = alert.showAndWait();
-        if(result.get() == ButtonType.OK){
-            return true;
-        }
-        else {
-            return false;
-        }
+        return result.get() == ButtonType.OK;
     }
 
     @FXML
@@ -98,12 +89,7 @@ public class MainController {
         alert.setTitle("Potwierdź wybór");
         alert.setHeaderText("Czy na pewno chcesz usunąć czytelnika " + firstName + " " + lastName+" ?");
         Optional<ButtonType> result = alert.showAndWait();
-        if(result.get() == ButtonType.OK){
-            return true;
-        }
-        else {
-            return false;
-        }
+        return result.get() == ButtonType.OK;
     }
 }
 

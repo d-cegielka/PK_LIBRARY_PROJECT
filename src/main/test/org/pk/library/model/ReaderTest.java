@@ -25,13 +25,13 @@ class ReaderTest {
 
     @Test
     void getName() {
-        assertEquals(reader1.getName(),"Jan");
+        assertEquals(reader1.getFirstName(),"Jan");
     }
 
     @Test
     void setName() {
-        reader1.setName("Wojciech");
-        assertEquals(reader1.getName(),"Wojciech");
+        reader1.setFirstName("Wojciech");
+        assertEquals(reader1.getFirstName(),"Wojciech");
     }
 
     @Test

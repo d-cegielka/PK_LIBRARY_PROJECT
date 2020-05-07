@@ -1,53 +1,61 @@
 package org.pk.library.view;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXTreeTableColumn;
+import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.input.MouseEvent;
 import org.pk.library.model.Book;
 
-import java.sql.SQLException;
-import java.util.regex.Pattern;
+import java.util.Collections;
 
 public class BookController {
-    public JFXButton addBookButton;
-    private MainController mainController;
-    public JFXTextField findBookField;
-    public JFXTextField bookTitleAddField;
-    public JFXTextField bookIsbnAddField;
-    public JFXTextField bookAuthorAddField;
-    public JFXTextField bookPublisherAddField;
-    public JFXTextField bookTitleUpdateField;
-    public JFXTextField bookIsbnUpdateField;
-    public JFXTextField bookAuthorUpdateField;
-    public JFXTextField bookPublisherUpdateField;
-    public Label listBookLabel;
-    Pattern isbnPattern;
-
     @FXML
-    JFXTreeTableView<Book> booksTableView;
-    JFXTreeTableColumn<Book,String> titleCol;
-    JFXTreeTableColumn<Book,String> isbnCol;
-    JFXTreeTableColumn<Book,String> publisherCol;
-    JFXTreeTableColumn<Book,String> authorCol;
+    private MainController mainController;
+    @FXML
+    private JFXTextField findBookField;
+    @FXML
+    private JFXTextField bookTitleAddField;
+    @FXML
+    private JFXTextField bookIsbnAddField;
+    @FXML
+    private JFXTextField bookAuthorAddField;
+    @FXML
+    private JFXTextField bookPublisherAddField;
+    @FXML
+    private JFXTextField bookTitleUpdateField;
+    @FXML
+    private JFXTextField bookIsbnUpdateField;
+    @FXML
+    private JFXTextField bookAuthorUpdateField;
+    @FXML
+    public JFXTextField bookPublisherUpdateField;
+    @FXML
+    private JFXTreeTableView<Book> booksTableView;
+    @FXML
+    private JFXTreeTableColumn<Book, String> titleCol;
+    @FXML
+    private JFXTreeTableColumn<Book, String> isbnCol;
+    @FXML
+    private JFXTreeTableColumn<Book, String> publisherCol;
+    @FXML
+    private JFXTreeTableColumn<Book, String> authorCol;
 
-    public void injectMainController(MainController mainController) {
+    void injectMainController(MainController mainController) {
         this.mainController = mainController;
-    }
-
-    public void initialize() {
-       isbnPattern = Pattern.compile("^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$");
     }
 
     /**
      * Inicializacja kolumn w tabeli z listą książek oraz wyszukiwarka książek
      */
-    public void initializeBookTableView(){
+    void initializeBookTableView(){
 
         titleCol = new JFXTreeTableColumn<>("Tytuł");
         titleCol.prefWidthProperty().bind(booksTableView.widthProperty().divide(4));
@@ -81,24 +89,22 @@ public class BookController {
             else return publisherCol.getComputedValue(param);
         });
 
-        TreeItem<Book> booksTreeItem = new RecursiveTreeItem<>(FXCollections.observableArrayList(mainController.library.getBooks()), RecursiveTreeObject::getChildren);
+        TreeItem<Book> booksTreeItem = new RecursiveTreeItem<>(FXCollections.observableArrayList(mainController.libraryController.getBooks()), RecursiveTreeObject::getChildren);
         booksTableView.setRoot(booksTreeItem);
 
         booksTableView.setShowRoot(false);
         booksTableView.setEditable(true);
         booksTableView.getColumns().setAll(titleCol,isbnCol,authorCol,publisherCol);
 
-        findBookField.textProperty().addListener((o, oldVal, newVal) -> {
-            booksTableView.setPredicate(bookProp -> {
-                final Book book = bookProp.getValue();
-                String checkValue = newVal.trim().toLowerCase();
-                return (book.getTitle().toLowerCase().contains(checkValue) ||
-                        book.getPublisher().toLowerCase().contains(checkValue) ||
-                        book.getAuthor().toLowerCase().contains(checkValue) ||
-                        book.getIsbn().toLowerCase().contains(checkValue) ||
-                        book.getBOOK_ID().toLowerCase().contains(checkValue));
-            });
-        });
+        findBookField.textProperty().addListener((o, oldVal, newVal) -> booksTableView.setPredicate(bookProp -> {
+            final Book book = bookProp.getValue();
+            String checkValue = newVal.trim().toLowerCase();
+            return (book.getTitle().toLowerCase().contains(checkValue) ||
+                    book.getPublisher().toLowerCase().contains(checkValue) ||
+                    book.getAuthor().toLowerCase().contains(checkValue) ||
+                    book.getIsbn().toLowerCase().contains(checkValue) ||
+                    book.getBOOK_ID().toLowerCase().contains(checkValue));
+        }));
 
         booksTableView.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> changeUpdateBookForm());
 }
@@ -107,7 +113,7 @@ public class BookController {
      * Aktualizacja listy książęk
      */
     private void reloadBookTableView(){
-        TreeItem<Book> booksTreeItem = new RecursiveTreeItem<>(FXCollections.observableArrayList(mainController.library.getBooks()), RecursiveTreeObject::getChildren);
+        TreeItem<Book> booksTreeItem = new RecursiveTreeItem<>(FXCollections.observableArrayList(mainController.libraryController.getBooks()), RecursiveTreeObject::getChildren);
         booksTableView.setRoot(booksTreeItem);
     }
 
@@ -116,36 +122,15 @@ public class BookController {
      */
     @FXML
     private void addBook() {
-        Book bookToAdd = null;
-
-        try {
-            if(bookIsbnAddField.getText().trim().isEmpty() || bookTitleAddField.getText().trim().isEmpty() ||
-                    bookAuthorAddField.getText().trim().isEmpty() || bookPublisherAddField.getText().trim().isEmpty()) {
-                throw new IllegalArgumentException("Uzupełnij wszystkie pola!");
-            }
-            if(!(isbnPattern.matcher(bookIsbnAddField.getText().trim())).matches()) {
-                //ISBN 978-0-596-52068-7 - valid
-                //ISBN 11978-0-596-52068-7 - invalid
-                throw new IllegalArgumentException("Niepoprawny numer ISBN!");
-            }
-            bookToAdd = new Book(bookIsbnAddField.getText().trim(), bookTitleAddField.getText().trim(),
-                    bookAuthorAddField.getText().trim(), bookPublisherAddField.getText().trim());
-            if(!mainController.library.addBook(bookToAdd))  {
-                throw new Exception("Nie udało się dodać książki!");
-            }
-            if(mainController.libraryDB != null) {
-                mainController.libraryDB.insertBook(bookToAdd);
-            }
-
-            mainController.showInfoDialog("Informacja", "Książka została dodana pomyślnie!");
-        } catch (SQLException se){
-            mainController.library.removeBook(bookToAdd);
-            mainController.showInfoDialog("Informacja SQL",se.getMessage());
-        } catch (IllegalArgumentException iae) {
-            mainController.showInfoDialog("Sprawdzenie formularza",iae.getMessage());
-        } catch (Exception e) {
-            mainController.showInfoDialog("Informacja",e.getMessage());
-        }
+        mainController.showInfoDialog(
+                "Informacja",
+                mainController.libraryController.addBook(
+                        bookIsbnAddField.getText(),
+                        bookTitleAddField.getText(),
+                        bookAuthorAddField.getText(),
+                        bookPublisherAddField.getText()
+                )
+        );
         reloadBookTableView();
     }
 
@@ -154,48 +139,16 @@ public class BookController {
      */
     @FXML
     private void updateBook() {
-        try {
-            int changesNum = 0;
-            if (bookIsbnUpdateField.getText().trim().isEmpty() || bookTitleUpdateField.getText().trim().isEmpty() ||
-                    bookAuthorUpdateField.getText().trim().isEmpty() || bookPublisherUpdateField.getText().trim().isEmpty()) {
-                throw new IllegalArgumentException("Uzupełnij wszystkie pola!");
-            }
-            if (!bookTitleUpdateField.getText().trim().equals(booksTableView.getSelectionModel().getSelectedItem().getValue().getTitle())) {
-                booksTableView.getSelectionModel().getSelectedItem().getValue().setTitle(bookTitleUpdateField.getText().trim());
-                changesNum++;
-            }
-            if (!bookIsbnUpdateField.getText().trim().equals(booksTableView.getSelectionModel().getSelectedItem().getValue().getIsbn())) {
-                if (!(isbnPattern.matcher(bookIsbnUpdateField.getText().trim())).matches()) {
-                    //ISBN 978-0-596-52068-7 - valid
-                    //ISBN 11978-0-596-52068-7 - invalid
-                    throw new IllegalArgumentException("Niepoprawny numer ISBN!");
-                }
-                booksTableView.getSelectionModel().getSelectedItem().getValue().setIsbn(bookIsbnUpdateField.getText().trim());
-                changesNum++;
-            }
-
-            if (!bookAuthorUpdateField.getText().trim().equals(booksTableView.getSelectionModel().getSelectedItem().getValue().getAuthor())) {
-                booksTableView.getSelectionModel().getSelectedItem().getValue().setAuthor(bookAuthorUpdateField.getText().trim());
-                changesNum++;
-            }
-            if (!bookPublisherUpdateField.getText().trim().equals(booksTableView.getSelectionModel().getSelectedItem().getValue().getPublisher())) {
-                booksTableView.getSelectionModel().getSelectedItem().getValue().setPublisher(bookPublisherUpdateField.getText().trim());
-                changesNum++;
-            }
-
-            if(changesNum > 0) {
-                mainController.libraryDB.updateBook(booksTableView.getSelectionModel().getSelectedItem().getValue());
-                mainController.showInfoDialog("Informacja", "Książka została zaktualizowana pomyślnie!\n" +
-                        "Ilość wprowadzonych zmian: " + changesNum);
-            } else {
-                mainController.showInfoDialog("Informacja", "Nie wprowadzono żadnych zmian!");
-            }
-
-        } catch (IllegalArgumentException e) {
-            mainController.showInfoDialog("Sprawdzenie formularza",e.getMessage());
-        } catch (SQLException se) {
-            mainController.showInfoDialog("Informacja SQL",se.getMessage());
-        }
+        mainController.showInfoDialog(
+                "Informacja",
+                mainController.libraryController.updateBook(
+                        booksTableView.getSelectionModel().getSelectedItem().getValue(),
+                        bookIsbnUpdateField.getText(),
+                        bookTitleUpdateField.getText(),
+                        bookAuthorUpdateField.getText(),
+                        bookPublisherUpdateField.getText()
+                )
+        );
         reloadBookTableView();
     }
 
@@ -205,17 +158,11 @@ public class BookController {
     @FXML
     private void deleteBook() {
         final Book bookToRemove = booksTableView.getSelectionModel().getSelectedItem().getValue();
-        try {
-            if(mainController.confirmDeletionBook(bookToRemove.getTitle())) {
-                if(mainController.libraryDB.deleteFromTable("BOOKS",bookToRemove.getBOOK_ID()) && mainController.library.removeBook(bookToRemove)){
-                    mainController.showInfoDialog("Informacja", "Książka została usunięta pomyślnie!");
-                }
-                else {
-                    mainController.showInfoDialog("Informacja", "Książka nie została usunięta!");
-                }
-            }
-        } catch (SQLException se) {
-            mainController.showInfoDialog("Informacja SQL",se.getMessage());
+        if(mainController.confirmDeletionBook(bookToRemove.getTitle())) {
+            mainController.showInfoDialog(
+                    "Informacja",
+                    mainController.libraryController.deleteBook(bookToRemove)
+            );
         }
         reloadBookTableView();
     }
@@ -255,16 +202,4 @@ public class BookController {
         bookAuthorUpdateField.clear();
         bookPublisherUpdateField.clear();
     }
-
-    @FXML
-    private void updateBookTestData(){
-        for(int i=0; i< 10000;i++)
-        {
-            Book book1;
-            book1 = new Book("5869782"+i,"Harry Potter", "J.K Rowling","Bloomsbury Publishing");
-            mainController.library.addBook(book1);
-        }
-        reloadBookTableView();
-    }
-
 }

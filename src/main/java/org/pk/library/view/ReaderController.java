@@ -4,48 +4,53 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.input.MouseEvent;
 import org.pk.library.model.Reader;
-import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.regex.Pattern;
 
 public class ReaderController {
-
     private MainController mainController;
-    public JFXTextField findReaderField;
-    public JFXTextField firstNameAddField;
-    public JFXTextField lastNameAddField;
-    public JFXDatePicker dateOfBirthAddField;
-    public JFXTextField phoneNumberAddField;
-    public JFXTextField emailAddressAddField;
-    public JFXTextField firstNameUpdateField;
-    public JFXTextField lastNameUpdateField;
-    public JFXDatePicker dateOfBirthUpdateField;
-    public JFXTextField phoneNumberUpdateField;
-    public JFXTextField emailAddressUpdateField;
-    LocalDate today = LocalDate.now();
     @FXML
-    JFXTreeTableView<Reader> readersTableView;
-    JFXTreeTableColumn<Reader,String> firstNameCol;
-    JFXTreeTableColumn<Reader,String> lastNameCol;
-    JFXTreeTableColumn<Reader, LocalDate> dateOfBirthCol;
-    JFXTreeTableColumn<Reader,String> phoneNumberCol;
-    JFXTreeTableColumn<Reader,String> emailAddressCol;
-    Pattern phoneNumberPattern;
-    Pattern emailAddressPattern;
-
+    private JFXTextField findReaderField;
+    @FXML
+    private JFXTextField firstNameAddField;
+    @FXML
+    private JFXTextField lastNameAddField;
+    @FXML
+    private JFXDatePicker dateOfBirthAddField;
+    @FXML
+    private JFXTextField phoneNumberAddField;
+    @FXML
+    private JFXTextField emailAddressAddField;
+    @FXML
+    private JFXTextField firstNameUpdateField;
+    @FXML
+    private JFXTextField lastNameUpdateField;
+    @FXML
+    private JFXDatePicker dateOfBirthUpdateField;
+    @FXML
+    private JFXTextField phoneNumberUpdateField;
+    @FXML
+    private JFXTextField emailAddressUpdateField;
+    @FXML
+    private JFXTreeTableView<Reader> readersTableView;
+    @FXML
+    private JFXTreeTableColumn<Reader, String> firstNameCol;
+    @FXML
+    private JFXTreeTableColumn<Reader, String> lastNameCol;
+    @FXML
+    private JFXTreeTableColumn<Reader, LocalDate> dateOfBirthCol;
+    @FXML
+    private JFXTreeTableColumn<Reader, String> phoneNumberCol;
+    @FXML
+    private JFXTreeTableColumn<Reader, String> emailAddressCol;
 
     public void injectMainController(MainController mainController) {
         this.mainController = mainController;
-    }
-
-    public void initialize() {
-        phoneNumberPattern = Pattern.compile("^\\+[0-9]{1,3}[0-9]{4,14}(?:x.+)?$");
-        emailAddressPattern = Pattern.compile("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$");
     }
 
     /**
@@ -93,25 +98,23 @@ public class ReaderController {
             else return emailAddressCol.getComputedValue(param);
         });
 
-        TreeItem<Reader> readersTreeItem = new RecursiveTreeItem<>(mainController.library.getReaders(), RecursiveTreeObject::getChildren);
+        TreeItem<Reader> readersTreeItem = new RecursiveTreeItem<>(FXCollections.observableArrayList(mainController.libraryController.getReaders()), RecursiveTreeObject::getChildren);
         readersTableView.setRoot(readersTreeItem);
 
         readersTableView.setShowRoot(false);
         readersTableView.setEditable(true);
         readersTableView.getColumns().setAll(firstNameCol, lastNameCol, dateOfBirthCol, phoneNumberCol, emailAddressCol);
 
-        findReaderField.textProperty().addListener((o, oldVal, newVal) -> {
-            readersTableView.setPredicate(readerProp -> {
-                clearUpdateReaderForm();
-                final Reader reader = readerProp.getValue();
-                String checkValue = newVal.trim().toLowerCase();
-                return (reader.getFirstName().toLowerCase().contains(checkValue) ||
-                        reader.getLastName().toLowerCase().contains(checkValue) ||
-                        reader.getDateOfBirth().toString().contains(checkValue) ||
-                        reader.getPhoneNumber().toLowerCase().contains(checkValue) ||
-                        reader.getEmailAddress().toLowerCase().contains(checkValue));
-            });
-        });
+        findReaderField.textProperty().addListener((o, oldVal, newVal) -> readersTableView.setPredicate(readerProp -> {
+            clearUpdateReaderForm();
+            final Reader reader = readerProp.getValue();
+            String checkValue = newVal.trim().toLowerCase();
+            return (reader.getFirstName().toLowerCase().contains(checkValue) ||
+                    reader.getLastName().toLowerCase().contains(checkValue) ||
+                    reader.getDateOfBirth().toString().contains(checkValue) ||
+                    reader.getPhoneNumber().toLowerCase().contains(checkValue) ||
+                    reader.getEmailAddress().toLowerCase().contains(checkValue));
+        }));
 
         readersTableView.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> changeUpdateReaderForm());
     }
@@ -120,7 +123,7 @@ public class ReaderController {
      * Aktualizacja listy czytelników
      */
     private void reloadReaderTableView(){
-        TreeItem<Reader> readersTreeItem = new RecursiveTreeItem<>(mainController.library.getReaders(), RecursiveTreeObject::getChildren);
+        TreeItem<Reader> readersTreeItem = new RecursiveTreeItem<>(FXCollections.observableArrayList(mainController.libraryController.getReaders()), RecursiveTreeObject::getChildren);
         readersTableView.setRoot(readersTreeItem);
     }
 
@@ -129,7 +132,18 @@ public class ReaderController {
      */
     @FXML
     private void addReader() {
-        Reader readerToAdd = null;
+        mainController.showInfoDialog(
+                "Informacja",
+                mainController.libraryController.addReader(
+                        firstNameAddField.getText(),
+                        lastNameAddField.getText(),
+                        dateOfBirthAddField.getValue(),
+                        phoneNumberAddField.getText(),
+                        emailAddressAddField.getText()
+                )
+        );
+        reloadReaderTableView();
+       /* Reader readerToAdd = null;
 
         try {
             if(firstNameAddField.getText().trim().isEmpty() || lastNameAddField.getText().trim().isEmpty() ||
@@ -165,8 +179,7 @@ public class ReaderController {
             mainController.showInfoDialog("Sprawdzenie formularza",iae.getMessage());
         } catch (Exception e) {
             mainController.showInfoDialog("Informacja",e.getMessage());
-        }
-        reloadReaderTableView();
+        }*/
     }
 
     /**
@@ -174,7 +187,18 @@ public class ReaderController {
      */
     @FXML
     private void updateReader() {
-        try {
+        mainController.showInfoDialog(
+                "Informacja",
+                mainController.libraryController.updateReader(
+                        readersTableView.getSelectionModel().getSelectedItem().getValue(),
+                        firstNameAddField.getText(),
+                        lastNameAddField.getText(),
+                        dateOfBirthAddField.getValue(),
+                        phoneNumberAddField.getText(),
+                        emailAddressAddField.getText()
+                )
+        );
+        /*try {
             int changesNum = 0;
             if(firstNameUpdateField.getText().trim().isEmpty() || lastNameUpdateField.getText().trim().isEmpty() ||
                     dateOfBirthUpdateField.getValue() == null || phoneNumberUpdateField.getText().trim().isEmpty() ||
@@ -225,7 +249,7 @@ public class ReaderController {
         } catch (SQLException se) {
             mainController.showInfoDialog("Informacja SQL",se.getMessage());
         }
-
+*/
     }
 
     /**
@@ -234,6 +258,15 @@ public class ReaderController {
     @FXML
     private void deleteReader() {
         final Reader readerToRemove = readersTableView.getSelectionModel().getSelectedItem().getValue();
+        if(mainController.confirmDeletionReader(readerToRemove.getFirstName(), readerToRemove.getLastName())){
+            mainController.showInfoDialog(
+                    "Informacja",
+                    mainController.libraryController.deleteReader(readerToRemove)
+            );
+        }
+        reloadReaderTableView();
+
+       /* final Reader readerToRemove = readersTableView.getSelectionModel().getSelectedItem().getValue();
         try {
             if(mainController.confirmDeletionReader(readerToRemove.getFirstName(), readerToRemove.getLastName())){
                 if(mainController.libraryDB.deleteFromTable("READERS",readerToRemove.getREADER_ID()) && mainController.library.removeReader(readerToRemove)){
@@ -246,7 +279,7 @@ public class ReaderController {
         } catch (SQLException se) {
             mainController.showInfoDialog("Informacja SQL",se.getMessage());
         }
-        reloadReaderTableView();
+        reloadReaderTableView();*/
     }
 
 
@@ -255,7 +288,7 @@ public class ReaderController {
      */
     private void changeUpdateReaderForm() {
         clearUpdateReaderForm();
-       if(!readersTableView.getSelectionModel().isEmpty()) {
+        if(!readersTableView.getSelectionModel().isEmpty()) {
             firstNameUpdateField.setText(readersTableView.getSelectionModel().getSelectedItem().getValue().getFirstName());
             lastNameUpdateField.setText(readersTableView.getSelectionModel().getSelectedItem().getValue().getLastName());
             dateOfBirthUpdateField.setValue(readersTableView.getSelectionModel().getSelectedItem().getValue().getDateOfBirth());
@@ -269,11 +302,11 @@ public class ReaderController {
      */
     @FXML
     public void clearAddReaderForm() {
-       firstNameAddField.clear();
-       lastNameAddField.clear();
-       dateOfBirthAddField.setValue(null);
-       phoneNumberAddField.clear();
-       emailAddressAddField.clear();
+        firstNameAddField.clear();
+        lastNameAddField.clear();
+        dateOfBirthAddField.setValue(null);
+        phoneNumberAddField.clear();
+        emailAddressAddField.clear();
     }
 
     /**

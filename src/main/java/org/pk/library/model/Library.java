@@ -10,16 +10,16 @@ import java.util.List;
 
 public class Library {
     private List<Book> books;
-    private ObservableList<Reader> readers;
-    private ObservableList<Rent> rents;
+    private List<Reader> readers;
+    private List<Rent> rents;
 
     public Library() {
         books = new ArrayList<>();
-        readers = FXCollections.observableArrayList();
-        rents = FXCollections.observableArrayList();
+        readers = new ArrayList<>();
+        rents = new ArrayList<>();
     }
 
-    public Library(List<Book> books, ObservableList<Reader> readers, ObservableList<Rent> rents) {
+    public Library(List<Book> books, List<Reader> readers, List<Rent> rents) {
         this.books = books;
         this.readers = readers;
         this.rents = rents;
@@ -60,7 +60,7 @@ public class Library {
         return books.size();
     }
 
-    /*public List<Book> getBooks() {
+    public List<Book> getBooks() {
         return Collections.unmodifiableList(books);
     }
 
@@ -70,20 +70,15 @@ public class Library {
 
     public List<Rent> getRents() {
         return Collections.unmodifiableList(rents);
-    }*/
-
-    public List<Book> getBooks() {
-       return books;
-       // return books;
     }
 
-    public ObservableList<Reader> getReaders() {
+/*    public ObservableList<Reader> getReaders() {
         return FXCollections.unmodifiableObservableList(readers);
     }
 
     public ObservableList<Rent> getRents() {
         return FXCollections.unmodifiableObservableList(rents);
-    }
+    }*/
 
     @Override
     public String toString() {
