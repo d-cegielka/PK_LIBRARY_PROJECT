@@ -15,6 +15,7 @@ import javafx.scene.text.Text;
 import org.pk.library.controller.Controller;
 import org.pk.library.model.*;
 
+import javax.security.auth.login.CredentialNotFoundException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,8 @@ public class MainController {
     private BookController bookController;
     @FXML
     private ReaderController readerController;
+    @FXML
+    private RentController rentController;
     @FXML
     private TabPane tabPane;
     @FXML
@@ -41,13 +44,12 @@ public class MainController {
 
         bookController.injectMainController(this);
         readerController.injectMainController(this);
+        rentController.injectMainController(this);
 
-        bookController.initializeBookTableView();
-        readerController.initializeReaderTableView();
     }
 
     /**
-     * Metoda wypisująca inforamcję w oknie dialogowym w przypadku powodzenia lub niepowodzenia
+     * Metoda wypisująca informację w oknie dialogowym w przypadku powodzenia lub niepowodzenia.
      * @param header nagłówek informacji
      * @param message treść informacji
      */
@@ -75,22 +77,12 @@ public class MainController {
     }
 
     @FXML
-    public boolean confirmDeletionBook(String title){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Potwierdź wybór");
-        alert.setHeaderText("Czy na pewno chcesz usunąć książkę pt. \"" + title + "\" ?");
-        Optional<ButtonType> result = alert.showAndWait();
-        return result.get() == ButtonType.OK;
+    void reloadRentView(){
+        rentController.reloadRentTableView();
+        rentController.reloadReadersTableView();
+        rentController.reloadBooksTableView();
     }
 
-    @FXML
-    public boolean confirmDeletionReader(String firstName, String lastName){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Potwierdź wybór");
-        alert.setHeaderText("Czy na pewno chcesz usunąć czytelnika " + firstName + " " + lastName+" ?");
-        Optional<ButtonType> result = alert.showAndWait();
-        return result.get() == ButtonType.OK;
-    }
 }
 
 

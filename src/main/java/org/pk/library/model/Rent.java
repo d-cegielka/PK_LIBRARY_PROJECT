@@ -1,10 +1,12 @@
 package org.pk.library.model;
 
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Rent {
+public class Rent extends RecursiveTreeObject<Rent> {
     private final Book BOOK;
     private final Reader READER;
     private LocalDate dateOfRent;
@@ -21,6 +23,15 @@ public class Rent {
         this.returned = returned;
     }
 
+    public Rent(Book BOOK, Reader READER, LocalDate dateOfRent, LocalDate dateOfReturn, boolean returned, String RENT_ID) {
+        this.BOOK = BOOK;
+        this.READER = READER;
+        this.dateOfRent = dateOfRent;
+        this.dateOfReturn = dateOfReturn;
+        this.returned = returned;
+        this.RENT_ID = RENT_ID;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -35,17 +46,16 @@ public class Rent {
         return Objects.hash(BOOK, READER);
     }
 
+
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Rent{");
-        sb.append("book=").append(BOOK);
-        sb.append(", reader=").append(READER);
-        sb.append(", dateOfRent=").append(dateOfRent);
-        sb.append(", dateOfReturn=").append(dateOfReturn);
-        sb.append(", returned=").append(returned);
-        sb.append(", rentID='").append(RENT_ID).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "Rent{" + "book=" + BOOK +
+                ", reader=" + READER +
+                ", dateOfRent=" + dateOfRent +
+                ", dateOfReturn=" + dateOfReturn +
+                ", returned=" + returned +
+                ", rentID='" + RENT_ID + '\'' +
+                '}';
     }
 
     public Book getBOOK() {

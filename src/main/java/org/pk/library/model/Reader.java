@@ -33,15 +33,13 @@ public class Reader extends RecursiveTreeObject<Reader> {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Reader{");
-        sb.append("firstName='").append(firstName).append('\'');
-        sb.append(", lastName='").append(lastName).append('\'');
-        sb.append(", dateOfBirth=").append(dateOfBirth);
-        sb.append(", phoneNumber='").append(phoneNumber).append('\'');
-        sb.append(", emailAddress='").append(emailAddress).append('\'');
-        sb.append(", readerID='").append(READER_ID).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "Reader{" + "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", readerID='" + READER_ID + '\'' +
+                '}';
     }
 
     @Override

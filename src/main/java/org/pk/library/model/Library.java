@@ -1,17 +1,14 @@
 package org.pk.library.model;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class Library {
-    private List<Book> books;
-    private List<Reader> readers;
-    private List<Rent> rents;
+    private final List<Book> books;
+    private final List<Reader> readers;
+    private final List<Rent> rents;
 
     public Library() {
         books = new ArrayList<>();
@@ -45,8 +42,8 @@ public class Library {
         return readers.remove(reader);
     }
 
-    public boolean removeRent(final Rent rent){
-        return rents.remove(rent);
+    public void removeRent(final Rent rent){
+        rents.remove(rent);
     }
 
     public Book getBook(int index) {
@@ -72,22 +69,12 @@ public class Library {
         return Collections.unmodifiableList(rents);
     }
 
-/*    public ObservableList<Reader> getReaders() {
-        return FXCollections.unmodifiableObservableList(readers);
-    }
-
-    public ObservableList<Rent> getRents() {
-        return FXCollections.unmodifiableObservableList(rents);
-    }*/
-
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Library{");
-        sb.append("books=").append(books);
-        sb.append(", readers=").append(readers);
-        sb.append(", rents=").append(rents);
-        sb.append('}');
-        return sb.toString();
+        return "Library{" + "books=" + books +
+                ", readers=" + readers +
+                ", rents=" + rents +
+                '}';
     }
 
     static class titleComparator implements Comparator<Book>{

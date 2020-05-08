@@ -2,12 +2,10 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDatePicker?>
-<?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -52,7 +50,7 @@
                     <children>
                         <VBox alignment="TOP_CENTER" layoutY="-1.0" prefHeight="707.0" prefWidth="636.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
-                                <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="16.0" text="Dodaj wypożyczenie" textAlignment="CENTER">
+                                <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="16.0" text="Wypożyczanie książki" textAlignment="CENTER">
                                     <font>
                                         <Font name="System Bold" size="24.0" />
                                     </font>
@@ -65,28 +63,40 @@
                                         <GridPane HBox.hgrow="SOMETIMES">
                                             <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                             </columnConstraints>
                                             <rowConstraints>
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                             <children>
-                                                <Label text="Wybierz czytelnika" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <Label text="Wybierz czytelnika">
                                                     <GridPane.margin>
-                                                        <Insets />
+                                                        <Insets left="15.0" />
                                                     </GridPane.margin>
                                                     <font>
                                                         <Font size="16.0" />
                                                     </font>
                                                 </Label>
-                                                <Label text="Wybierz książkę" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <Label text="Wybierz książkę" GridPane.columnIndex="2">
                                                     <GridPane.margin>
-                                                        <Insets />
+                                                        <Insets left="15.0" />
                                                     </GridPane.margin>
                                                     <font>
                                                         <Font size="16.0" />
                                                     </font>
                                                 </Label>
+                                    <JFXTextField fx:id="findReaderField" promptText="Szukaj" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="25.0" right="20.0" />
+                                       </GridPane.margin>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="findBookField" promptText="Szukaj" GridPane.columnIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="25.0" right="20.0" />
+                                       </GridPane.margin>
+                                    </JFXTextField>
                                             </children>
                                         </GridPane>
                                     </children>
@@ -96,7 +106,7 @@
                                         <DropShadow />
                                     </effect>
                                     <children>
-                                        <GridPane alignment="CENTER" prefHeight="100.0" HBox.hgrow="SOMETIMES">
+                                        <GridPane alignment="CENTER" prefHeight="450.0" HBox.hgrow="SOMETIMES">
                                             <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -104,18 +114,21 @@
                                             <rowConstraints>
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
-                                            <children>
-                                                <JFXListView fx:id="readersListView" prefHeight="100.0">
-                                                    <GridPane.margin>
-                                                        <Insets left="15.0" right="15.0" />
-                                                    </GridPane.margin>
-                                                </JFXListView>
-                                                <JFXListView fx:id="booksListView" prefHeight="126.0" GridPane.columnIndex="1">
-                                                    <GridPane.margin>
-                                                        <Insets left="15.0" right="15.0" />
-                                                    </GridPane.margin>
-                                                </JFXListView>
-                                            </children>
+                                 <children>
+                                    <JFXTreeTableView fx:id="readersTableView">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </JFXTreeTableView>
+                                    <JFXTreeTableView fx:id="booksTableView" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </JFXTreeTableView>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets top="10.0" />
+                                 </HBox.margin>
                                         </GridPane>
                                     </children>
                                 </HBox>
@@ -130,17 +143,20 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                             <children>
-                                                <JFXDatePicker maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="28.0" promptText="Data wypożyczenia" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER">
+                                                <JFXDatePicker fx:id="dateOfRentField" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="28.0" promptText="Data wypożyczenia" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER">
                                                     <GridPane.margin>
                                                         <Insets left="15.0" right="10.0" />
                                                     </GridPane.margin>
                                                 </JFXDatePicker>
-                                                <JFXDatePicker maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="28.0" promptText="Data zwrotu" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER">
+                                                <JFXDatePicker fx:id="dateOfReturnField" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="28.0" promptText="Data zwrotu" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER">
                                                     <GridPane.margin>
                                                         <Insets left="15.0" right="10.0" />
                                                     </GridPane.margin>
                                                 </JFXDatePicker>
                                             </children>
+                                 <HBox.margin>
+                                    <Insets top="10.0" />
+                                 </HBox.margin>
                                         </GridPane>
                                     </children>
                                 </HBox>
@@ -155,91 +171,19 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                             <children>
-                                                <JFXButton alignment="CENTER" contentDisplay="TOP" defaultButton="true" prefHeight="35.0" prefWidth="230.0" stylesheets="@addbook.css" text="Dodaj" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <JFXButton alignment="CENTER" contentDisplay="TOP" defaultButton="true" onAction="#addRent" prefHeight="35.0" prefWidth="230.0" stylesheets="@addbook.css" text="Dodaj wypożyczenie" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                                     <GridPane.margin>
                                                         <Insets />
                                                     </GridPane.margin>
                                                 </JFXButton>
-                                                <JFXButton cancelButton="true" prefHeight="35.0" prefWidth="230.0" ripplerFill="#664444" stylesheets="@addbook.css" text="Wyczyść" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                                    <GridPane.margin>
-                                                        <Insets />
-                                                    </GridPane.margin>
-                                                </JFXButton>
-                                            </children>
-                                            <HBox.margin>
-                                                <Insets />
-                                            </HBox.margin>
-                                            <opaqueInsets>
-                                                <Insets />
-                                            </opaqueInsets>
-                                        </GridPane>
-                                    </children>
-                                    <opaqueInsets>
-                                        <Insets />
-                                    </opaqueInsets>
-                                </HBox>
-                                <Separator prefHeight="10.0" prefWidth="636.0">
-                                    <VBox.margin>
-                                        <Insets bottom="5.0" top="5.0" />
-                                    </VBox.margin>
-                                </Separator>
-                                <Label alignment="CENTER" layoutX="40.0" layoutY="30.0" prefHeight="16.0" prefWidth="636.0" text="Aktualizuj dane wypożyczenia" textAlignment="CENTER">
-                                    <font>
-                                        <Font name="System Bold" size="24.0" />
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets left="30.0" right="30.0" top="10.0" />
-                                    </VBox.margin>
-                                </Label>
-                                <JFXTextField layoutX="40.0" layoutY="75.0" promptText="Imię">
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
-                                    </VBox.margin>
-                                </JFXTextField>
-                                <JFXTextField layoutX="40.0" layoutY="120.0" promptText="Nazwisko">
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
-                                    </VBox.margin>
-                                </JFXTextField>
-                                <JFXDatePicker layoutX="40.0" layoutY="165.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" promptText="Data urodzenia">
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
-                                    </VBox.margin>
-                                </JFXDatePicker>
-                                <JFXTextField layoutX="40.0" layoutY="213.0" promptText="Numer telefonu">
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
-                                    </VBox.margin>
-                                </JFXTextField>
-                                <JFXTextField layoutX="40.0" layoutY="258.0" promptText="Adres e-mail">
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
-                                    </VBox.margin>
-                                </JFXTextField>
-                                <HBox alignment="TOP_CENTER" prefHeight="56.0" prefWidth="636.0">
-                                    <children>
-                                        <GridPane alignment="TOP_CENTER" prefHeight="85.0" HBox.hgrow="SOMETIMES">
-                                            <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                            </columnConstraints>
-                                            <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            </rowConstraints>
-                                            <children>
-                                                <JFXButton alignment="CENTER" contentDisplay="TOP" defaultButton="true" prefHeight="35.0" prefWidth="230.0" stylesheets="@addbook.css" text="Zapisz" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                                    <GridPane.margin>
-                                                        <Insets />
-                                                    </GridPane.margin>
-                                                </JFXButton>
-                                                <JFXButton cancelButton="true" prefHeight="35.0" prefWidth="230.0" ripplerFill="#664444" stylesheets="@addbook.css" text="Wyczyść" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <JFXButton alignment="CENTER" contentDisplay="TOP" defaultButton="true" prefHeight="35.0" prefWidth="230.0" ripplerFill="#664444" stylesheets="@addbook.css" text="Aktualizuj wypożyczenie" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                                     <GridPane.margin>
                                                         <Insets />
                                                     </GridPane.margin>
                                                 </JFXButton>
                                             </children>
                                             <HBox.margin>
-                                                <Insets />
+                                                <Insets top="20.0" />
                                             </HBox.margin>
                                             <opaqueInsets>
                                                 <Insets />

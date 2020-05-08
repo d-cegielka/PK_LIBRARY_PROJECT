@@ -6,11 +6,14 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.input.MouseEvent;
 import org.pk.library.model.Reader;
 import java.time.LocalDate;
+import java.util.Optional;
 
 public class ReaderController {
     private MainController mainController;
@@ -49,15 +52,15 @@ public class ReaderController {
     @FXML
     private JFXTreeTableColumn<Reader, String> emailAddressCol;
 
-    public void injectMainController(MainController mainController) {
+    void injectMainController(MainController mainController) {
         this.mainController = mainController;
+        initializeReaderTableView();
     }
 
     /**
-     * Inicializacja kolumn w tabeli z listą czytelników oraz wyszukiwarka czytelników
+     * Inicializacja kolumn w tabeli z listą czytelników oraz wyszukiwarki czytelników
      */
     public void initializeReaderTableView(){
-
         firstNameCol = new JFXTreeTableColumn<>("Imię");
         firstNameCol.prefWidthProperty().bind(readersTableView.widthProperty().divide(5));
         firstNameCol.setResizable(false);
@@ -122,6 +125,7 @@ public class ReaderController {
     /**
      * Aktualizacja listy czytelników
      */
+    @FXML
     private void reloadReaderTableView(){
         TreeItem<Reader> readersTreeItem = new RecursiveTreeItem<>(FXCollections.observableArrayList(mainController.libraryController.getReaders()), RecursiveTreeObject::getChildren);
         readersTableView.setRoot(readersTreeItem);
@@ -143,43 +147,6 @@ public class ReaderController {
                 )
         );
         reloadReaderTableView();
-       /* Reader readerToAdd = null;
-
-        try {
-            if(firstNameAddField.getText().trim().isEmpty() || lastNameAddField.getText().trim().isEmpty() ||
-                    dateOfBirthAddField.getValue() == null || phoneNumberAddField.getText().trim().isEmpty() ||
-                    emailAddressAddField.getText().trim().isEmpty()) {
-                throw new IllegalArgumentException("Uzupełnij wszystkie pola!");
-            }
-            if(dateOfBirthAddField.getValue().isAfter(today)) {
-                throw new IllegalArgumentException("Wybrano datę urodzenia z przyszłości! Popraw dane!");
-            }
-            if(!(phoneNumberPattern.matcher(phoneNumberAddField.getText().trim())).matches()) {
-                throw new IllegalArgumentException("Niepoprawny format numeru kontaktowego!");
-            }
-            if(!(emailAddressPattern.matcher(emailAddressAddField.getText().trim())).matches()) {
-                throw new IllegalArgumentException("Niepoprawny format adresu e-mail!");
-            }
-
-            readerToAdd = new Reader(firstNameAddField.getText().trim(), lastNameAddField.getText().trim(),
-                    dateOfBirthAddField.getValue(), phoneNumberAddField.getText().trim(), emailAddressAddField.getText().trim());
-
-            if(!mainController.library.addReader(readerToAdd))  {
-                throw new Exception("Nie udało się dodać czytelnika!");
-            }
-            if(mainController.libraryDB != null) {
-                mainController.libraryDB.insertReader(readerToAdd);
-            }
-
-            mainController.showInfoDialog("Informacja", "Czytelnik został dodany pomyślnie!");
-        } catch (SQLException se){
-            mainController.library.removeReader(readerToAdd);
-            mainController.showInfoDialog("Informacja SQL",se.getMessage());
-        } catch (IllegalArgumentException iae) {
-            mainController.showInfoDialog("Sprawdzenie formularza",iae.getMessage());
-        } catch (Exception e) {
-            mainController.showInfoDialog("Informacja",e.getMessage());
-        }*/
     }
 
     /**
@@ -187,69 +154,20 @@ public class ReaderController {
      */
     @FXML
     private void updateReader() {
+        int readerIndex = readersTableView.getSelectionModel().getSelectedIndex();
         mainController.showInfoDialog(
                 "Informacja",
                 mainController.libraryController.updateReader(
                         readersTableView.getSelectionModel().getSelectedItem().getValue(),
-                        firstNameAddField.getText(),
-                        lastNameAddField.getText(),
-                        dateOfBirthAddField.getValue(),
-                        phoneNumberAddField.getText(),
-                        emailAddressAddField.getText()
+                        firstNameUpdateField.getText(),
+                        lastNameUpdateField.getText(),
+                        dateOfBirthUpdateField.getValue(),
+                        phoneNumberUpdateField.getText(),
+                        emailAddressUpdateField.getText()
                 )
         );
-        /*try {
-            int changesNum = 0;
-            if(firstNameUpdateField.getText().trim().isEmpty() || lastNameUpdateField.getText().trim().isEmpty() ||
-                    dateOfBirthUpdateField.getValue() == null || phoneNumberUpdateField.getText().trim().isEmpty() ||
-                    emailAddressUpdateField.getText().trim().isEmpty()) {
-                throw new IllegalArgumentException("Uzupełnij wszystkie pola!");
-            }
-            if (!firstNameUpdateField.getText().trim().equals(readersTableView.getSelectionModel().getSelectedItem().getValue().getFirstName())) {
-                readersTableView.getSelectionModel().getSelectedItem().getValue().setFirstName(firstNameUpdateField.getText());
-                changesNum++;
-            }
-            if (!lastNameUpdateField.getText().trim().equals(readersTableView.getSelectionModel().getSelectedItem().getValue().getLastName())) {
-                readersTableView.getSelectionModel().getSelectedItem().getValue().setLastName(lastNameUpdateField.getText().trim());
-                changesNum++;
-            }
-            if (!dateOfBirthUpdateField.getValue().equals(readersTableView.getSelectionModel().getSelectedItem().getValue().getDateOfBirth())) {
-                if(dateOfBirthUpdateField.getValue().isAfter(today)) {
-                    throw new IllegalArgumentException("Wybrano datę urodzenia z przyszłości! Popraw dane!");
-                }
-                readersTableView.getSelectionModel().getSelectedItem().getValue().setDateOfBirth(dateOfBirthUpdateField.getValue());
-                changesNum++;
-            }
-            if (!phoneNumberUpdateField.getText().trim().equals(readersTableView.getSelectionModel().getSelectedItem().getValue().getPhoneNumber())) {
-                if(!(phoneNumberPattern.matcher(phoneNumberUpdateField.getText().trim())).matches()) {
-                    throw new IllegalArgumentException("Niepoprawny format numeru kontaktowego!");
-                }
-                readersTableView.getSelectionModel().getSelectedItem().getValue().setPhoneNumber(phoneNumberUpdateField.getText().trim());
-                changesNum++;
-            }
-            if (!emailAddressUpdateField.getText().trim().equals(readersTableView.getSelectionModel().getSelectedItem().getValue().getEmailAddress())) {
-                if(!(emailAddressPattern.matcher(emailAddressUpdateField.getText().trim())).matches()) {
-                    throw new IllegalArgumentException("Niepoprawny format adresu e-mail");
-                }
-                readersTableView.getSelectionModel().getSelectedItem().getValue().setEmailAddress(emailAddressUpdateField.getText().trim());
-                changesNum++;
-            }
-
-            if(changesNum > 0) {
-                mainController.libraryDB.updateReader(readersTableView.getSelectionModel().getSelectedItem().getValue());
-                mainController.showInfoDialog("Informacja", "Dane czytelnika zostały zaktualizowane pomyślnie!\n" +
-                        "Ilość wprowadzonych zmian: " + changesNum);
-                reloadReaderTableView();
-            } else {
-                mainController.showInfoDialog("Informacja", "Nie wprowadzono żadnych zmian!");
-            }
-
-        } catch (IllegalArgumentException e) {
-            mainController.showInfoDialog("Sprawdzenie formularza",e.getMessage());
-        } catch (SQLException se) {
-            mainController.showInfoDialog("Informacja SQL",se.getMessage());
-        }
-*/
+        reloadReaderTableView();
+        readersTableView.getSelectionModel().select(readerIndex);
     }
 
     /**
@@ -258,30 +176,14 @@ public class ReaderController {
     @FXML
     private void deleteReader() {
         final Reader readerToRemove = readersTableView.getSelectionModel().getSelectedItem().getValue();
-        if(mainController.confirmDeletionReader(readerToRemove.getFirstName(), readerToRemove.getLastName())){
+        if(confirmDeletionReader(readerToRemove.getFirstName(), readerToRemove.getLastName())){
             mainController.showInfoDialog(
                     "Informacja",
                     mainController.libraryController.deleteReader(readerToRemove)
             );
         }
         reloadReaderTableView();
-
-       /* final Reader readerToRemove = readersTableView.getSelectionModel().getSelectedItem().getValue();
-        try {
-            if(mainController.confirmDeletionReader(readerToRemove.getFirstName(), readerToRemove.getLastName())){
-                if(mainController.libraryDB.deleteFromTable("READERS",readerToRemove.getREADER_ID()) && mainController.library.removeReader(readerToRemove)){
-                    mainController.showInfoDialog("Informacja", "Czytelnik został usunięty pomyślnie!");
-                }
-                else {
-                    mainController.showInfoDialog("Informacja", "Czytelnik nie został usunięty!");
-                }
-            }
-        } catch (SQLException se) {
-            mainController.showInfoDialog("Informacja SQL",se.getMessage());
-        }
-        reloadReaderTableView();*/
     }
-
 
     /**
      * Aktualizacja danych formularza po wybraniu czytelnika z listy
@@ -298,10 +200,25 @@ public class ReaderController {
     }
 
     /**
+     * Metoda wypisująca inforamcję w oknie dialogowym podczas usuwania książki
+     * @param firstName imię czytelnika
+     * @param lastName nazwisko czytelnika
+     * @return potwierdzenie/niepotwierdzenie usunięcia
+     */
+    @FXML
+    boolean confirmDeletionReader(String firstName, String lastName){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Potwierdź wybór");
+        alert.setHeaderText("Czy na pewno chcesz usunąć czytelnika " + firstName + " " + lastName+" ?");
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.orElse(null) == ButtonType.OK;
+    }
+
+    /**
      * Czyszczenie pól formularza dodawania czytelnika
      */
     @FXML
-    public void clearAddReaderForm() {
+    private void clearAddReaderForm() {
         firstNameAddField.clear();
         lastNameAddField.clear();
         dateOfBirthAddField.setValue(null);
@@ -313,7 +230,7 @@ public class ReaderController {
      * Czyszczenie pól formularza aktualizacji danych czytelnika
      */
     @FXML
-    public void clearUpdateReaderForm() {
+    private void clearUpdateReaderForm() {
         firstNameUpdateField.clear();
         lastNameUpdateField.clear();
         dateOfBirthUpdateField.setValue(null);

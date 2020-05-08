@@ -7,14 +7,15 @@ import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.input.MouseEvent;
 import org.pk.library.model.Book;
 
-import java.util.Collections;
+import java.util.Optional;
 
 public class BookController {
     @FXML
@@ -50,13 +51,13 @@ public class BookController {
 
     void injectMainController(MainController mainController) {
         this.mainController = mainController;
+        initializeBookTableView();
     }
 
     /**
      * Inicializacja kolumn w tabeli z listą książek oraz wyszukiwarka książek
      */
     void initializeBookTableView(){
-
         titleCol = new JFXTreeTableColumn<>("Tytuł");
         titleCol.prefWidthProperty().bind(booksTableView.widthProperty().divide(4));
         titleCol.setResizable(false);
@@ -115,6 +116,7 @@ public class BookController {
     private void reloadBookTableView(){
         TreeItem<Book> booksTreeItem = new RecursiveTreeItem<>(FXCollections.observableArrayList(mainController.libraryController.getBooks()), RecursiveTreeObject::getChildren);
         booksTableView.setRoot(booksTreeItem);
+
     }
 
     /**
@@ -139,6 +141,7 @@ public class BookController {
      */
     @FXML
     private void updateBook() {
+        int bookIndex = booksTableView.getSelectionModel().getSelectedIndex();
         mainController.showInfoDialog(
                 "Informacja",
                 mainController.libraryController.updateBook(
@@ -150,6 +153,7 @@ public class BookController {
                 )
         );
         reloadBookTableView();
+        booksTableView.getSelectionModel().select(bookIndex);
     }
 
     /**
@@ -158,7 +162,7 @@ public class BookController {
     @FXML
     private void deleteBook() {
         final Book bookToRemove = booksTableView.getSelectionModel().getSelectedItem().getValue();
-        if(mainController.confirmDeletionBook(bookToRemove.getTitle())) {
+        if(confirmDeletionBook(bookToRemove.getTitle())) {
             mainController.showInfoDialog(
                     "Informacja",
                     mainController.libraryController.deleteBook(bookToRemove)
@@ -179,6 +183,20 @@ public class BookController {
             bookIsbnUpdateField.setText(booksTableView.getSelectionModel().getSelectedItem().getValue().getIsbn());
             bookAuthorUpdateField.setText(booksTableView.getSelectionModel().getSelectedItem().getValue().getAuthor());
         }
+    }
+
+    /**
+     * Metoda wypisująca inforamcję w oknie dialogowym podczas usuwania książki
+     * @param title tytuł książki
+     * @return potwierdzenie/niepotwierdzenie usunięcia
+     */
+    @FXML
+    boolean confirmDeletionBook(String title){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Potwierdź wybór");
+        alert.setHeaderText("Czy na pewno chcesz usunąć książkę pt. \"" + title + "\" ?");
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.orElse(null) == ButtonType.OK;
     }
 
     /**

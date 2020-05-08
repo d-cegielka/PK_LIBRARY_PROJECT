@@ -4,8 +4,6 @@
 <?import com.calendarfx.view.print.TimeRangeView?>
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDatePicker?>
-<?import com.jfoenix.controls.JFXListView?>
-<?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTimePicker?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
@@ -27,7 +25,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="roots" minHeight="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pk.library.view.MainController">
+<AnchorPane minHeight="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pk.library.view.MainController">
    <children>
       <MenuBar layoutY="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <menus>
@@ -64,9 +62,9 @@
                  <fx:include fx:id="reader" source="reader.fxml" />
                </content>
             </Tab>
-            <Tab text="Wypożyczenia">
+            <Tab onSelectionChanged="#reloadRentView" text="Wypożyczenia">
                <content>
-                  <fx:include fx:id="rent" source="rent.fxml"/>
+                  <fx:include fx:id="rent" source="rent.fxml" />
                </content>
             </Tab>
             <Tab text="Zwroty">
