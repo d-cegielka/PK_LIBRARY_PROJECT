@@ -41,7 +41,7 @@
                                       </JFXTextField>
                                   </children>
                               </HBox>
-                              <JFXTreeTableView fx:id="booksTableView" stylesheets="@addbook.css" VBox.vgrow="SOMETIMES">
+                              <JFXTreeTableView fx:id="booksTableView" VBox.vgrow="SOMETIMES">
                                   <effect>
                                       <DropShadow />
                                   </effect>
@@ -49,7 +49,7 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
                            </VBox.margin>
                               </JFXTreeTableView>
-                        <JFXButton alignment="CENTER" contentDisplay="TOP" defaultButton="true" onAction="#deleteBook" prefHeight="35.0" prefWidth="230.0" stylesheets="@addbook.css" text="Usuń wybraną książkę" textAlignment="CENTER">
+                        <JFXButton alignment="CENTER" contentDisplay="TOP" defaultButton="true" onAction="#deleteBook" prefHeight="35.0" prefWidth="230.0" text="Usuń wybraną książkę" textAlignment="CENTER">
                            <VBox.margin>
                               <Insets bottom="10.0" top="5.0" />
                            </VBox.margin>
@@ -106,7 +106,7 @@
                                                         <Insets />
                                                     </GridPane.margin>
                                                 </JFXButton>
-                                                <JFXButton cancelButton="true" onAction="#clearAddBookForm" prefHeight="35.0" prefWidth="230.0" ripplerFill="#664444" stylesheets="@addbook.css" text="Wyczyść" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <JFXButton cancelButton="true" onAction="#clearAddBookForm" prefHeight="35.0" prefWidth="230.0" ripplerFill="#664444" text="Wyczyść" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                                     <GridPane.margin>
                                                         <Insets />
                                                     </GridPane.margin>
@@ -168,12 +168,12 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                             <children>
-                                                <JFXButton alignment="CENTER" contentDisplay="TOP" defaultButton="true" onAction="#updateBook" prefHeight="35.0" prefWidth="230.0" stylesheets="@addbook.css" text="Zapisz" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <JFXButton alignment="CENTER" contentDisplay="TOP" defaultButton="true" onAction="#updateBook" prefHeight="35.0" prefWidth="230.0" text="Zapisz" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                                     <GridPane.margin>
                                                         <Insets />
                                                     </GridPane.margin>
                                                 </JFXButton>
-                                                <JFXButton cancelButton="true" onAction="#clearUpdateBookForm" prefHeight="35.0" prefWidth="230.0" ripplerFill="#664444" stylesheets="@addbook.css" text="Wyczyść" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <JFXButton cancelButton="true" onAction="#clearUpdateBookForm" prefHeight="35.0" prefWidth="230.0" ripplerFill="#664444" text="Wyczyść" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                                     <GridPane.margin>
                                                         <Insets />
                                                     </GridPane.margin>

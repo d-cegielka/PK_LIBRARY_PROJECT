@@ -171,12 +171,12 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                             <children>
-                                                <JFXButton alignment="CENTER" contentDisplay="TOP" defaultButton="true" onAction="#addRent" prefHeight="35.0" prefWidth="230.0" stylesheets="@addbook.css" text="Dodaj wypożyczenie" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <JFXButton alignment="CENTER" contentDisplay="TOP" defaultButton="true" onAction="#addRent" prefHeight="35.0" prefWidth="230.0" text="Dodaj wypożyczenie" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                                     <GridPane.margin>
                                                         <Insets />
                                                     </GridPane.margin>
                                                 </JFXButton>
-                                                <JFXButton alignment="CENTER" contentDisplay="TOP" defaultButton="true" prefHeight="35.0" prefWidth="230.0" ripplerFill="#664444" stylesheets="@addbook.css" text="Aktualizuj wypożyczenie" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                <JFXButton alignment="CENTER" contentDisplay="TOP" defaultButton="true" prefHeight="35.0" prefWidth="230.0" ripplerFill="#664444" text="Aktualizuj wypożyczenie" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                                     <GridPane.margin>
                                                         <Insets />
                                                     </GridPane.margin>
