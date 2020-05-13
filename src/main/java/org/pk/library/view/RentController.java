@@ -2,30 +2,39 @@ package org.pk.library.view;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import org.pk.library.model.Book;
 import org.pk.library.model.Reader;
 import org.pk.library.model.Rent;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
-public class RentController {
+public class RentController  {
     private MainController mainController;
+    @FXML
+    private SplitPane rentSplitPane;
     @FXML
     private JFXTextField findReaderField;
     @FXML
     private JFXTextField findBookField;
     @FXML
-    private JFXDatePicker dateOfRentField;
+    private JFXDatePicker dateOfRentDataPicker;
     @FXML
-    private JFXDatePicker dateOfReturnField;
+    private JFXDatePicker dateOfReturnDataPicker;
     @FXML
     private JFXTextField findRentField;
     @FXML
@@ -35,9 +44,9 @@ public class RentController {
     @FXML
     private JFXTreeTableColumn<Rent, Reader> readerCol;
     @FXML
-    private JFXTreeTableColumn<Rent, LocalDate> dateOfRentCol;
+    private JFXTreeTableColumn<Rent, LocalDateTime> dateOfRentCol;
     @FXML
-    private JFXTreeTableColumn<Rent, LocalDate> dateOfReturnCol;
+    private JFXTreeTableColumn<Rent, LocalDateTime> dateOfReturnCol;
     @FXML
     private JFXTreeTableColumn<Rent, Boolean> returnedCol;
     @FXML
@@ -54,12 +63,21 @@ public class RentController {
     private JFXTreeTableColumn<Book, String> titleCol;
     @FXML
     private JFXTreeTableColumn<Book, String> authorCol;
+    @FXML
+    private JFXButton addRentButton;
+    @FXML
+    private JFXButton updateRentButton;
+    @FXML
+    private JFXTimePicker timeOfRentTimePicker;
+    @FXML
+    private JFXTextField numOfDays;
 
     void injectMainController(MainController mainController) {
         this.mainController = mainController;
         initializeRentTableView();
         initializeBookTableViewInRent();
         initializeReaderTableViewInRent();
+        updateRentButton.setDisable(true);
     }
 
     /**
@@ -119,7 +137,7 @@ public class RentController {
         dateOfRentCol = new JFXTreeTableColumn<>("Data wypożyczenia");
         dateOfRentCol.prefWidthProperty().bind(rentsTableView.widthProperty().divide(5));
         dateOfRentCol.setResizable(false);
-        dateOfRentCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Rent, LocalDate> param) ->{
+        dateOfRentCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Rent, LocalDateTime> param) ->{
             if(dateOfRentCol.validateValue(param)) return new SimpleObjectProperty<>(param.getValue().getValue().getDateOfRent());
             else return dateOfRentCol.getComputedValue(param);
         });
@@ -127,7 +145,7 @@ public class RentController {
         dateOfReturnCol = new JFXTreeTableColumn<>("Data zwrotu");
         dateOfReturnCol.prefWidthProperty().bind(rentsTableView.widthProperty().divide(5));
         dateOfReturnCol.setResizable(false);
-        dateOfReturnCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Rent, LocalDate> param) ->{
+        dateOfReturnCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Rent, LocalDateTime> param) ->{
             if(dateOfReturnCol.validateValue(param)) return new SimpleObjectProperty<>(param.getValue().getValue().getDateOfReturn());
             else return dateOfReturnCol.getComputedValue(param);
         });
@@ -178,8 +196,28 @@ public class RentController {
                     rent.getDateOfReturn().toString().contains(checkValue) ||
                     String.valueOf(rent.isReturned()).contains(checkValue));
         }));
+
+        //rentsTableView.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> changeRentForm());
+        rentsTableView.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> {
+         /*   changeRentForm();*/
+            //clearFindField();
+            changeRentForm();
+        });
+
+
+        rentSplitPane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+            if(mouseEvent.getClickCount()==2){
+                addRentButton.setDisable(false);
+                updateRentButton.setDisable(true);
+            }
+
+        });
+
     }
 
+    public void keyPressed(KeyEvent k) {
+        mainController.showInfoDialog("test","wcisnieto przycisk");
+    }
     /**
      * Inicjalizacja kolumn w tabeli z listą czytelników oraz wyszukiwarki czytelników w wypożyczaniu książki
      */
@@ -298,21 +336,81 @@ public class RentController {
     }
 
     /**
-     * Dodawnie
+     * Dodawnie wypożyczenia do struktury danych
      */
     @FXML
     private void addRent() {
+
         mainController.showInfoDialog(
                 "Informacja",
                 mainController.libraryController.addRent(
                         booksTableView.getSelectionModel().getSelectedItem().getValue(),
                         readersTableView.getSelectionModel().getSelectedItem().getValue(),
-                        dateOfRentField.getValue(),
-                        dateOfReturnField.getValue()
+                        LocalDateTime.of(dateOfRentDataPicker.getValue(),timeOfRentTimePicker.getValue()),
+                        numOfDays.getText()
                 )
         );
         reloadRentTableView();
+    }
 
+    @FXML
+    private void updateRent() {
+        int rentIndex = rentsTableView.getSelectionModel().getSelectedIndex();
+        mainController.showInfoDialog(
+                "Informacja",
+                mainController.libraryController.updateRent(
+                        rentsTableView.getSelectionModel().getSelectedItem().getValue(),
+                        LocalDateTime.of(dateOfRentDataPicker.getValue(),timeOfRentTimePicker.getValue()),
+                        numOfDays.getText()
+                )
+        );
+        reloadRentTableView();
+        rentsTableView.getSelectionModel().select(rentIndex);
+    }
+
+    @FXML
+    private void changeRentForm() {
+        findReaderField.clear();
+        findBookField.clear();
+
+        if(!rentsTableView.getSelectionModel().isEmpty()) {
+            updateRentButton.setDisable(false);
+            addRentButton.setDisable(true);
+           // TreeItem<Rent> selectedRent = rentsTableView.getSelectionModel().getSelectedItem();
+            LocalDateTime dateOfRent = rentsTableView.getSelectionModel().getSelectedItem().getValue().getDateOfRent();
+            dateOfRentDataPicker.setValue(dateOfRent.toLocalDate());
+            timeOfRentTimePicker.setValue(dateOfRent.toLocalTime());
+//            Period period = Period.between(dateOfRent.toLocalDate(),rentsTableView.getSelectionModel().getSelectedItem().getValue().getDateOfReturn().toLocalDate());
+
+            numOfDays.setText(String.valueOf(ChronoUnit.DAYS.between(dateOfRent,rentsTableView.getSelectionModel().getSelectedItem().getValue().getDateOfReturn())));
+            // dateOfReturnDataPicker.setValue(rentsTableView.getSelectionModel().getSelectedItem().getValue().getDateOfReturn());
+         /*   int rowReader =  mainController.libraryController.getReaders().indexOf(selectedRent.getValue().getREADER());
+            int rowBook =  mainController.libraryController.getBooks().indexOf(selectedRent.getValue().getBOOK());
+            readersTableView.getSelectionModel().select(rowReader);
+            booksTableView.getSelectionModel().select(rowBook);*/
+            updateTable();
+        }
+        //addRentButton.setDisable(false);
+
+        //addRentButton.setDisable(false);
+    }
+
+
+    @FXML
+    private void clearFindField() {
+        findReaderField.clear();
+        findBookField.clear();
+    }
+
+    @FXML
+    private void updateTable() {
+        if(!rentsTableView.getSelectionModel().isEmpty()) {
+            TreeItem<Rent> selectedRent = rentsTableView.getSelectionModel().getSelectedItem();
+            int rowReader =  mainController.libraryController.getReaders().indexOf(selectedRent.getValue().getREADER());
+            int rowBook =  mainController.libraryController.getBooks().indexOf(selectedRent.getValue().getBOOK());
+            readersTableView.getSelectionModel().select(rowReader);
+            booksTableView.getSelectionModel().select(rowBook);
+        }
     }
 
 

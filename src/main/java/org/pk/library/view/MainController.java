@@ -30,6 +30,8 @@ public class MainController {
     @FXML
     private RentController rentController;
     @FXML
+    private ReturnController returnController;
+    @FXML
     private TabPane tabPane;
     @FXML
     private StackPane mainStackPane;
@@ -45,7 +47,7 @@ public class MainController {
         bookController.injectMainController(this);
         readerController.injectMainController(this);
         rentController.injectMainController(this);
-
+        returnController.injectMainController(this);
     }
 
     /**

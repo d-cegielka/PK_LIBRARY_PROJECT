@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.calendarfx.view.CalendarView?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTimePicker?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pk.library.view.ReturnController">
+    <children>
+        <SplitPane dividerPositions="0.5" prefHeight="709.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                    <children>
+                        <CalendarView fx:id="returnCalendar" layoutX="73.0" layoutY="-14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                    </children>
+                </AnchorPane>
+                <AnchorPane layoutX="10.0" layoutY="10.0">
+                    <children>
+                        <VBox alignment="TOP_CENTER" prefHeight="707.0" prefWidth="636.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <children>
+                                <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="16.0" text="Zwrot książki" textAlignment="CENTER">
+                                    <font>
+                                        <Font name="System Bold" size="24.0" />
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" left="30.0" right="30.0" top="15.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Label alignment="CENTER" text="Wybierz książkę z kalendarza">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets />
+                                    </VBox.margin>
+                                </Label>
+                                <JFXButton alignment="CENTER" contentDisplay="CENTER" defaultButton="true" disable="true" prefHeight="35.0" prefWidth="230.0" text="Zwróć książkę">
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" top="15.0" />
+                                    </VBox.margin>
+                                </JFXButton>
+                                <Separator prefHeight="10.0" prefWidth="636.0">
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" top="10.0" />
+                                    </VBox.margin>
+                                </Separator>
+                                <Label alignment="CENTER" layoutX="40.0" layoutY="20.0" prefHeight="16.0" prefWidth="636.0" text="Przedłuż czas wypożyczenia" textAlignment="CENTER">
+                                    <font>
+                                        <Font name="System Bold" size="24.0" />
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Label text="Wybierz książkę z kalendarza">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <JFXDatePicker maxWidth="1.7976931348623157E308" minWidth="-Infinity" promptText="Wybierz nową datę zwrotu">
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                                    </VBox.margin>
+                                </JFXDatePicker>
+                                <JFXButton alignment="CENTER" contentDisplay="TOP" defaultButton="true" prefHeight="35.0" prefWidth="230.0" text="Przedłuż" textAlignment="CENTER">
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" top="15.0" />
+                                    </VBox.margin>
+                                </JFXButton>
+                                <Separator layoutX="10.0" layoutY="172.0" prefHeight="10.0" prefWidth="636.0">
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" top="10.0" />
+                                    </VBox.margin>
+                                </Separator>
+                                <Label alignment="CENTER" layoutX="40.0" layoutY="202.0" prefHeight="16.0" prefWidth="636.0" text="Przypomnienie o terminie zwrotu książki" textAlignment="CENTER">
+                                    <font>
+                                        <Font name="System Bold" size="24.0" />
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" top="10.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <Label layoutX="241.0" layoutY="247.0" text="Wybierz książkę z kalendarza">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <JFXDatePicker layoutX="40.0" layoutY="284.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" promptText="Wybierz datę">
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                                    </VBox.margin>
+                                </JFXDatePicker>
+                                <JFXTimePicker maxWidth="1.7976931348623157E308" minWidth="-Infinity" promptText="Wybierz godzinę">
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                                    </VBox.margin>
+                                </JFXTimePicker>
+                                <JFXButton alignment="CENTER" contentDisplay="TOP" defaultButton="true" layoutX="213.0" layoutY="337.0" prefHeight="35.0" prefWidth="230.0" text="Dodaj przypomnienie" textAlignment="CENTER">
+                                    <VBox.margin>
+                                        <Insets top="10.0" />
+                                    </VBox.margin>
+                                </JFXButton>
+                            </children>
+                        </VBox>
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+    </children>
+</AnchorPane>

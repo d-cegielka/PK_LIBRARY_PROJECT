@@ -2,6 +2,7 @@ package org.pk.library.model;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,8 +120,8 @@ public class LibraryDB {
         PreparedStatement preparedStatement = conn.prepareStatement(sqlQuery);
         preparedStatement.setString(1,rent.getBOOK().getBOOK_ID());
         preparedStatement.setString(2,rent.getREADER().getREADER_ID());
-        preparedStatement.setDate(3, Date.valueOf(rent.getDateOfRent()));
-        preparedStatement.setDate(4, Date.valueOf(rent.getDateOfReturn()));
+        preparedStatement.setTimestamp(3,Timestamp.valueOf(rent.getDateOfRent()));
+        preparedStatement.setTimestamp(4,Timestamp.valueOf(rent.getDateOfReturn()));
         preparedStatement.setBoolean(5, rent.isReturned());
         preparedStatement.setString(6,rent.getRENT_ID());
         preparedStatement.executeUpdate();
@@ -199,8 +200,8 @@ public class LibraryDB {
         while(rs.next()) {
             Book book = findBookById(books, rs.getString("book"));
             Reader reader = findReaderById(readers,rs.getString("reader"));
-            LocalDate date_of_rent = rs.getDate("date_of_rent").toLocalDate();
-            LocalDate date_of_return = rs.getDate("date_of_return").toLocalDate();
+            LocalDateTime date_of_rent = rs.getTimestamp("date_of_rent").toLocalDateTime();
+            LocalDateTime date_of_return = rs.getTimestamp("date_of_return").toLocalDateTime();
             boolean returned = rs.getBoolean("returned");
             String rent_id = rs.getString("rent_id");
             rents.add(new Rent(book,reader,date_of_rent,date_of_return,returned,rent_id));

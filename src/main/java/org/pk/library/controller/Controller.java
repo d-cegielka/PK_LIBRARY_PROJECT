@@ -4,6 +4,7 @@ import org.pk.library.model.*;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,7 @@ public class Controller {
      */
     public final String addBook(final String isbn, final String title, final String author, final String publisher) {
             if (isbn.trim().isEmpty() || title.trim().isEmpty() || author.trim().isEmpty() || publisher.trim().isEmpty()) {
-                return "Uzupełnij wszystkie dane książki!";
+                return "Uzupełnij poprawnie wszystkie dane książki!";
             }
             if(!checkIsbn(isbn.trim())){
                 //ISBN 978-0-596-52068-7 - valid
@@ -77,7 +78,7 @@ public class Controller {
     public final String updateBook(final Book updateBook, final String isbn, final String title, final String author, final String publisher) {
         int changesNum = 0;
         if (isbn.trim().isEmpty() || title.trim().isEmpty() || author.trim().isEmpty() || publisher.trim().isEmpty()) {
-            return "Uzupełnij wszystkie dane książki!";
+            return "Uzupełnij poprawnie wszystkie dane książki!";
         }
         if (!isbn.trim().equals(updateBook.getIsbn())) {
             if (!checkIsbn(isbn.trim())) {
@@ -145,7 +146,7 @@ public class Controller {
         if(firstName.trim().isEmpty() || lastName.trim().isEmpty() ||
                 dateOfBirth== null || phoneNumber.trim().isEmpty() ||
                 emailAddress.trim().isEmpty()) {
-            return "Uzupełnij wszystkie dane czytelnika!";
+            return "Uzupełnij poprawnie wszystkie dane czytelnika!";
         }
         if(dateOfBirth.isAfter(LocalDate.now())){
             return "Wybrano datę urodzenia z przyszłości! Popraw dane!";
@@ -187,7 +188,7 @@ public class Controller {
                                      final String phoneNumber, final String emailAddress) {
         int changesNum = 0;
         if (firstName.trim().isEmpty() || lastName.trim().isEmpty() || dateOfBirth == null || phoneNumber.trim().isEmpty() || emailAddress.trim().isEmpty()) {
-            return "Uzupełnij wszystkie dane czytelnika!";
+            return "Uzupełnij poprawnie wszystkie dane czytelnika!";
         }
         if (!firstName.trim().equals(updateReader.getFirstName())) {
             updateReader.setFirstName(firstName.trim());
@@ -249,23 +250,27 @@ public class Controller {
             return se.getMessage();
         }
     }
+    public static boolean isNumeric(String string) {
+       return string.matches("-?\\d+(\\.\\d+)?");
+    }
 
     /**
      * Metoda dodająca wypożyczenie do struktury danych.
      * @param book obiekt książki
      * @param reader obiekt czytelnika
      * @param rentDate data wypożyczenia książki
-     * @param returnDate data zwrotu książki
+     * @param rentalPeriod ilość dni wypożycznia książki
      * @return komunikat dla interfejsu użytkownika
      */
-    public final String addRent(final Book book, final Reader reader, final LocalDate rentDate, final LocalDate returnDate){
-        if(book == null || reader == null || rentDate == null || returnDate == null) {
-            return "Uzupełnij wszystkie dane wypożyczenia!";
+    public final String addRent(final Book book, final Reader reader, final LocalDateTime rentDate, final String rentalPeriod){
+        if(book == null || reader == null || rentDate == null || !isNumeric(rentalPeriod)) {
+            return "Uzupełnij poprawnie wszystkie dane wypożyczenia!";
         }
-        if(ChronoUnit.DAYS.between(rentDate, LocalDate.now()) > 7) {
-            return "Błędna data wypożyczenia! Data wypożyczenia przed " + LocalDate.now().minusDays(7).toString() + " nie jest akceptowalna!";
+        LocalDateTime returnDate = rentDate.plusDays(Integer.parseInt(rentalPeriod));
+        if(ChronoUnit.DAYS.between(rentDate, LocalDateTime.now()) > 7) {
+            return "Błędna data wypożyczenia! Data wypożyczenia przed " + LocalDateTime.now().minusDays(7).toString() + " nie jest akceptowalna!";
         }
-        if(returnDate.isBefore(LocalDate.now())) {
+        if(returnDate.isBefore(rentDate)) {
             return "Błędna data zwrotu! Data zwrotu nie może być wcześniejsza niż data wypożyczenia";
         }
         if(!checkBookIsAvailable(book)) {
@@ -286,6 +291,66 @@ public class Controller {
             }
         }
         return "Książka została wypożyczona pomyślnie!";
+    }
+
+    public final String updateRent(final Rent updateRent, final LocalDateTime rentDate, final String rentalPeriod) {
+        int changesNum = 0;
+        if(rentDate == null || !isNumeric(rentalPeriod)) {
+            return "Uzupełnij poprawnie wszystkie dane wypożyczenia!";
+        }
+        LocalDateTime returnDate = rentDate.plusDays(Integer.parseInt(rentalPeriod));
+
+        if(rentDate.compareTo(updateRent.getDateOfRent()) != 0) {
+            if(ChronoUnit.DAYS.between(rentDate, LocalDateTime.now()) > 7) {
+                return "Błędna data wypożyczenia! Data wypożyczenia przed " + LocalDateTime.now().minusDays(7).toString() + " nie jest akceptowalna!";
+            }
+            updateRent.setDateOfRent(rentDate);
+            changesNum++;
+        }
+        if(returnDate.compareTo(updateRent.getDateOfReturn()) != 0) {
+            if(returnDate.isBefore(rentDate)) {
+                return "Błędna data zwrotu! Data zwrotu nie może być wcześniejsza niż data wypożyczenia";
+            }
+            updateRent.setDateOfReturn(returnDate);
+            changesNum++;
+        }
+        if(changesNum > 0) {
+            try {
+                libraryDB.updateRent(updateRent);
+            } catch (SQLException se) {
+                return se.getMessage();
+            }
+            return "Dane wypożyczenia zostały zaktualizowane pomyślnie!\n" +
+                    "Ilość wprowadzonych zmian: " + changesNum;
+        } else {
+            return "Nie wprowadzono żadnych zmian!";
+        }
+
+    }
+
+    public final String extendRentalPeriod(final Rent rent, final LocalDateTime newReturnDate) {
+        int changesNum = 0;
+        if(newReturnDate == null) {
+            return "Nie wybrano książki do przedłużenia wypożyczenia!";
+        }
+        if(newReturnDate.compareTo(rent.getDateOfReturn()) != 0) {
+            if(newReturnDate.isBefore(rent.getDateOfRent())) {
+                return "Błędna data zwrotu! Data zwrotu nie może być wcześniejsza niż data wypożyczenia";
+            }
+            rent.setDateOfReturn(newReturnDate);
+            changesNum++;
+        }
+        if(changesNum > 0) {
+            try {
+                libraryDB.updateRent(rent);
+            } catch (SQLException se) {
+                return se.getMessage();
+            }
+            return "Dane wypożyczenia zostały zaktualizowane pomyślnie!\n" +
+                    "Ilość wprowadzonych zmian: " + changesNum;
+        } else {
+            return "Nie wprowadzono żadnych zmian!";
+        }
     }
 
     /**

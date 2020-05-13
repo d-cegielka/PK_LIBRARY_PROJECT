@@ -2,19 +2,19 @@ package org.pk.library.model;
 
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
 public class Rent extends RecursiveTreeObject<Rent> {
     private final Book BOOK;
     private final Reader READER;
-    private LocalDate dateOfRent;
-    private LocalDate dateOfReturn;
+    private LocalDateTime dateOfRent;
+    private LocalDateTime dateOfReturn;
     private boolean returned;
     private final String RENT_ID;
 
-    public Rent(Book BOOK, Reader READER, LocalDate dateOfRent, LocalDate dateOfReturn, boolean returned) {
+    public Rent(Book BOOK, Reader READER, LocalDateTime dateOfRent, LocalDateTime dateOfReturn, boolean returned) {
         this.RENT_ID = UUID.randomUUID().toString();
         this.BOOK = BOOK;
         this.READER = READER;
@@ -23,7 +23,7 @@ public class Rent extends RecursiveTreeObject<Rent> {
         this.returned = returned;
     }
 
-    public Rent(Book BOOK, Reader READER, LocalDate dateOfRent, LocalDate dateOfReturn, boolean returned, String RENT_ID) {
+    public Rent(Book BOOK, Reader READER, LocalDateTime dateOfRent, LocalDateTime dateOfReturn, boolean returned, String RENT_ID) {
         this.BOOK = BOOK;
         this.READER = READER;
         this.dateOfRent = dateOfRent;
@@ -66,19 +66,19 @@ public class Rent extends RecursiveTreeObject<Rent> {
         return READER;
     }
 
-    public LocalDate getDateOfRent() {
+    public LocalDateTime getDateOfRent() {
         return dateOfRent;
     }
 
-    public void setDateOfRent(LocalDate dateOfRent) {
+    public void setDateOfRent(LocalDateTime dateOfRent) {
         this.dateOfRent = dateOfRent;
     }
 
-    public LocalDate getDateOfReturn() {
+    public LocalDateTime getDateOfReturn() {
         return dateOfReturn;
     }
 
-    public void setDateOfReturn(LocalDate dateOfReturn) {
+    public void setDateOfReturn(LocalDateTime dateOfReturn) {
         this.dateOfReturn = dateOfReturn;
     }
 

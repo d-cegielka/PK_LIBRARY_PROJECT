@@ -1,0 +1,84 @@
+.jfx-button {
+	-fx-background-color: #7f7f7f;
+	-fx-text-fill: white;
+    -fx-border-color:black;
+    -fx-background-radius:20;
+    -fx-border-radius:20;
+}
+
+.jfx-button:hover {
+	-fx-background-color: #a5a5a5;
+}
+
+.root {
+    -fx-base: rgb(50, 50, 50);
+    -fx-background: #575757;
+
+    /* make controls (buttons, thumb, etc.) slightly lighter */
+    -fx-color: derive(-fx-base, 10%);
+
+    /* text fields and table rows background */
+    -fx-control-inner-background: #46494c;
+    /* version of -fx-control-inner-background for alternative rows */
+    -fx-control-inner-background-alt: derive(-fx-control-inner-background, 2.5%);
+
+    /* text colors depending on background's brightness */
+    -fx-light-text-color: rgb(220, 220, 220);
+    -fx-mid-text-color: rgb(100, 100, 100);
+    -fx-dark-text-color: rgb(20, 20, 20);
+
+    /* A bright blue for highlighting/accenting objects.  For example: selected
+     * text; selected items in menus, lists, trees, and tables; progress bars */
+    /*-fx-accent: rgb(0, 80, 100);*/
+
+    /* color of non-focused yet selected elements */
+    -fx-selection-bar-non-focused: rgb(50, 50, 50);
+}
+
+/* Fix derived prompt color for text fields */
+.text-input {
+    -fx-prompt-text-fill: #b8b5b0;
+}
+
+/* Keep prompt invisible when focused (above color fix overrides it) */
+.text-input:focused {
+    -fx-prompt-text-fill: transparent;
+}
+
+.tab-pane {
+    -fx-tab-min-width:90px;
+}
+
+.tab .tab-label { 
+    -fx-alignment: CENTER;
+    /* -fx-text-fill: black; */
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.jfx-text-field {
+    -fx-background-insets: 0, 0 0 1 0 ;
+    -fx-background-radius: 0 ;
+    -fx-background-color:#686763;
+    -jfx-focus-color: #cdd7d6;
+   /* -fx-bottom-border-color:WHITE;*/
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: #686763;
+}
+
+.jfx-tree-table-view .column-header{
+    -fx-background-color: #595959;
+    -fx-border-width: 0;
+    -fx-text-alignment: center;
+}
+
+.tree-table-row-cell:selected {
+    -fx-background-color: #7c7a7a;
+    -fx-table-cell-border-color:7c7a7a;
+}
+
+.table-column {
+    -fx-alignment: center;
+}
