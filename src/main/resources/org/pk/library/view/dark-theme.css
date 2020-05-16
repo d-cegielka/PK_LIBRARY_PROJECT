@@ -66,6 +66,7 @@
 
 .tab-pane .tab:selected {
     -fx-background-color: #686763;
+
 }
 
 .jfx-tree-table-view .column-header{

@@ -1,36 +1,43 @@
 package org.pk.library.view;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXToggleButton;
 import com.jfoenix.controls.events.JFXDialogEvent;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.animation.*;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TabPane;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import org.pk.library.controller.Controller;
-import org.pk.library.model.*;
 
-import javax.security.auth.login.CredentialNotFoundException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 public class MainController {
+    public JFXToggleButton changeStyleToggleButton;
     Controller libraryController;
     @FXML
-    private BookController bookController;
+    BookController bookController;
     @FXML
-    private ReaderController readerController;
+    ReaderController readerController;
     @FXML
-    private RentController rentController;
+    RentController rentController;
     @FXML
-    private ReturnController returnController;
+    ReturnController returnController;
+    @FXML
+    CalendarController calendarController;
+
+    @FXML
+    private AnchorPane mainPane;
     @FXML
     private TabPane tabPane;
     @FXML
@@ -48,6 +55,7 @@ public class MainController {
         readerController.injectMainController(this);
         rentController.injectMainController(this);
         returnController.injectMainController(this);
+        calendarController.injectMainController(this);
     }
 
     /**
@@ -85,6 +93,27 @@ public class MainController {
         rentController.reloadBooksTableView();
     }
 
+    public void changeStyle(ActionEvent actionEvent) {
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(500),mainPane);
+        fadeTransition.setFromValue(1);
+        fadeTransition.setToValue(0.05);
+        fadeTransition.play();
+
+        fadeTransition.setOnFinished((ActionEvent event) -> {
+            if(changeStyleToggleButton.isSelected()) {
+                mainPane.getStylesheets().clear();
+                mainPane.getStylesheets().add(String.valueOf(getClass().getResource("light-theme.css")));
+            } else {
+                mainPane.getStylesheets().clear();
+                mainPane.getStylesheets().add(String.valueOf(getClass().getResource("dark-theme.css")));
+            }
+            FadeTransition fadeOut = new FadeTransition(Duration.millis(500),mainPane);
+            fadeOut.setFromValue(0.05);
+            fadeOut.setToValue(1);
+            fadeOut.play();
+        });
+
+    }
 }
 
 

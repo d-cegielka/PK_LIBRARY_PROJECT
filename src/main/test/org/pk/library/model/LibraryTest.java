@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +28,7 @@ class LibraryTest {
         reader2 = new Reader("Adrian","Kowalski",LocalDate.of(1994,4,21),"667677888","adrian.kowalski@gmail.com");
         library.addReader(reader1);
         library.addReader(reader2);
-        rent1 = new Rent(book1,reader1,LocalDate.now(),LocalDate.of(2020,5,10),false);
+        rent1 = new Rent(book1,reader1, LocalDateTime.now(),LocalDateTime.of(2020,5,10,2,30),false);
         library.addRent(rent1);
     }
 

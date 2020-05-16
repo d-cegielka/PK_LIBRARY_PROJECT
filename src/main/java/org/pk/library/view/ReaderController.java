@@ -40,6 +40,8 @@ public class ReaderController {
     @FXML
     private JFXTextField emailAddressUpdateField;
     @FXML
+    private JFXButton deleteReaderButton;
+    @FXML
     private JFXTreeTableView<Reader> readersTableView;
     @FXML
     private JFXTreeTableColumn<Reader, String> firstNameCol;
@@ -61,8 +63,9 @@ public class ReaderController {
      * Inicializacja kolumn w tabeli z listą czytelników oraz wyszukiwarki czytelników
      */
     public void initializeReaderTableView(){
+
         firstNameCol = new JFXTreeTableColumn<>("Imię");
-        firstNameCol.prefWidthProperty().bind(readersTableView.widthProperty().divide(5));
+        firstNameCol.prefWidthProperty().bind(readersTableView.widthProperty().subtract(20).divide(5));
         firstNameCol.setResizable(false);
         firstNameCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Reader, String> param) ->{
             if(firstNameCol.validateValue(param)) return new SimpleStringProperty(param.getValue().getValue().getFirstName());
@@ -70,7 +73,7 @@ public class ReaderController {
         });
 
         lastNameCol = new JFXTreeTableColumn<>("Nazwisko");
-        lastNameCol.prefWidthProperty().bind(readersTableView.widthProperty().divide(5));
+        lastNameCol.prefWidthProperty().bind(readersTableView.widthProperty().subtract(20).divide(5));
         lastNameCol.setResizable(false);
         lastNameCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Reader, String> param) ->{
             if(lastNameCol.validateValue(param)) return new SimpleStringProperty(param.getValue().getValue().getLastName());
@@ -78,7 +81,7 @@ public class ReaderController {
         });
 
         dateOfBirthCol = new JFXTreeTableColumn<>("Data urodzenia");
-        dateOfBirthCol.prefWidthProperty().bind(readersTableView.widthProperty().divide(5));
+        dateOfBirthCol.prefWidthProperty().bind(readersTableView.widthProperty().subtract(20).divide(5));
         dateOfBirthCol.setResizable(false);
         dateOfBirthCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Reader, LocalDate> param) ->{
             if(dateOfBirthCol.validateValue(param)) return new SimpleObjectProperty<>(param.getValue().getValue().getDateOfBirth());
@@ -86,7 +89,7 @@ public class ReaderController {
         });
 
         phoneNumberCol = new JFXTreeTableColumn<>("Tel. kontaktowy");
-        phoneNumberCol.prefWidthProperty().bind(readersTableView.widthProperty().divide(5));
+        phoneNumberCol.prefWidthProperty().bind(readersTableView.widthProperty().subtract(20).divide(5));
         phoneNumberCol.setResizable(false);
         phoneNumberCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Reader, String> param) ->{
             if(phoneNumberCol.validateValue(param)) return new SimpleStringProperty(param.getValue().getValue().getPhoneNumber());
@@ -94,7 +97,7 @@ public class ReaderController {
         });
 
         emailAddressCol = new JFXTreeTableColumn<>("Email");
-        emailAddressCol.prefWidthProperty().bind(readersTableView.widthProperty().divide(5));
+        emailAddressCol.prefWidthProperty().bind(readersTableView.widthProperty().subtract(20).divide(5));
         emailAddressCol.setResizable(false);
         emailAddressCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Reader, String> param) ->{
             if(emailAddressCol.validateValue(param)) return new SimpleStringProperty(param.getValue().getValue().getEmailAddress());
@@ -109,7 +112,6 @@ public class ReaderController {
         readersTableView.getColumns().setAll(firstNameCol, lastNameCol, dateOfBirthCol, phoneNumberCol, emailAddressCol);
 
         findReaderField.textProperty().addListener((o, oldVal, newVal) -> readersTableView.setPredicate(readerProp -> {
-            clearUpdateReaderForm();
             final Reader reader = readerProp.getValue();
             String checkValue = newVal.trim().toLowerCase();
             return (reader.getFirstName().toLowerCase().contains(checkValue) ||
@@ -119,7 +121,11 @@ public class ReaderController {
                     reader.getEmailAddress().toLowerCase().contains(checkValue));
         }));
 
-        readersTableView.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> changeUpdateReaderForm());
+        //readersTableView.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> changeUpdateReaderForm());
+        readersTableView.currentItemsCountProperty().addListener((observableValue, rentTreeItem, t1) -> {
+            if (readersTableView.getCurrentItemsCount() == 0) clearUpdateReaderForm();
+        });
+        readersTableView.getSelectionModel().selectedItemProperty().addListener((observableValue, rentTreeItem, t1) -> changeUpdateReaderForm());
     }
 
     /**
@@ -189,13 +195,13 @@ public class ReaderController {
      * Aktualizacja danych formularza po wybraniu czytelnika z listy
      */
     private void changeUpdateReaderForm() {
-        clearUpdateReaderForm();
-        if(!readersTableView.getSelectionModel().isEmpty()) {
+        if(readersTableView.getSelectionModel().getSelectedItem() != null) {
             firstNameUpdateField.setText(readersTableView.getSelectionModel().getSelectedItem().getValue().getFirstName());
             lastNameUpdateField.setText(readersTableView.getSelectionModel().getSelectedItem().getValue().getLastName());
             dateOfBirthUpdateField.setValue(readersTableView.getSelectionModel().getSelectedItem().getValue().getDateOfBirth());
             phoneNumberUpdateField.setText(readersTableView.getSelectionModel().getSelectedItem().getValue().getPhoneNumber());
             emailAddressUpdateField.setText(readersTableView.getSelectionModel().getSelectedItem().getValue().getEmailAddress());
+            deleteReaderButton.setDisable(false);
         }
     }
 
@@ -236,6 +242,7 @@ public class ReaderController {
         dateOfBirthUpdateField.setValue(null);
         phoneNumberUpdateField.clear();
         emailAddressUpdateField.clear();
+        deleteReaderButton.setDisable(true);
     }
 
 }

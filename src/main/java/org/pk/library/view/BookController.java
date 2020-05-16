@@ -1,9 +1,6 @@
 package org.pk.library.view;
 
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -12,7 +9,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.input.MouseEvent;
 import org.pk.library.model.Book;
 
 import java.util.Optional;
@@ -48,6 +44,8 @@ public class BookController {
     private JFXTreeTableColumn<Book, String> publisherCol;
     @FXML
     private JFXTreeTableColumn<Book, String> authorCol;
+    @FXML
+    private JFXButton deleteBookButton;
 
     void injectMainController(MainController mainController) {
         this.mainController = mainController;
@@ -59,7 +57,7 @@ public class BookController {
      */
     void initializeBookTableView(){
         titleCol = new JFXTreeTableColumn<>("Tytuł");
-        titleCol.prefWidthProperty().bind(booksTableView.widthProperty().divide(4));
+        titleCol.prefWidthProperty().bind(booksTableView.widthProperty().subtract(16).divide(4));
         titleCol.setResizable(false);
         titleCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Book, String> param) ->{
             if(titleCol.validateValue(param)) return new SimpleStringProperty(param.getValue().getValue().getTitle());
@@ -67,7 +65,7 @@ public class BookController {
         });
 
         isbnCol = new JFXTreeTableColumn<>("ISBN");
-        isbnCol.prefWidthProperty().bind(booksTableView.widthProperty().divide(4));
+        isbnCol.prefWidthProperty().bind(booksTableView.widthProperty().subtract(16).divide(4));
         isbnCol.setResizable(false);
         isbnCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Book, String> param) ->{
             if(isbnCol.validateValue(param)) return new SimpleStringProperty(param.getValue().getValue().getIsbn());
@@ -75,7 +73,7 @@ public class BookController {
         });
 
         authorCol = new JFXTreeTableColumn<>("Autor");
-        authorCol.prefWidthProperty().bind(booksTableView.widthProperty().divide(4));
+        authorCol.prefWidthProperty().bind(booksTableView.widthProperty().subtract(16).divide(4));
         authorCol.setResizable(false);
         authorCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Book, String> param) ->{
             if(authorCol.validateValue(param)) return new SimpleStringProperty(param.getValue().getValue().getAuthor());
@@ -83,7 +81,7 @@ public class BookController {
         });
 
         publisherCol = new JFXTreeTableColumn<>("Wydawnictwo");
-        publisherCol.prefWidthProperty().bind(booksTableView.widthProperty().divide(4));
+        publisherCol.prefWidthProperty().bind(booksTableView.widthProperty().subtract(16).divide(4));
         publisherCol.setResizable(false);
         publisherCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Book, String> param) ->{
             if(publisherCol.validateValue(param)) return new SimpleStringProperty(param.getValue().getValue().getPublisher());
@@ -107,7 +105,11 @@ public class BookController {
                     book.getBOOK_ID().toLowerCase().contains(checkValue));
         }));
 
-        booksTableView.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> changeUpdateBookForm());
+        booksTableView.currentItemsCountProperty().addListener((observableValue, rentTreeItem, t1) -> {
+                    if (booksTableView.getCurrentItemsCount() == 0) clearUpdateBookForm();
+        });
+        //booksTableView.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> changeUpdateBookForm());
+        booksTableView.getSelectionModel().selectedItemProperty().addListener((observableValue, rentTreeItem, t1) -> changeUpdateBookForm());
 }
 
     /**
@@ -176,12 +178,12 @@ public class BookController {
      */
     @FXML
     private void changeUpdateBookForm() {
-        clearUpdateBookForm();
-        if(!booksTableView.getSelectionModel().isEmpty()) {
+        if(booksTableView.getSelectionModel().getSelectedItem() != null) {
             bookTitleUpdateField.setText(booksTableView.getSelectionModel().getSelectedItem().getValue().getTitle());
             bookPublisherUpdateField.setText(booksTableView.getSelectionModel().getSelectedItem().getValue().getPublisher());
             bookIsbnUpdateField.setText(booksTableView.getSelectionModel().getSelectedItem().getValue().getIsbn());
             bookAuthorUpdateField.setText(booksTableView.getSelectionModel().getSelectedItem().getValue().getAuthor());
+            deleteBookButton.setDisable(false);
         }
     }
 
@@ -219,5 +221,6 @@ public class BookController {
         bookIsbnUpdateField.clear();
         bookAuthorUpdateField.clear();
         bookPublisherUpdateField.clear();
+        deleteBookButton.setDisable(true);
     }
 }

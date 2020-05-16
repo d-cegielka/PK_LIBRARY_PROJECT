@@ -295,26 +295,29 @@ public class Controller {
 
     public final String updateRent(final Rent updateRent, final LocalDateTime rentDate, final String rentalPeriod) {
         int changesNum = 0;
-        if(rentDate == null || !isNumeric(rentalPeriod)) {
+        if (rentDate == null || !isNumeric(rentalPeriod)) {
             return "Uzupełnij poprawnie wszystkie dane wypożyczenia!";
+        }
+        if (updateRent.isReturned()) {
+            return "Nie można edytować danych zakończonego wypożyczenia!";
         }
         LocalDateTime returnDate = rentDate.plusDays(Integer.parseInt(rentalPeriod));
 
-        if(rentDate.compareTo(updateRent.getDateOfRent()) != 0) {
-            if(ChronoUnit.DAYS.between(rentDate, LocalDateTime.now()) > 7) {
+        if (rentDate.compareTo(updateRent.getDateOfRent()) != 0) {
+            if (ChronoUnit.DAYS.between(rentDate, LocalDateTime.now()) > 7) {
                 return "Błędna data wypożyczenia! Data wypożyczenia przed " + LocalDateTime.now().minusDays(7).toString() + " nie jest akceptowalna!";
             }
             updateRent.setDateOfRent(rentDate);
             changesNum++;
         }
-        if(returnDate.compareTo(updateRent.getDateOfReturn()) != 0) {
-            if(returnDate.isBefore(rentDate)) {
+        if (returnDate.compareTo(updateRent.getDateOfReturn()) != 0) {
+            if (returnDate.isBefore(rentDate)) {
                 return "Błędna data zwrotu! Data zwrotu nie może być wcześniejsza niż data wypożyczenia";
             }
             updateRent.setDateOfReturn(returnDate);
             changesNum++;
         }
-        if(changesNum > 0) {
+        if (changesNum > 0) {
             try {
                 libraryDB.updateRent(updateRent);
             } catch (SQLException se) {
@@ -325,31 +328,55 @@ public class Controller {
         } else {
             return "Nie wprowadzono żadnych zmian!";
         }
-
     }
 
-    public final String extendRentalPeriod(final Rent rent, final LocalDateTime newReturnDate) {
+
+    public final String extendRentalPeriod(final Rent rent, final String numOfDaysExtendRentPeriod) {
         int changesNum = 0;
-        if(newReturnDate == null) {
+        if(rent == null || !isNumeric(numOfDaysExtendRentPeriod)) {
             return "Nie wybrano książki do przedłużenia wypożyczenia!";
         }
-        if(newReturnDate.compareTo(rent.getDateOfReturn()) != 0) {
-            if(newReturnDate.isBefore(rent.getDateOfRent())) {
-                return "Błędna data zwrotu! Data zwrotu nie może być wcześniejsza niż data wypożyczenia";
-            }
-            rent.setDateOfReturn(newReturnDate);
+        int numOfDays = Integer.parseInt(numOfDaysExtendRentPeriod);
+        if(rent.getDateOfReturn().plusDays(numOfDays) != rent.getDateOfReturn()) {
+            rent.setDateOfReturn(rent.getDateOfReturn().plusDays(numOfDays));
             changesNum++;
         }
         if(changesNum > 0) {
             try {
                 libraryDB.updateRent(rent);
             } catch (SQLException se) {
+                rent.setDateOfReturn(rent.getDateOfReturn().minusDays(numOfDays));
                 return se.getMessage();
             }
-            return "Dane wypożyczenia zostały zaktualizowane pomyślnie!\n" +
-                    "Ilość wprowadzonych zmian: " + changesNum;
+            return "Data zwrotu wypożyczenia została przedłużona o " + numOfDaysExtendRentPeriod + " dni" +
+                    "\nNowa data zwrotu: " + rent.getDateOfReturn().toString();
         } else {
             return "Nie wprowadzono żadnych zmian!";
+        }
+    }
+
+    public final String returnBook(final Rent rent, final boolean op) {
+        if(rent == null) {
+            return "Nie wybrano książki do zwrotu!";
+        }
+        if(rent.isReturned() == op){
+            if(op) {
+                return "Książka "+ rent.getBOOK().getTitle()+" została zwrócona wcześniej!";
+            } else{
+                return "Nie można cofnąć zwrotu! Książka "+ rent.getBOOK().getTitle()+" nie została zwrócona!";
+            }
+        }
+        rent.setReturned(op);
+        try {
+            libraryDB.updateRent(rent);
+        } catch (Exception e) {
+            rent.setReturned(!op);
+            return e.getMessage();
+        }
+        if(op){
+            return "Książka "+ rent.getBOOK().getTitle()+" została zwrócona pomyślnie!";
+        } else {
+            return "Zwrot książki "+ rent.getBOOK().getTitle()+" został wycofany pomyślnie!";
         }
     }
 

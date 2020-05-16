@@ -1,5 +1,6 @@
 package org.pk.library.view;
 
+import com.calendarfx.model.CalendarSource;
 import com.calendarfx.view.CalendarView;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTreeTableColumn;
@@ -23,8 +24,6 @@ import java.time.LocalDateTime;
 import java.util.Calendar;
 
 public class ReturnController {
-
-
     private MainController mainController;
     private RentController rentController;
     @FXML
@@ -41,8 +40,17 @@ public class ReturnController {
     private JFXTreeTableColumn<Rent, Boolean> returnedCol;
     @FXML
     private JFXDatePicker newReturnDateDataPicker;
-    @FXML
+    /*@FXML
     private CalendarView returnCalendar;
+
+    @FXML
+    void initializeCalendar(){
+        System.out.println(returnCalendar.getCalendarSources().size());
+        //com.calendarfx.model.Calendar rentsCalendar = new com.calendarfx.model.Calendar("Wypożyczenia");
+        CalendarSource rentsSource = new CalendarSource("Wypożyczenia");
+        //rentsSource.getCalendars().addAll(rentsCalendar);
+        //returnCalendar.getCalendarSources().add(rentsSource);
+    }*/
 
     void injectMainController(MainController mainController) {
         this.mainController = mainController;
