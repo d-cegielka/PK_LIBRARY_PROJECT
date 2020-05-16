@@ -57,11 +57,6 @@
                   <fx:include fx:id="return" source="return.fxml" />
                </content>
             </Tab>
-            <Tab text="Zwroty kalendarz">
-               <content>
-                  <fx:include fx:id="calendar" source="returnCalendar.fxml" />
-               </content>
-            </Tab>
          </tabs>
       </TabPane>
          <JFXToggleButton fx:id="changeStyleToggleButton" contentDisplay="RIGHT" graphicTextGap="6.0" onAction="#changeStyle" size="5.0" text="Jasny motyw" StackPane.alignment="TOP_RIGHT" />

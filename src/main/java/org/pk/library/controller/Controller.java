@@ -28,7 +28,8 @@ public class Controller {
         List<Book> books = new ArrayList<>(libraryDB.getBooksFromDB());
         List<Reader> readers = new ArrayList<>(libraryDB.getReadersFromDB());
         List<Rent> rents = new ArrayList<>(libraryDB.getRentsFromDB(books,readers));
-        library = new Library(books,readers,rents);
+        List<RentalReminder> rentalReminders = new ArrayList<>(libraryDB.getRentalRemindersFromDB(rents));
+        library = new Library(books,readers,rents,rentalReminders);
         isbnPattern = Pattern.compile("^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$");
         phoneNumberPattern = Pattern.compile("^\\+[0-9]{1,3}[0-9]{4,14}(?:x.+)?$");
         emailAddressPattern = Pattern.compile("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$");
@@ -250,7 +251,13 @@ public class Controller {
             return se.getMessage();
         }
     }
-    public static boolean isNumeric(String string) {
+
+    /**
+     * Metoda sprawdzająca czy podany ciąg znaków jest liczbą
+     * @param string ciąg znaków
+     * @return wartość logiczna
+     */
+    public boolean isNumeric(String string) {
        return string.matches("-?\\d+(\\.\\d+)?");
     }
 
@@ -293,6 +300,13 @@ public class Controller {
         return "Książka została wypożyczona pomyślnie!";
     }
 
+    /**
+     * Metoda aktualizująca wypożyczenie w strukturze danych.
+     * @param updateRent obiekt klasy Rent do aktualizacji
+     * @param rentDate  data wypożyczenia książki
+     * @param rentalPeriod ilość dni o ile przedłużyć wypożyczenie
+     * @return komunikat do interfejsu użytkownika
+     */
     public final String updateRent(final Rent updateRent, final LocalDateTime rentDate, final String rentalPeriod) {
         int changesNum = 0;
         if (rentDate == null || !isNumeric(rentalPeriod)) {
@@ -330,7 +344,12 @@ public class Controller {
         }
     }
 
-
+    /**
+     * Metoda do przedłużenia czasu wypożyczenia
+     * @param rent obiekt klasy Rent do przedłużenia wypożyczenia
+     * @param numOfDaysExtendRentPeriod ilość dni o ile przedłużyć wypożyczenie
+     * @return komunikat do interfejsu użytkownika
+     */
     public final String extendRentalPeriod(final Rent rent, final String numOfDaysExtendRentPeriod) {
         int changesNum = 0;
         if(rent == null || !isNumeric(numOfDaysExtendRentPeriod)) {
@@ -355,6 +374,12 @@ public class Controller {
         }
     }
 
+    /**
+     * Metoda zwracająca / cofająca zwrot książki
+     * @param rent obiekt klasy Rent z wypożyczeniem
+     * @param op typ operacji
+     * @return komunikat do interfejsu użytkownika
+     */
     public final String returnBook(final Rent rent, final boolean op) {
         if(rent == null) {
             return "Nie wybrano książki do zwrotu!";
@@ -377,6 +402,53 @@ public class Controller {
             return "Książka "+ rent.getBOOK().getTitle()+" została zwrócona pomyślnie!";
         } else {
             return "Zwrot książki "+ rent.getBOOK().getTitle()+" został wycofany pomyślnie!";
+        }
+    }
+
+    /**
+     * Metoda dodająca przypomnienie o zwrocie książki
+     * @param rent obiekt klasy Rent z wypożyczeniem
+     * @param dateOfReminder data i czas przypomnienia
+     * @return komunikat do interfejsu użytkownika
+     */
+    public final String addReminder(final Rent rent, final LocalDateTime dateOfReminder) {
+        if(rent == null || dateOfReminder == null) {
+            return "Uzupełnij poprawnie wszystkie dane do ustawienia przypomnienia!";
+        }
+        if(ChronoUnit.DAYS.between(dateOfReminder,rent.getDateOfReturn()) <= -1) {
+            return "Błedna data przypomnienia! \nData zwrotu książki: " +
+                    rent.getDateOfReturn().toString();
+        }
+        RentalReminder rentalReminder = new RentalReminder(rent,dateOfReminder);
+        if(!library.addRentalReminder(rentalReminder)){
+            return "Nie udało się dodać przypomnienia!";
+        }
+
+        if(libraryDB != null) {
+            try {
+                libraryDB.insertReminder(rentalReminder);
+            } catch (SQLException se) {
+                library.removeRentalReminder(rentalReminder);
+                return se.getMessage();
+            }
+        }
+        return "Przypomnienie zostało dodane poprawnie!";
+    }
+
+    /**
+     * Metoda usuwająca przypomnienie ze struktury danych.
+     * @param rentalReminder obiekt klasy RentalReminder, który ma zostać usunięty
+     * @return komunikat dla interfejsu użytkownika
+     */
+    public final String deleteReminder(final RentalReminder rentalReminder) {
+        try {
+            if(libraryDB.deleteFromTable("RENTALREMINDERS",rentalReminder.getREMINDER_ID()) && library.removeRentalReminder(rentalReminder)){
+                return "Przypomnienie zostało usunięte pomyślnie!";
+            } else {
+                return "Przypomnienie nie zostało usunięte!";
+            }
+        } catch (SQLException se) {
+            return se.getMessage();
         }
     }
 
@@ -444,5 +516,13 @@ public class Controller {
      */
     public final List<Rent> getRents() {
         return library.getRents();
+    }
+
+    /**
+     * Metoda zwracająca listę przypomnień.
+     * @return lista przypomnień
+     */
+    public final List<RentalReminder> getRentalReminders() {
+        return library.getRentalReminders();
     }
 }

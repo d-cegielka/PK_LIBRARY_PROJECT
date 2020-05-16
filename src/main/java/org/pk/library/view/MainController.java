@@ -5,17 +5,13 @@ import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXToggleButton;
 import com.jfoenix.controls.events.JFXDialogEvent;
-import javafx.animation.*;
-import javafx.application.Platform;
+import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TabPane;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import org.pk.library.controller.Controller;
@@ -23,7 +19,7 @@ import org.pk.library.controller.Controller;
 import java.sql.SQLException;
 
 public class MainController {
-    public JFXToggleButton changeStyleToggleButton;
+
     Controller libraryController;
     @FXML
     BookController bookController;
@@ -34,14 +30,13 @@ public class MainController {
     @FXML
     ReturnController returnController;
     @FXML
-    CalendarController calendarController;
-
-    @FXML
     private AnchorPane mainPane;
     @FXML
     private TabPane tabPane;
     @FXML
     private StackPane mainStackPane;
+    @FXML
+    private JFXToggleButton changeStyleToggleButton;
 
     @FXML
     private void initialize() {
@@ -55,7 +50,6 @@ public class MainController {
         readerController.injectMainController(this);
         rentController.injectMainController(this);
         returnController.injectMainController(this);
-        calendarController.injectMainController(this);
     }
 
     /**
@@ -63,7 +57,6 @@ public class MainController {
      * @param header nagłówek informacji
      * @param message treść informacji
      */
-    @FXML
     void showInfoDialog(String header, String message){
         BoxBlur blur = new BoxBlur(4, 4, 4);
         JFXDialogLayout dialogLayout = new JFXDialogLayout();
@@ -71,8 +64,6 @@ public class MainController {
         dialogLayout.setBody(new Text(message));
         JFXDialog dialog = new JFXDialog(mainStackPane, dialogLayout, JFXDialog.DialogTransition.TOP);
         JFXButton button = new JFXButton("Okay");
-        //button.setStyle("-fx-background-color: green; -fx-text-fill: white");
-        //button.getStyleClass().add("dialog-button");
         button.setOnAction(
                 event -> dialog.close());
         button.setButtonType(com.jfoenix.controls.JFXButton.ButtonType.RAISED);
@@ -86,6 +77,9 @@ public class MainController {
         tabPane.setEffect(blur);
     }
 
+    /**
+     * Przeładowanie widoku wypożyczeń
+     */
     @FXML
     void reloadRentView(){
         rentController.reloadRentTableView();
@@ -93,7 +87,11 @@ public class MainController {
         rentController.reloadBooksTableView();
     }
 
-    public void changeStyle(ActionEvent actionEvent) {
+    /**
+     * Zmiana stylu GUI
+     */
+    @FXML
+    void changeStyle() {
         FadeTransition fadeTransition = new FadeTransition(Duration.millis(500),mainPane);
         fadeTransition.setFromValue(1);
         fadeTransition.setToValue(0.05);

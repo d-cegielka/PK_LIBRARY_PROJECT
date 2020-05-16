@@ -98,17 +98,12 @@ public class BookController {
         findBookField.textProperty().addListener((o, oldVal, newVal) -> booksTableView.setPredicate(bookProp -> {
             final Book book = bookProp.getValue();
             String checkValue = newVal.trim().toLowerCase();
-            return (book.getTitle().toLowerCase().contains(checkValue) ||
-                    book.getPublisher().toLowerCase().contains(checkValue) ||
-                    book.getAuthor().toLowerCase().contains(checkValue) ||
-                    book.getIsbn().toLowerCase().contains(checkValue) ||
-                    book.getBOOK_ID().toLowerCase().contains(checkValue));
+            return book.toString().toLowerCase().contains(checkValue);
         }));
 
         booksTableView.currentItemsCountProperty().addListener((observableValue, rentTreeItem, t1) -> {
                     if (booksTableView.getCurrentItemsCount() == 0) clearUpdateBookForm();
         });
-        //booksTableView.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> changeUpdateBookForm());
         booksTableView.getSelectionModel().selectedItemProperty().addListener((observableValue, rentTreeItem, t1) -> changeUpdateBookForm());
 }
 

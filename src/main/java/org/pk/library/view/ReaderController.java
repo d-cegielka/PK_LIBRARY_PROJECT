@@ -10,8 +10,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.input.MouseEvent;
 import org.pk.library.model.Reader;
+
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -114,14 +114,9 @@ public class ReaderController {
         findReaderField.textProperty().addListener((o, oldVal, newVal) -> readersTableView.setPredicate(readerProp -> {
             final Reader reader = readerProp.getValue();
             String checkValue = newVal.trim().toLowerCase();
-            return (reader.getFirstName().toLowerCase().contains(checkValue) ||
-                    reader.getLastName().toLowerCase().contains(checkValue) ||
-                    reader.getDateOfBirth().toString().contains(checkValue) ||
-                    reader.getPhoneNumber().toLowerCase().contains(checkValue) ||
-                    reader.getEmailAddress().toLowerCase().contains(checkValue));
+            return reader.toString().toLowerCase().contains(checkValue);
         }));
 
-        //readersTableView.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> changeUpdateReaderForm());
         readersTableView.currentItemsCountProperty().addListener((observableValue, rentTreeItem, t1) -> {
             if (readersTableView.getCurrentItemsCount() == 0) clearUpdateReaderForm();
         });

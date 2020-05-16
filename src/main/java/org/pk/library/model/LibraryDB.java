@@ -13,6 +13,11 @@ public class LibraryDB {
         conn = this.connect();
     }
 
+    /**
+     * Ustanowienie połączenia z bazą danych
+     * @return połączenie
+     * @throws SQLException wyjątek SQL
+     */
     private Connection connect() throws SQLException {
         Connection conn;
         String URL = "jdbc:mysql://srv31876.seohost.com.pl:3306/srv31876_library?serverTimezone=UTC";
@@ -22,18 +27,34 @@ public class LibraryDB {
         return conn;
     }
 
+    /**
+     * Metoda inicjalizująca zapytanie SQL
+     * @param book obiekt klasy Book, który ma zostać dodany
+     * @throws SQLException wyjątek SQL
+     */
     public void insertBook(final Book book) throws SQLException {
         String sqlInsert = "INSERT INTO BOOKS (isbn, title, author, publisher, book_id) VALUES(?,?,?,?,?)";
 
         executeBookQuery(book, sqlInsert);
     }
 
+    /**
+     * Metoda inicjalizująca zapytanie SQL
+     * @param book obiekt klasy Book, który ma zostać zaktualizowany
+     * @throws SQLException wyjątek SQL
+     */
     public void updateBook(final Book book) throws SQLException {
         String sqlUpdate ="UPDATE BOOKS SET isbn=?, title=?, author=?, publisher=? WHERE book_id=?";
 
         executeBookQuery(book, sqlUpdate);
     }
 
+    /**
+     * Metoda wykonująca zapytanie SQL(INSERT lub UPDATE) na tabeli Books
+     * @param book obiekt klasy Book do dodania/aktualizacji
+     * @param sqlQuery zapytanie SQL
+     * @throws SQLException wyjątek SQL
+     */
     private void executeBookQuery(Book book, String sqlQuery) throws SQLException {
         if(conn.isClosed()) {
             conn = this.connect();
@@ -47,6 +68,13 @@ public class LibraryDB {
         preparedStatement.executeUpdate();
     }
 
+    /**
+     * Metoda usuwająca dane z wybranej tabeli w bazie danych
+     * @param table nazwa tabeli
+     * @param id identyfikator obiektu do usunięcia z tabeli
+     * @return wartość logiczna
+     * @throws SQLException wyjątek SQL
+     */
     public boolean deleteFromTable(String table, String id) throws SQLException {
         String sqlDelete = "DELETE FROM " + table + " WHERE " + table.substring(0, table.length() - 1).toLowerCase() + "_id=?";
 
@@ -59,18 +87,34 @@ public class LibraryDB {
         return result == 1;
     }
 
+    /**
+     * Metoda inicjalizująca zapytanie SQL
+     * @param reader obiekt klasy Reader, który ma zostać dodany
+     * @throws SQLException wyjątek SQL
+     */
     public void insertReader(final Reader reader) throws SQLException {
         String sqlInsert = "INSERT INTO READERS (first_name, last_name, date_of_birth, phone_number, email, reader_id) VALUES(?,?,?,?,?,?)";
 
         executeReaderQuery(reader, sqlInsert);
     }
 
+    /**
+     * Metoda inicjalizująca zapytanie SQL
+     * @param reader obiekt klasy Reader, który ma zostać zaktualizowany
+     * @throws SQLException wyjątek SQL
+     */
     public void updateReader(final Reader reader) throws SQLException {
         String sqlUpdate ="UPDATE READERS SET first_name=?, last_name=?, date_of_birth=?, phone_number=?, email=? WHERE reader_id=?";
 
         executeReaderQuery(reader, sqlUpdate);
     }
 
+    /**
+     * Metoda wykonująca zapytanie SQL(INSERT lub UPDATE) na tabeli Readers
+     * @param reader obiekt klasy Reader do dodania/aktualizacji
+     * @param sqlQuery zapytanie SQL
+     * @throws SQLException wyjątek SQL
+     */
     private void executeReaderQuery(Reader reader, String sqlQuery) throws SQLException {
         if(conn.isClosed()) {
             conn = this.connect();
@@ -87,7 +131,7 @@ public class LibraryDB {
 
     /**
      * Metoda inicjalizująca zapytanie SQL
-     * @param rent obiekt klasy Rent do dodania
+     * @param rent obiekt klasy Rent, który ma zostać dodany
      * @throws SQLException wyjątek SQL
      */
     public void insertRent(final Rent rent) throws SQLException {
@@ -98,7 +142,7 @@ public class LibraryDB {
 
     /**
      * Metoda inicjalizująca zapytanie SQL
-     * @param rent obiekt klasy Rent do aktualizacji
+     * @param rent obiekt klasy Rent, który ma zostać zaktualizowany
      * @throws SQLException wyjątek SQL
      */
     public void updateRent(final Rent rent) throws SQLException {
@@ -126,6 +170,35 @@ public class LibraryDB {
         preparedStatement.setString(6,rent.getRENT_ID());
         preparedStatement.executeUpdate();
     }
+
+    /**
+     * Metoda inicjalizująca zapytanie SQL
+     * @param rentalReminder obiekt klasy RentalReminder, który ma zostać dodany
+     * @throws SQLException wyjątek SQL
+     */
+    public void insertReminder(final RentalReminder rentalReminder) throws SQLException {
+        String sqlInsert = "INSERT INTO RENTALREMINDERS (rent, date_of_reminder, rentalreminder_id) VALUES(?,?,?)";
+
+        executeReminderQuery(rentalReminder, sqlInsert);
+    }
+
+    /**
+     * Metoda wykonująca zapytanie SQL(INSERT lub UPDATE) na tabeli RentalReminders
+     * @param rentalReminder obiekt klasy RentalReminders do dodania/aktualizacji
+     * @param sqlQuery zapytanie SQL
+     * @throws SQLException wyjątek SQL
+     */
+    private void executeReminderQuery(RentalReminder rentalReminder, String sqlQuery) throws SQLException {
+        if(conn.isClosed()) {
+            conn = this.connect();
+        }
+        PreparedStatement preparedStatement = conn.prepareStatement(sqlQuery);
+        preparedStatement.setString(1,rentalReminder.getRent().getRENT_ID());
+        preparedStatement.setTimestamp(2,Timestamp.valueOf(rentalReminder.getDateOfReminder()));
+        preparedStatement.setString(3, rentalReminder.getREMINDER_ID());
+        preparedStatement.executeUpdate();
+    }
+
 
     /**
      * Metoda zwracająca listę książek pobranych z bazy danych.
@@ -175,7 +248,7 @@ public class LibraryDB {
             String email = rs.getString("email");
             String reader_id = rs.getString("reader_id");
 
-            readers.add(new Reader(first_name,last_name,date_of_birth,phone_number,email,reader_id));
+            readers.add(new Reader(first_name, last_name,date_of_birth,phone_number,email,reader_id));
         }
         rs.close();
 
@@ -199,16 +272,39 @@ public class LibraryDB {
 
         while(rs.next()) {
             Book book = findBookById(books, rs.getString("book"));
-            Reader reader = findReaderById(readers,rs.getString("reader"));
+            Reader reader = findReaderById(readers, rs.getString("reader"));
             LocalDateTime date_of_rent = rs.getTimestamp("date_of_rent").toLocalDateTime();
             LocalDateTime date_of_return = rs.getTimestamp("date_of_return").toLocalDateTime();
             boolean returned = rs.getBoolean("returned");
             String rent_id = rs.getString("rent_id");
-            rents.add(new Rent(book,reader,date_of_rent,date_of_return,returned,rent_id));
+            rents.add(new Rent(book, reader, date_of_rent, date_of_return, returned, rent_id));
         }
         rs.close();
 
         return rents;
+    }
+
+    /**
+     * Metoda zwracająca listę przypomnień pobranych z bazy danych.
+     * @param rents lista wypożyczeń
+     * @return zwraca listę przypomnień
+     * @throws SQLException wyjatek SQL
+     */
+    public List<RentalReminder> getRentalRemindersFromDB(final List<Rent> rents) throws SQLException{
+        List<RentalReminder> rentalReminders = new ArrayList<>();
+        Connection conn = this.connect();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT rent, date_of_reminder, rentalreminder_id FROM RENTALREMINDERS");
+
+        while (rs.next()){
+            Rent rent = findRentById(rents,rs.getString("rent"));
+            LocalDateTime date_of_reminder = rs.getTimestamp("date_of_reminder").toLocalDateTime();
+            String reminder_id = rs.getString("rentalreminder_id");
+            rentalReminders.add(new RentalReminder(rent, date_of_reminder, reminder_id));
+        }
+        rs.close();
+
+        return rentalReminders;
     }
 
     /**
@@ -232,5 +328,17 @@ public class LibraryDB {
     {
         return readers.stream().filter(reader -> reader_id.equals(reader.getREADER_ID())).findAny().orElse(null);
     }
+
+    /**
+     * Wyszukuje obiekt wypożyczenia w liście wypożyczeń po ID wypożyczenia
+     * @param rents lista wypożyczeń
+     * @param rent_id ID wyszukiwanego wypożyczenia
+     * @return obiekt typu Rent z wypożyczeniem
+     */
+    private Rent findRentById(final List<Rent> rents, final String rent_id)
+    {
+        return rents.stream().filter(rent -> rent_id.equals(rent.getRENT_ID())).findAny().orElse(null);
+    }
+
 
 }

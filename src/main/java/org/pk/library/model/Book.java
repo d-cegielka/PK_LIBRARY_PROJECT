@@ -30,14 +30,12 @@ public class Book extends RecursiveTreeObject<Book> implements Comparable<Book>,
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Book{");
-        sb.append("isbn='").append(isbn).append('\'');
-        sb.append(", title='").append(title).append('\'');
-        sb.append(", author='").append(author).append('\'');
-        sb.append(", publisher='").append(publisher).append('\'');
-        sb.append(", bookID='").append(BOOK_ID).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "Book{" + "isbn='" + isbn + '\'' +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", bookID='" + BOOK_ID + '\'' +
+                '}';
     }
 
     @Override

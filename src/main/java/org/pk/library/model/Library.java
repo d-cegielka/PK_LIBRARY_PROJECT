@@ -9,17 +9,20 @@ public class Library {
     private final List<Book> books;
     private final List<Reader> readers;
     private final List<Rent> rents;
+    private final List<RentalReminder> rentalReminders;
 
     public Library() {
         books = new ArrayList<>();
         readers = new ArrayList<>();
         rents = new ArrayList<>();
+        rentalReminders = new ArrayList<>();
     }
 
-    public Library(List<Book> books, List<Reader> readers, List<Rent> rents) {
+    public Library(List<Book> books, List<Reader> readers, List<Rent> rents, List<RentalReminder> rentalReminders) {
         this.books = books;
         this.readers = readers;
         this.rents = rents;
+        this.rentalReminders = rentalReminders;
     }
 
     public boolean addBook(final Book book) {
@@ -34,6 +37,10 @@ public class Library {
         return rents.add(rent);
     }
 
+    public boolean addRentalReminder(final RentalReminder rentalReminder) {
+        return rentalReminders.add(rentalReminder);
+    }
+
     public boolean removeBook(final Book book){
         return books.remove(book);
     }
@@ -44,6 +51,10 @@ public class Library {
 
     public void removeRent(final Rent rent){
         rents.remove(rent);
+    }
+
+    public boolean removeRentalReminder(final RentalReminder rentalReminder) {
+        return rentalReminders.remove(rentalReminder);
     }
 
     public Book getBook(int index) {
@@ -69,11 +80,18 @@ public class Library {
         return Collections.unmodifiableList(rents);
     }
 
+    public List<RentalReminder> getRentalReminders() {
+        return Collections.unmodifiableList(rentalReminders);
+    }
+
+
+
     @Override
     public String toString() {
         return "Library{" + "books=" + books +
                 ", readers=" + readers +
                 ", rents=" + rents +
+                ", rentalReminders=" + rentalReminders +
                 '}';
     }
 

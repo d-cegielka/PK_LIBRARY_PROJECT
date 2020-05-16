@@ -1,202 +1,302 @@
 package org.pk.library.view;
 
+import com.calendarfx.model.Calendar;
 import com.calendarfx.model.CalendarSource;
+import com.calendarfx.model.Entry;
 import com.calendarfx.view.CalendarView;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXTimePicker;
+import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableCell;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.input.MouseEvent;
-import org.pk.library.model.Book;
-import org.pk.library.model.Reader;
+import javafx.scene.layout.StackPane;
 import org.pk.library.model.Rent;
+import org.pk.library.model.RentalReminder;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Calendar;
+import java.time.*;
+import java.util.List;
+import java.util.Map;
 
 public class ReturnController {
+    @FXML
+    private JFXTimePicker timeOfReminderField;
+    @FXML
+    private JFXDatePicker dateOfReminderField;
+    @FXML
+    private JFXButton deleteReminderButton;
+    @FXML
+    private JFXButton addReminderButton;
+    @FXML
+    private JFXTextField numOfDaysExtendRentalPeriod;
+    @FXML
+    private JFXButton extendRentalPeriodButton;
+    @FXML
+    private JFXButton cancelReturnBookButton;
+    @FXML
+    private StackPane calendarStackPane;
+    @FXML
+    private JFXButton returnBookButton;
+    @FXML
     private MainController mainController;
-    private RentController rentController;
     @FXML
-    private JFXTreeTableView<Rent> returnTableView;
+    private CalendarView returnCalendarView;
     @FXML
-    private JFXTreeTableColumn<Rent, Book> bookCol;
+    private Calendar rentsCalendar;
     @FXML
-    private JFXTreeTableColumn<Rent, Reader> readerCol;
+    private Calendar rentsCalendarReturned;
     @FXML
-    private JFXTreeTableColumn<Rent, LocalDateTime> dateOfRentCol;
-    @FXML
-    private JFXTreeTableColumn<Rent, LocalDateTime> dateOfReturnCol;
-    @FXML
-    private JFXTreeTableColumn<Rent, Boolean> returnedCol;
-    @FXML
-    private JFXDatePicker newReturnDateDataPicker;
-    /*@FXML
-    private CalendarView returnCalendar;
+    private Calendar rentalReminders;
 
-    @FXML
-    void initializeCalendar(){
-        System.out.println(returnCalendar.getCalendarSources().size());
-        //com.calendarfx.model.Calendar rentsCalendar = new com.calendarfx.model.Calendar("Wypożyczenia");
-        CalendarSource rentsSource = new CalendarSource("Wypożyczenia");
-        //rentsSource.getCalendars().addAll(rentsCalendar);
-        //returnCalendar.getCalendarSources().add(rentsSource);
-    }*/
 
     void injectMainController(MainController mainController) {
         this.mainController = mainController;
-        initializeReturnTableView();
+        initializeCalendars();
+        numOfDaysExtendRentalPeriod.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                numOfDaysExtendRentalPeriod.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+        timeOfReminderField.set24HourView(true);
+
     }
 
-    void initializeReturnTableView() {
-        bookCol = new JFXTreeTableColumn<>("Książka");
-        bookCol.prefWidthProperty().bind(returnTableView.widthProperty().divide(5));
-        bookCol.setResizable(false);
-        bookCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Rent, Book> param) -> {
-            if(bookCol.validateValue(param)) return new SimpleObjectProperty<>(param.getValue().getValue().getBOOK());
-            else return bookCol.getComputedValue(param);
-        });
-        bookCol.setCellFactory(column -> new TreeTableCell<>(){
+    /**
+     * Inicjalizacja kalendarza.
+     * @param name nazwa kalendarza
+     * @param style styl kalendarza
+     * @return zainicjalizowany kalendarz
+     */
+    @FXML
+    private Calendar initializeCalendar(String name, Calendar.Style style){
+        Calendar calendar = new Calendar(name);
+        calendar.setStyle(style);
+        calendar.setReadOnly(true);
+        return calendar;
+    }
+
+    /**
+     * Inicjalizacja kalendarzy z wypożyczeniami i przypomnieniami.
+     */
+    @FXML
+    void initializeCalendars(){
+        returnCalendarView = new CalendarView();
+        rentsCalendar = initializeCalendar("Wypożyczenia aktualne",Calendar.Style.STYLE1);
+        rentsCalendarReturned = initializeCalendar("Wypożyczenia archwialne",Calendar.Style.STYLE2);
+        rentalReminders = initializeCalendar("Przypomnienia", Calendar.Style.STYLE3);
+        CalendarSource rentsSource = new CalendarSource("Wypożyczenia");
+        rentsSource.getCalendars().addAll(rentsCalendar,rentsCalendarReturned,rentalReminders);
+        returnCalendarView.setRequestedTime(LocalTime.now());
+        returnCalendarView.showMonthPage();
+        returnCalendarView.setShowAddCalendarButton(false);
+        returnCalendarView.setShowPrintButton(false);
+        calendarStackPane.getChildren().clear();
+        calendarStackPane.getChildren().add(returnCalendarView);
+
+        //Uruchomienie obsługi aktualizacji czasu kalendarza i wyświetlania powiadomień w oddzielnym wątku.
+        Thread updateTimeThread = new Thread("Kalendarz: aktualizacja czasu") {
             @Override
-            protected void updateItem(Book book, boolean b) {
-                if (book == getItem()) {
-                    return;
-                }
-                super.updateItem(book, b);
-                if (book == null) {
-                    super.setText(null);
-                    super.setGraphic(null);
-                } else {
-                    super.setText(book.getTitle());
-                    super.setGraphic(null);
-                }
-            }
-        });
-
-        readerCol = new JFXTreeTableColumn<>("Czytelnik");
-        readerCol.prefWidthProperty().bind(returnTableView.widthProperty().divide(5));
-        readerCol.setResizable(false);
-        readerCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Rent, Reader> param)->{
-            if(readerCol.validateValue(param))
-                return new SimpleObjectProperty<>(param.getValue().getValue().getREADER());
-            else return readerCol.getComputedValue(param);
-        });
-        readerCol.setCellFactory(column -> new TreeTableCell<>(){
-            @Override
-            protected void updateItem(Reader reader, boolean b) {
-                if (reader == getItem()) {
-                    return;
-                }
-                super.updateItem(reader, b);
-                if (reader == null) {
-                    super.setText(null);
-                    super.setGraphic(null);
-                } else {
-                    super.setText(reader.getFirstName() + " " + reader.getLastName());
-                    super.setGraphic(null);
-                }
-            }
-        } );
-
-        dateOfRentCol = new JFXTreeTableColumn<>("Data wypożyczenia");
-        dateOfRentCol.prefWidthProperty().bind(returnTableView.widthProperty().divide(5));
-        dateOfRentCol.setResizable(false);
-        dateOfRentCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Rent, LocalDateTime> param) ->{
-            if(dateOfRentCol.validateValue(param)) return new SimpleObjectProperty<>(param.getValue().getValue().getDateOfRent());
-            else return dateOfRentCol.getComputedValue(param);
-        });
-
-        dateOfReturnCol = new JFXTreeTableColumn<>("Data zwrotu");
-        dateOfReturnCol.prefWidthProperty().bind(returnTableView.widthProperty().divide(5));
-        dateOfReturnCol.setResizable(false);
-        dateOfReturnCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Rent, LocalDateTime> param) ->{
-            if(dateOfReturnCol.validateValue(param)) return new SimpleObjectProperty<>(param.getValue().getValue().getDateOfReturn());
-            else return dateOfReturnCol.getComputedValue(param);
-        });
-
-        returnedCol = new JFXTreeTableColumn<>("Czy zwrócono");
-        returnedCol.prefWidthProperty().bind(returnTableView.widthProperty().divide(5));
-        returnedCol.setResizable(false);
-        returnedCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Rent, Boolean> param) ->{
-            if(returnedCol.validateValue(param)) return new SimpleBooleanProperty(param.getValue().getValue().isReturned());
-            else return returnedCol.getComputedValue(param);
-        });
-
-        returnedCol.setCellFactory(column -> new TreeTableCell<>(){
-            @Override
-            protected void updateItem(Boolean aBoolean, boolean b) {
-                if (aBoolean == getItem()) {
-                    return;
-                }
-                super.updateItem(aBoolean, b);
-                if (aBoolean == null) {
-                    super.setText(null);
-                    super.setGraphic(null);
-                } else {
-                    if(aBoolean){
-                        super.setText("tak");
-                    } else{
-                        super.setText("nie");
+            public void run() {
+                while (true) {
+                    Platform.runLater(() -> {
+                        returnCalendarView.setToday(LocalDate.now());
+                        returnCalendarView.setTime(LocalTime.now());
+                        LocalDate now = LocalDate.now();
+                        LocalTime nowMinus5 = LocalTime.now().minusSeconds(5);
+                        LocalTime nowPlus5 = LocalTime.now().plusSeconds(5);
+                        Map<LocalDate, List<Entry<?>>> result = rentalReminders.findEntries(now,
+                                now, ZoneId.systemDefault());
+                        if(result.values().size() == 0){
+                            return;
+                        }
+                        for(Entry<?> obj: result.get(now)) {
+                            RentalReminder rentalReminder = (RentalReminder) obj.getUserObject();
+                            if(obj.getEndTime().isBefore(nowPlus5) && obj.getEndTime().isAfter(nowMinus5)) {
+                                mainController.showInfoDialog("Przypomnienie",
+                                        "Czytelnik: " + rentalReminder.getRent().getREADER().getFirstName() + " " +rentalReminder.getRent().getREADER().getLastName() +
+                                        " powinien zwrócić książkę: " + rentalReminder.getRent().getBOOK().getTitle() + " dnia " + rentalReminder.getRent().getDateOfReturn()
+                                        );
+                                rentalReminders.removeEntry(obj);
+                                mainController.libraryController.deleteReminder(rentalReminder);
+                            }
+                        }
+                    });
+                    try {
+                        // Aktualizacja co 10 sekund
+                        sleep(10000);
+                    } catch (InterruptedException e) {
+                        mainController.showInfoDialog("Wątek aktualizacji kalendarza",e.getMessage());
                     }
-                    super.setGraphic(null);
+
                 }
             }
+        };
+        updateTimeThread.setPriority(Thread.MIN_PRIORITY);
+        updateTimeThread.setDaemon(true);
+        updateTimeThread.start();
+        returnCalendarView.getCalendarSources().clear();
+        returnCalendarView.getCalendarSources().add(rentsSource);
+
+        loadRentsCalendar();
+        loadRentRemindersCalendar();
+
+        returnCalendarView.getSelections().addListener((InvalidationListener) changes -> {
+            ObservableList<Entry<?>> selectedRent = FXCollections.observableArrayList(returnCalendarView.getSelections());
+            if (selectedRent.size() == 1) {
+                if(rentsCalendar.findEntries("").contains(selectedRent.get(0))){
+                    returnBookButton.setDisable(false);
+                    cancelReturnBookButton.setDisable(true);
+                    extendRentalPeriodButton.setDisable(false);
+                    addReminderButton.setDisable(false);
+                    dateOfReminderField.setValue(null);
+                    timeOfReminderField.setValue(null);
+                } else {
+                    returnBookButton.setDisable(true);
+                    cancelReturnBookButton.setDisable(false);
+                }
+                if(rentalReminders.findEntries("").contains(selectedRent.get(0))) {
+                    deleteReminderButton.setDisable(false);
+                    cancelReturnBookButton.setDisable(true);
+                }
+            } else {
+                returnBookButton.setDisable(true);
+                cancelReturnBookButton.setDisable(true);
+                extendRentalPeriodButton.setDisable(true);
+                addReminderButton.setDisable(true);
+                deleteReminderButton.setDisable(true);
+            }
         });
-
-        TreeItem<Rent> rentsTreeItem = new RecursiveTreeItem<>(FXCollections.observableArrayList(mainController.libraryController.getRents()), RecursiveTreeObject::getChildren);
-        returnTableView.setRoot(rentsTreeItem);
-
-        returnTableView.setShowRoot(false);
-        returnTableView.setEditable(true);
-        returnTableView.getColumns().setAll(bookCol,readerCol,dateOfRentCol,dateOfReturnCol,returnedCol);
-
-        /*returnTableView.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> {
-            changeDataPicker();
-        });*/
     }
 
-
-    @FXML
-    void reloadReturnTableView(){
-        TreeItem<Rent> rentsTreeItem = new RecursiveTreeItem<>(FXCollections.observableArrayList(mainController.libraryController.getRents()), RecursiveTreeObject::getChildren);
-        returnTableView.setRoot(rentsTreeItem);
-    }
-
-    /*@FXML
-    private void extendRentalPeriod() {
-        int rentIndex = returnTableView.getSelectionModel().getSelectedIndex();
-        mainController.showInfoDialog(
-                "Informacja",
-                mainController.libraryController.extendRentalPeriod(
-                        returnTableView.getSelectionModel().getSelectedItem().getValue(),
-                        newReturnDateDataPicker.getValue()
-                )
-        );
-        reloadReturnTableView();
-        returnTableView.getSelectionModel().select(rentIndex);
-    }
-
-    @FXML
-    private void changeDataPicker() {
-        if(!returnTableView.getSelectionModel().isEmpty()) {
-            newReturnDateDataPicker.setValue(returnTableView.getSelectionModel().getSelectedItem().getValue().getDateOfReturn());
+    /**
+     * Wczytanie wypożyczeń z struktury danych do kalendarza wypożyczeń aktualnych rentsCalendar(nie zwrócone książki) i
+     * kalendarza wypożyczeń archiwalnych rentsCalendarReturn(zwrócone książki).
+     */
+    void loadRentsCalendar() {
+        rentsCalendarReturned.clear();
+        rentsCalendar.clear();
+        for (Rent rent : mainController.libraryController.getRents()) {
+            Entry<Rent> rentEntry = new Entry<>("Książka: " + rent.getBOOK().getTitle() +
+                    " \nCzytelnik: " + rent.getREADER().getFirstName() + " " + rent.getREADER().getLastName());
+            rentEntry.setInterval(rent.getDateOfReturn());
+            rentEntry.setUserObject(rent);
+            if(rent.isReturned()) {
+                rentsCalendarReturned.addEntry(rentEntry);
+            } else {
+                rentsCalendar.addEntry(rentEntry);
+            }
         }
     }
 
+    /**
+     * Wczytanie przypomnień z struktury danych do kalendarza przypomnień rentalReminders.
+     */
+    void loadRentRemindersCalendar(){
+        rentalReminders.clear();
+        for(RentalReminder rentalReminder:mainController.libraryController.getRentalReminders()) {
+            Entry<RentalReminder> reminderEntry = new Entry<>("Przypomnienie o zwrocie książki: " + rentalReminder.getRent().getBOOK().getTitle() +
+                    " \nCzytelnik: " + rentalReminder.getRent().getREADER().getFirstName() + " " + rentalReminder.getRent().getREADER().getLastName() +
+                    "\nData zwrotu: "+rentalReminder.getRent().getDateOfReturn());
+            reminderEntry.setInterval(rentalReminder.getDateOfReminder());
+            reminderEntry.setUserObject(rentalReminder);
+            rentalReminders.addEntry(reminderEntry);
+        }
+    }
+
+    /**
+     * Zwrot książki przez czytelnika.
+     */
     @FXML
-    private void initializeCalendar() {
+    private void returnBook(){
+        ObservableList<Entry<?>> returnRentList = FXCollections.observableArrayList(returnCalendarView.getSelections());
+        Rent returnRent = (Rent) returnRentList.get(0).getUserObject();
+        String message = mainController.libraryController.returnBook(returnRent,true);
+        mainController.showInfoDialog("Informacja", message);
+        if(message.contains("zwrócona pomyślnie")) {
+            rentsCalendar.removeEntry(returnRentList.get(0));
+            rentsCalendarReturned.addEntry(returnRentList.get(0));
+            mainController.reloadRentView();
+            returnBookButton.setDisable(true);
+            cancelReturnBookButton.setDisable(false);
+        }
+    }
 
-        Calendar calendar = new Calendar();
+    /**
+     * Cofnięcie zwrotu książki przez czytelnika.
+     */
+    @FXML
+    private void cancelReturnBook(){
+        ObservableList<Entry<?>> cancelReturnRentList = FXCollections.observableArrayList(returnCalendarView.getSelections());
+        Rent returnRent = (Rent) cancelReturnRentList.get(0).getUserObject();
+        String message = mainController.libraryController.returnBook(returnRent,false);
+        mainController.showInfoDialog("Informacja", message);
+        if(message.contains("wycofany pomyślnie")) {
+            rentsCalendarReturned.removeEntry(cancelReturnRentList.get(0));
+            rentsCalendar.addEntry(cancelReturnRentList.get(0));
+            mainController.reloadRentView();
+            returnBookButton.setDisable(false);
+            cancelReturnBookButton.setDisable(true);
+        }
+    }
 
-    }*/
+    /**
+     * Przedłużenie czasu wypożyczenia książki.
+     */
+    @FXML
+    private void extendRentalPeriod() {
+        ObservableList<Entry<?>> returnRentList = FXCollections.observableArrayList(returnCalendarView.getSelections());
+        Rent rent = (Rent) returnRentList.get(0).getUserObject();
+        mainController.showInfoDialog(
+                "Informacja",
+                mainController.libraryController.extendRentalPeriod(
+                        rent,
+                        numOfDaysExtendRentalPeriod.getText()
+                )
+        );
+        returnRentList.get(0).setInterval(rent.getDateOfReturn());
+        mainController.reloadRentView();
+    }
+
+    /**
+     * Dodanie przypomnienia do struktury danych.
+     */
+    @FXML
+    private void addReminder() {
+        ObservableList<Entry<?>> currentRental = FXCollections.observableArrayList(returnCalendarView.getSelections());
+        Rent rent = (Rent) currentRental.get(0).getUserObject();
+        if(dateOfReminderField.getValue() == null){
+            dateOfReminderField.setValue(rent.getDateOfReturn().toLocalDate().minusDays(2));
+        }
+        if(timeOfReminderField.getValue() == null) {
+            timeOfReminderField.setValue(rent.getDateOfReturn().toLocalTime());
+        }
+        mainController.showInfoDialog(
+                "Informacja",
+                mainController.libraryController.addReminder(
+                        rent,
+                        LocalDateTime.of(dateOfReminderField.getValue(),timeOfReminderField.getValue())
+                )
+        );
+        addReminderButton.setDisable(true);
+        loadRentRemindersCalendar();
+    }
+
+    /**
+     * Usunięcie przypomnienia ze struktury danych.
+     */
+    @FXML
+    private void deleteReminder(){
+        ObservableList<Entry<?>> currentReminder = FXCollections.observableArrayList(returnCalendarView.getSelections());
+        RentalReminder rentalReminder = (RentalReminder) currentReminder.get(0).getUserObject();
+        mainController.showInfoDialog(
+                "Informacja",
+                mainController.libraryController.deleteReminder(rentalReminder)
+        );
+        rentalReminders.removeEntry(currentReminder.get(0));
+        deleteReminderButton.setDisable(true);
+    }
 
 }

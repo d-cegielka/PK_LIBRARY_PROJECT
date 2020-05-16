@@ -6,12 +6,9 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import org.pk.library.model.Book;
 import org.pk.library.model.Reader;
@@ -104,11 +101,10 @@ public class RentController  {
                 super.updateItem(book, b);
                 if (book == null) {
                     super.setText(null);
-                    super.setGraphic(null);
                 } else {
                     super.setText(book.getTitle());
-                    super.setGraphic(null);
                 }
+                super.setGraphic(null);
             }
         });
 
@@ -129,11 +125,10 @@ public class RentController  {
                 super.updateItem(reader, b);
                 if (reader == null) {
                     super.setText(null);
-                    super.setGraphic(null);
                 } else {
                     super.setText(reader.getFirstName() + " " + reader.getLastName());
-                    super.setGraphic(null);
                 }
+                super.setGraphic(null);
             }
         } );
 
@@ -193,11 +188,8 @@ public class RentController  {
 
             final Rent rent = readerProp.getValue();
             String checkValue = newVal.trim().toLowerCase();
-            return (rent.getBOOK().toString().toLowerCase().contains(checkValue) ||
-                    rent.getREADER().toString().toLowerCase().contains(checkValue) ||
-                    rent.getDateOfRent().toString().contains(checkValue) ||
-                    rent.getDateOfReturn().toString().contains(checkValue) ||
-                    String.valueOf(rent.isReturned()).contains(checkValue));
+            return rent.toString().toLowerCase().contains(checkValue) ||
+                    String.valueOf(rent.isReturned()).replace("true","tak").replace("false","nie").contains(checkValue);
         }));
 
         rentsTableView.currentItemsCountProperty().addListener((observableValue, rentTreeItem, t1) -> {
@@ -205,7 +197,6 @@ public class RentController  {
         });
 
         rentsTableView.getSelectionModel().selectedItemProperty().addListener((observableValue, rentTreeItem, t1) -> changeRentForm());
-
 
         rentSplitPane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             if(mouseEvent.getClickCount()==2){
@@ -215,7 +206,6 @@ public class RentController  {
             }
 
         });
-
     }
 
     /**
@@ -257,11 +247,7 @@ public class RentController  {
         findReaderField.textProperty().addListener((o, oldVal, newVal) -> readersTableView.setPredicate(readerProp -> {
             final Reader reader = readerProp.getValue();
             String checkValue = newVal.trim().toLowerCase();
-            return (reader.getFirstName().toLowerCase().contains(checkValue) ||
-                    reader.getLastName().toLowerCase().contains(checkValue) ||
-                    reader.getDateOfBirth().toString().contains(checkValue) ||
-                    reader.getPhoneNumber().toLowerCase().contains(checkValue) ||
-                    reader.getEmailAddress().toLowerCase().contains(checkValue));
+            return reader.toString().toLowerCase().contains(checkValue);
         }));
     }
 
@@ -296,16 +282,8 @@ public class RentController  {
         findBookField.textProperty().addListener((o, oldVal, newVal) -> booksTableView.setPredicate(bookProp -> {
             final Book book = bookProp.getValue();
             String checkValue = newVal.trim().toLowerCase();
-            return (book.getTitle().toLowerCase().contains(checkValue) ||
-                    book.getPublisher().toLowerCase().contains(checkValue) ||
-                    book.getAuthor().toLowerCase().contains(checkValue) ||
-                    book.getIsbn().toLowerCase().contains(checkValue) ||
-                    book.getBOOK_ID().toLowerCase().contains(checkValue));
+            return book.toString().toLowerCase().contains(checkValue);
         }));
-
-       // booksTableView.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseEvent -> changeUpdateBookForm());
-        //booksTableView.getSelectionModel().selectedItemProperty().addListener((observableValue, rentTreeItem, t1) -> clearFindField());
-
     }
 
     /**
@@ -357,10 +335,13 @@ public class RentController  {
                         numOfDays.getText()
                 )
         );
-        mainController.calendarController.loadRentsCalendar();
+        mainController.returnController.loadRentsCalendar();
         reloadRentTableView();
     }
 
+    /**
+     * Aktualizacja wypożyczenia w strukturze danych
+     */
     @FXML
     private void updateRent() {
         int rentIndex = rentsTableView.getSelectionModel().getSelectedIndex();
@@ -372,11 +353,14 @@ public class RentController  {
                         numOfDays.getText()
                 )
         );
-        mainController.calendarController.loadRentsCalendar();
+        mainController.returnController.loadRentsCalendar();
         reloadRentTableView();
         rentsTableView.getSelectionModel().select(rentIndex);
     }
 
+    /**
+     * Metoda obsługująca wybór wypożyczenia z listy
+     */
     @FXML
     private void changeRentForm() {
         if(rentsTableView.getSelectionModel().getSelectedItem() != null) {
@@ -388,17 +372,20 @@ public class RentController  {
             numOfDays.setText(String.valueOf(ChronoUnit.DAYS.between(dateOfRent,rentsTableView.getSelectionModel().getSelectedItem().getValue().getDateOfReturn())));
             updateTable();
         }
-        //addRentButton.setDisable(false);
-        //addRentButton.setDisable(false);
     }
 
-
+    /**
+     * Czyszczenie pól wyszukiwania w formularzu wypożyczenia
+     */
     @FXML
     private void clearFindField() {
         findReaderField.clear();
         findBookField.clear();
     }
 
+    /**
+     * Czyszczenie pol formularza wypożyczenia
+     */
     @FXML
     private void clearRentForm(){
         Platform.runLater(()->{
@@ -412,6 +399,9 @@ public class RentController  {
         numOfDays.clear();
     }
 
+    /**
+     * Aktualizacja tabel z wyborem książki i czytelnika w formularzu wypożyczenia po wybraniu wypożyczenia z listy
+     */
     @FXML
     private void updateTable() {
             TreeItem<Rent> selectedRent = rentsTableView.getSelectionModel().getSelectedItem();
@@ -420,7 +410,6 @@ public class RentController  {
 
             clearFindField();
             Platform.runLater(()->  {
-                readersTableView.getPredicate();
                 readersTableView.getSelectionModel().clearAndSelect(rowReader);
                 booksTableView.getSelectionModel().clearAndSelect(rowBook);
                 booksTableView.scrollTo(rowBook - 1);
