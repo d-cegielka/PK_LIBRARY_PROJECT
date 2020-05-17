@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -21,6 +22,8 @@ public class App extends Application {
         stage.setMinWidth(1280);
         stage.setMinHeight(800);
         stage.setScene(scene);
+        stage.setTitle("Biblioteka");
+        stage.getIcons().add(new Image(String.valueOf(App.class.getResource("icon.png"))));
         stage.show();
     }
 
