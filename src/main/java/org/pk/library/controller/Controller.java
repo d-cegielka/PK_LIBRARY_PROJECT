@@ -10,17 +10,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * Kontroler
+ */
 public class Controller {
+    /**
+     * Klasa kontenerowa przechowująca strukturę danych biblioteki.
+     */
     Library library;
+    /**
+     * Klasa umożliwająca operacje na bazie danych.
+     */
     LibraryDB libraryDB;
+    /**
+     * Wzorzec walidacyjny ISBN.
+     */
     Pattern isbnPattern;
+    /**
+     * Wzorzec walidacyjny dla numeru telefonu.
+     */
     Pattern phoneNumberPattern;
+    /**
+     * Wzorzec walidacyjny dla adresu email.
+     */
     Pattern emailAddressPattern;
 
     /**
      * Konstruktor bezparametrowy kontrolera.
      * Tworzona jest struktura danych biblioteki.
-     * @throws SQLException wyjątek rzuacany przez kontroler bazy danych
+     * @throws SQLException wyjątek rzucany przez kontroler bazy danych
      */
     public Controller() throws SQLException {
         library = new Library();

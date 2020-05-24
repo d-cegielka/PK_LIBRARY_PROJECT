@@ -6,11 +6,26 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Library {
+    /**
+     * Lista książek.
+     */
     private final List<Book> books;
+    /**
+     * Lista czytelników.
+     */
     private final List<Reader> readers;
+    /**
+     * Lista wypożyczeń.
+     */
     private final List<Rent> rents;
+    /**
+     * Lista przypomnień.
+     */
     private final List<RentalReminder> rentalReminders;
 
+    /**
+     * Konstruktor bezparametrowy biblioteki.
+     */
     public Library() {
         books = new ArrayList<>();
         readers = new ArrayList<>();
@@ -18,6 +33,13 @@ public class Library {
         rentalReminders = new ArrayList<>();
     }
 
+    /**
+     * Konstruktor parametrowy biblioteki.
+     * @param books lista książek
+     * @param readers lista czytelników
+     * @param rents lista wypożyczeń
+     * @param rentalReminders lista przypomnień
+     */
     public Library(List<Book> books, List<Reader> readers, List<Rent> rents, List<RentalReminder> rentalReminders) {
         this.books = books;
         this.readers = readers;
@@ -83,8 +105,6 @@ public class Library {
     public List<RentalReminder> getRentalReminders() {
         return Collections.unmodifiableList(rentalReminders);
     }
-
-
 
     @Override
     public String toString() {

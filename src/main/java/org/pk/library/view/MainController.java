@@ -100,10 +100,10 @@ public class MainController {
         fadeTransition.setOnFinished((ActionEvent event) -> {
             if(changeStyleToggleButton.isSelected()) {
                 mainPane.getStylesheets().clear();
-                mainPane.getStylesheets().add(String.valueOf(getClass().getResource("light-theme.css")));
+                mainPane.getStylesheets().add(String.valueOf(getClass().getResource("styles/light-theme.css")));
             } else {
                 mainPane.getStylesheets().clear();
-                mainPane.getStylesheets().add(String.valueOf(getClass().getResource("dark-theme.css")));
+                mainPane.getStylesheets().add(String.valueOf(getClass().getResource("styles/dark-theme.css")));
             }
             FadeTransition fadeOut = new FadeTransition(Duration.millis(500),mainPane);
             fadeOut.setFromValue(0.05);
