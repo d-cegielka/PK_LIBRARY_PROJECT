@@ -5,6 +5,8 @@ module org.pk.library {
     requires com.jfoenix;
     requires org.controlsfx.controls;
     requires java.sql;
+    requires JCDP;
+    requires xstream;
 
     opens org.pk.library.view to javafx.fxml;
     exports org.pk.library.view;

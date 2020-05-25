@@ -1,5 +1,9 @@
 package org.pk.library.model;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,6 +29,40 @@ public class LibraryDB {
         String password = "WBbYzm0SJC";
         conn = DriverManager.getConnection(URL, user, password);
         return conn;
+    }
+
+    /**
+     * Metoda usuwa tabele (jeśli istnieją) i tworzy wymagane tabele w bazie danych.
+     * @throws SQLException wyjątek SQL
+     * @throws IOException wyjątek otwarcia pliku IO
+     */
+    public void dropAndCreateTables() throws SQLException, IOException {
+        if(conn.isClosed()) {
+            conn = this.connect();
+        }
+
+        File sqlFile = new File("CREATETABLES.sql");
+        String sql = new String(Files.readAllBytes(Paths.get(sqlFile.getPath())));
+        String[] queries = sql.replaceAll("\\r\\n|\\r|\\n", " ").split(";");
+        Statement st = conn.createStatement();
+        for(String query: queries){
+            st.execute(query);
+        }
+    }
+
+    /**
+     * Metoda sprawdzająca czy tabela istnieje w bazie danych.
+     * @param table nazwa tabeli
+     * @return wartość logiczna
+     * @throws SQLException wyjątek SQL
+     */
+    public boolean checkIfTableExists(String table) throws SQLException {
+        if(conn.isClosed()) {
+            conn = this.connect();
+        }
+
+        Statement st = conn.createStatement();
+        return st.executeUpdate("SHOW TABLES LIKE '" + table.toUpperCase() + "'") == 1;
     }
 
     /**
@@ -75,6 +113,7 @@ public class LibraryDB {
      * @return wartość logiczna
      * @throws SQLException wyjątek SQL
      */
+    @SuppressWarnings("SqlResolve")
     public boolean deleteFromTable(String table, String id) throws SQLException {
         String sqlDelete = "DELETE FROM " + table + " WHERE " + table.substring(0, table.length() - 1).toLowerCase() + "_id=?";
 

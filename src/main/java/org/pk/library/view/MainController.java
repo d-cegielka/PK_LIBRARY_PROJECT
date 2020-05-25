@@ -16,6 +16,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import org.pk.library.controller.Controller;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class MainController {
@@ -42,10 +43,10 @@ public class MainController {
     private void initialize() {
         try {
             libraryController = new Controller();
-        } catch (SQLException se) {
-            showInfoDialog("Inicjalizacja kontrolera biblioteki",se.getMessage());
+        } catch (SQLException | IOException se) {
+            //showInfoDialog("Inicjalizacja kontrolera biblioteki",se.getMessage());
+            System.out.println(se.getMessage());
         }
-
         bookController.injectMainController(this);
         readerController.injectMainController(this);
         rentController.injectMainController(this);

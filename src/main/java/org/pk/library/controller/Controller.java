@@ -2,6 +2,7 @@ package org.pk.library.controller;
 
 import org.pk.library.model.*;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -40,9 +41,12 @@ public class Controller {
      * Tworzona jest struktura danych biblioteki.
      * @throws SQLException wyjątek rzucany przez kontroler bazy danych
      */
-    public Controller() throws SQLException {
+    public Controller() throws SQLException, IOException {
         library = new Library();
         libraryDB = new LibraryDB();
+        if(!checkExistsRequiredTables()){
+            libraryDB.dropAndCreateTables();
+        }
         List<Book> books = new ArrayList<>(libraryDB.getBooksFromDB());
         List<Reader> readers = new ArrayList<>(libraryDB.getReadersFromDB());
         List<Rent> rents = new ArrayList<>(libraryDB.getRentsFromDB(books,readers));
@@ -468,6 +472,43 @@ public class Controller {
         } catch (SQLException se) {
             return se.getMessage();
         }
+    }
+
+    /**
+     * Eksport danych z struktury danych bibloteki(listy) do bazy danych.
+     * @return komunikat dla interfejsu użytkownika
+     */
+    public final String exportDataFromListsToDB(){
+        try {
+            libraryDB.dropAndCreateTables();
+            for(Book book : getBooks()) {
+                libraryDB.insertBook(book);
+            }
+            for(Reader reader : getReaders()) {
+                libraryDB.insertReader(reader);
+            }
+            for(Rent rent : getRents()) {
+                libraryDB.insertRent(rent);
+            }
+            for(RentalReminder rentalReminder : getRentalReminders()) {
+                libraryDB.insertReminder(rentalReminder);
+            }
+        }
+        catch (SQLException | IOException se) {
+            return se.getMessage();
+        }
+        return "Eksport danych do bazy danych zakończony pomyślnie.";
+    }
+
+    /**
+     * Metoda sprawdzająca czy w bazie danych istnieją wymagane tabele.
+     * @return wartość logiczna
+     */
+    public boolean checkExistsRequiredTables() throws SQLException {
+        return libraryDB.checkIfTableExists("books") &&
+                libraryDB.checkIfTableExists("readers") &&
+                libraryDB.checkIfTableExists("rents") &&
+                libraryDB.checkIfTableExists("rentalreminders");
     }
 
     /**
