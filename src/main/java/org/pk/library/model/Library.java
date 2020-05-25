@@ -47,6 +47,13 @@ public class Library {
         this.rentalReminders = rentalReminders;
     }
 
+    public Library(List<Book> books, List<Reader> readers, List<Rent> rents) {
+        this.books = books;
+        this.readers = readers;
+        this.rents = rents;
+        rentalReminders = new ArrayList<>();
+    }
+
     public boolean addBook(final Book book) {
         return books.add(book);
     }

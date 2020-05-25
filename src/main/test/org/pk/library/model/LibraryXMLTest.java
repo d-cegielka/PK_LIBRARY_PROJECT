@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LibraryXMLTest {
 
-    Library library;
+/*    Library library;
     LibraryXML libraryXML;
     Book book1, book2, book3;
     Reader reader1, reader2;
@@ -47,5 +47,5 @@ class LibraryXMLTest {
 
     @Test
     void readDataFromXML() {
-    }
+    }*/
 }
