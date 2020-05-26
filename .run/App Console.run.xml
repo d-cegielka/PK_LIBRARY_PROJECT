@@ -12,9 +12,6 @@
     </extension>
     <method v="2">
       <option name="Make" enabled="true" />
-      <option name="BuildArtifacts" enabled="true">
-        <artifact name="PK_LIBRARY-PROJECT:jar" />
-      </option>
     </method>
   </configuration>
 </component>
