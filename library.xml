@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/css" href="arkusz_stylow.css"?>
-<!--przykład komentarza; kodowanie moze byc inne, np. <?xml version="1.0" encoding="iso-8859-2"?>-->
 <library>
 	<books>
 		<book>
@@ -8,21 +6,21 @@
 			<title>Harry Potter</title>
 			<author>J.K Rowling</author>
 			<publisher>Bloomsbury Publishing</publisher>
-			<book_id>ffa57f42-b86f-41be-b2cb-01cf14225ea1</book_id>
+			<book_id>0f789467-92b9-4c58-80f0-856338ad8230</book_id>
 		</book>
 			<book>
 			<isbn>5244322</isbn>
 			<title>Masło przygodowe</title>
 			<author>Barbara Stenka</author>
 			<publisher>Helion</publisher>
-			<book_id>c9478120-e589-44ea-b097-8222b16727d4</book_id>
+			<book_id>0f571dd0-3d4c-4d93-9e03-2285c7036642</book_id>
 		</book>
 			<book>
 			<isbn>8865433</isbn>
 			<title>Pulpet i Prudencja</title>
 			<author>Joanna Olech</author>
 			<publisher>PWN</publisher>
-			<book_id>580b92c0-36e5-462c-bd0e-abce18be1da2</book_id>
+			<book_id>9086bd17-bb6e-4fcc-8f87-d0528d61c13f</book_id>
 		</book>
 	</books>
 	<readers>
@@ -32,7 +30,7 @@
 			<date_of_birth>1990-01-12</date_of_birth>
 			<phone_number>666777888</phone_number>
 			<email>jan.kowalski@gmail.com</email>
-			<reader_id>d76ca555-3620-4fbc-812e-d7638f4eaf06</reader_id>
+			<reader_id>7da9d877-3530-46e8-a2b9-f4731fff5726</reader_id>
 		</reader>
 			<reader>
 			<first_name>Adrian</first_name>
@@ -40,17 +38,24 @@
 			<date_of_birth>1994-04-21</date_of_birth>
 			<phone_number>667677888</phone_number>
 			<email>adrian.kowalski@gmail.com</email>
-			<reader_id>529b51b2-43aa-4cc5-ace8-c65c198f55aa</reader_id>
+			<reader_id>5101a69a-d32f-4ced-acb3-6b44c959bd99</reader_id>
 		</reader>
 	</readers>
 	<rents>
 		<rent>
-			<book_id>ffa57f42-b86f-41be-b2cb-01cf14225ea1</book_id>
-			<reader_id>d76ca555-3620-4fbc-812e-d7638f4eaf06</reader_id>
-			<date_of_rent>2020-05-25T22:12:53.855690100</date_of_rent>
-			<date_of_return>2020-05-10T02:30</date_of_return>
+			<book_id>0f789467-92b9-4c58-80f0-856338ad8230</book_id>
+			<reader_id>7da9d877-3530-46e8-a2b9-f4731fff5726</reader_id>
+			<date_of_rent>2020-05-26T00:00</date_of_rent>
+			<date_of_return>2020-05-10T02:30:01.000000001</date_of_return>
 			<returned>false</returned>
-			<rent_id>7117acb6-c960-4f18-9291-de73207cb977</rent_id>
+			<rent_id>7da9d877-3530-46e8-a2b9-f4731fff5726</rent_id>
 		</rent>
 	</rents>
+	<rentalReminders>
+		<rentalReminder>
+			<rent_id>7da9d877-3530-46e8-a2b9-f4731fff5726</rent_id>
+			<date_of_reminder>2020-05-08T02:30:01.000000001</date_of_reminder>
+			<rentalreminder_id>75daf846-c56b-4c8b-8073-074ee34d9004</rentalreminder_id>
+		</rentalReminder>
+	</rentalReminders>
 </library>

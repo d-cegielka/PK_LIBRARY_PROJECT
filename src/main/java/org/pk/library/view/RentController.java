@@ -30,7 +30,7 @@ public class RentController  {
     @FXML
     private JFXDatePicker dateOfRentDataPicker;
     @FXML
-    private JFXTextField findRentField;
+    JFXTextField findRentField;
     @FXML
     private JFXTreeTableView<Rent> rentsTableView;
     @FXML

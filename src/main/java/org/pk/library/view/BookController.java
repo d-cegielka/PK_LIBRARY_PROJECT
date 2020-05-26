@@ -17,7 +17,7 @@ public class BookController {
     @FXML
     private MainController mainController;
     @FXML
-    private JFXTextField findBookField;
+    JFXTextField findBookField;
     @FXML
     private JFXTextField bookTitleAddField;
     @FXML

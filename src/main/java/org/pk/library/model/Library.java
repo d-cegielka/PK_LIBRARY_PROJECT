@@ -47,13 +47,6 @@ public class Library {
         this.rentalReminders = rentalReminders;
     }
 
-    public Library(List<Book> books, List<Reader> readers, List<Rent> rents) {
-        this.books = books;
-        this.readers = readers;
-        this.rents = rents;
-        rentalReminders = new ArrayList<>();
-    }
-
     public boolean addBook(final Book book) {
         return books.add(book);
     }
@@ -111,6 +104,39 @@ public class Library {
 
     public List<RentalReminder> getRentalReminders() {
         return Collections.unmodifiableList(rentalReminders);
+    }
+
+    /**
+     * Wyszukuje obiekt książki w liście książek po ID książki
+     * @param books lista książek
+     * @param book_id ID wyszukiwanej książki
+     * @return obiekt typu Book z książką
+     */
+    public static Book findBookById(final List<Book> books, final String book_id)
+    {
+        return books.stream().filter(book -> book_id.equals(book.getBOOK_ID())).findAny().orElse(null);
+    }
+
+    /**
+     * Wyszukuje obiekt czytelnika w liście czytelników po ID czytelnika
+     * @param readers lista czytelników
+     * @param reader_id ID wyszukiwanego czytelnika
+     * @return obiekt typu Reader z czytelnikiem
+     */
+    public static Reader findReaderById(final List<Reader> readers, final String reader_id)
+    {
+        return readers.stream().filter(reader -> reader_id.equals(reader.getREADER_ID())).findAny().orElse(null);
+    }
+
+    /**
+     * Wyszukuje obiekt wypożyczenia w liście wypożyczeń po ID wypożyczenia
+     * @param rents lista wypożyczeń
+     * @param rent_id ID wyszukiwanego wypożyczenia
+     * @return obiekt typu Rent z wypożyczeniem
+     */
+    public static Rent findRentById(final List<Rent> rents, final String rent_id)
+    {
+        return rents.stream().filter(rent -> rent_id.equals(rent.getRENT_ID())).findAny().orElse(null);
     }
 
     @Override

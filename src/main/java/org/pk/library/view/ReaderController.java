@@ -18,7 +18,7 @@ import java.util.Optional;
 public class ReaderController {
     private MainController mainController;
     @FXML
-    private JFXTextField findReaderField;
+    JFXTextField findReaderField;
     @FXML
     private JFXTextField firstNameAddField;
     @FXML

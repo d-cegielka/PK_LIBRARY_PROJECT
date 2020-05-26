@@ -43,7 +43,7 @@ public class ReturnController {
     @FXML
     private MainController mainController;
     @FXML
-    private CalendarView returnCalendarView;
+    CalendarView returnCalendarView;
     @FXML
     private Calendar rentsCalendar;
     @FXML

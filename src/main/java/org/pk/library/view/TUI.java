@@ -36,9 +36,10 @@ public class TUI {
         try {
             libraryController = new Controller();
         } catch (SQLException | IOException se) {
-            System.out.println("Błąd SQL");
+            System.out.println("Blad SQL");
             System.out.println(se.getMessage());
         }
+        drawMainMenu();
     }
 
     private static class CLS {
@@ -56,7 +57,40 @@ public class TUI {
 
     private void drawMainMenu() {
         clearTerminal();
-        
+        drawMenu("Menu glowne", new String[]{"Ksiazki", "Czytelnicy", "Wypozyczenia", "Eksport do XML","Import z XML", "O programie", "Zamknij"});
+        Scanner scanner = new Scanner(System.in);
+        char choice = scanner.next().charAt(0);
+        switch (choice) {
+            case '1':
+                drawBooksMenu();
+                break;
+            case '2':
+                //drawReadersMenu();
+                break;
+            case '3':
+               // drawRentsMenu();
+                break;
+            case '4':
+                drawExportToXMLMenu();
+                break;
+            case '5':
+                drawImportFromXMLMenu();
+                break;
+            case '6':
+                drawAbout();
+                break;
+            case '7':
+                /*try {
+                    Serialization.write(dashboard);
+                } catch (IOException e) {
+                    redTextColor.println("\t" + e.getMessage());
+                }*/
+                System.exit(0);
+                break;
+            default:
+                redTextColor.println("\n\tZly wybor!");
+                waitForEnter(true);
+        }
     }
     
     private void drawMenu(String title, String[] options) {
@@ -79,9 +113,14 @@ public class TUI {
         yellowTextColor.print("\n\tEnter choice: ");
     }
 
-    private void drawExportMenu() {
+    private void drawBooksMenu(){
         clearTerminal();
-        drawMenu("Export Menu", new String[]{"XML", "SQL", "Go back"});
+
+    }
+
+    private void drawExportToXMLMenu() {
+        clearTerminal();
+        drawMenu("Eksport Menu", new String[]{"Eksportuj", "Cofnij"});
         Scanner scanner = new Scanner(System.in);
         char choice = scanner.next().charAt(0);
         switch (choice) {
@@ -107,22 +146,19 @@ public class TUI {
                 } catch (Exception e) {
                     redTextColor.println("\n\tExport failed!\n\t" + e.getMessage());
                     waitForEnter(false);
-                    drawExportMenu();
+                    //drawExportMenu();
                 }
-                break;
-            case '3':
-                drawMainMenu();
                 break;
             default:
                 redTextColor.println("\n\tWrong choice!");
                 waitForEnter(false);
-                drawExportMenu();
+                //drawExportMenu();
         }
     }
 
-    private void drawImportMenu() {
+    private void drawImportFromXMLMenu() {
         clearTerminal();
-        drawMenu("Import Menu", new String[]{"XML", "SQL", "Go back"});
+        drawMenu("Import Menu", new String[]{"Importuj", "Cofnij"});
         Scanner scanner = new Scanner(System.in);
         char choice = scanner.next().charAt(0);
         switch (choice) {
@@ -144,14 +180,62 @@ public class TUI {
                 greenTextColor.println("\n\tSuccesfully imported dashboard data from database!");
                 waitForEnter(true);
                 break;
-            case '3':
-                drawMainMenu();
-                break;
             default:
                 redTextColor.println("\n\tWrong choice!");
                 waitForEnter(false);
-                drawImportMenu();
+               // drawImportMenu();
         }
+    }
+
+    private void drawAbout() {
+        clearTerminal();
+        purpleTextColor.print("\n\n\t+----------------------------------------------------------------------------------------------------------+\n" +
+                "\t|                                                                                                          |\n" +
+                "\t|                                                                                                          |\n" +
+                "\t|         ");
+        yellowTextColor.print("/$$$$$$$                      /$$       /$$                                           /$$");
+        purpleTextColor.print("        |\n\t|        ");
+        yellowTextColor.print("| $$__  $$                    | $$      | $$                                          | $$");
+        purpleTextColor.print("        |\n\t|        ");
+        yellowTextColor.print("| $$  \\ $$  /$$$$$$   /$$$$$$$| $$$$$$$ | $$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$$");
+        purpleTextColor.print("        |\n\t|        ");
+        yellowTextColor.print("| $$  | $$ |____  $$ /$$_____/| $$__  $$| $$__  $$ /$$__  $$ |____  $$ /$$__  $$ /$$__  $$");
+        purpleTextColor.print("        |\n\t|        ");
+        yellowTextColor.print("| $$  | $$  /$$$$$$$|  $$$$$$ | $$  \\ $$| $$  \\ $$| $$  \\ $$  /$$$$$$$| $$  \\__/| $$  | $$");
+        purpleTextColor.print("        |\n\t|        ");
+        yellowTextColor.print("| $$  | $$ /$$__  $$ \\____  $$| $$  | $$| $$  | $$| $$  | $$ /$$__  $$| $$      | $$  | $$");
+        purpleTextColor.print("        |\n\t|        ");
+        yellowTextColor.print("| $$$$$$$/|  $$$$$$$ /$$$$$$$/| $$  | $$| $$$$$$$/|  $$$$$$/|  $$$$$$$| $$      |  $$$$$$$");
+        purpleTextColor.print("        |\n\t|        ");
+        yellowTextColor.print("|_______/  \\_______/|_______/ |__/  |__/|_______/  \\______/  \\_______/|__/       \\_______/");
+        purpleTextColor.print("        |\n\t|                                                                                                          |\n" +
+                "\t|                                                                                     ");
+        redTextColor.print("Version 1.0.0");
+        purpleTextColor.print("        |\n" +
+                "\t|                                                                                                          |\n" +
+                "\t|                                                                                                          |\n" +
+                "\t|                                                                                                          |\n" +
+                "\t|                                                                                                          |\n" +
+                "\t|                                                                                                          |\n" +
+                "\t|                                                                                      ");
+        blueTextColor.print("+---------------+");
+        purpleTextColor.print("   |\n\t|                                                                                      ");
+        cyanTextColor.print("|A|u|t|o|r|z|y|:|");
+        purpleTextColor.print("   |\n\t|                                                      ");
+        blueTextColor.print("+---------------------------------+ +-----------+");
+        purpleTextColor.print("   |\n\t|                                                      ");
+        cyanTextColor.print("|D|o|m|i|n|i|k| |C|e|g|i|e|l|k|a| |2|2|4|4|7|8|");
+        purpleTextColor.print("   |\n\t|                                                      ");
+        blueTextColor.print("+-----------------------------------------------+");
+        purpleTextColor.print("   |\n\t|                                                                  ");
+        cyanTextColor.print("|K|a|m|i|l| |Z|a|r|y|c|h| |2|2|4|5|4|6|");
+        purpleTextColor.print("   |\n\t|                                                                  ");
+        blueTextColor.print("+---------+ +---------+ +-----------+");
+        purpleTextColor.println("   |\n" +
+                "\t|                                                                                                          |\n" +
+                "\t+----------------------------------------------------------------------------------------------------------+");
+        System.out.println("\n");
+        waitForEnter(true);
     }
 
     private void waitForEnter(boolean goToMainMenu) {

@@ -60,9 +60,9 @@ public class LibraryDB {
         if(conn.isClosed()) {
             conn = this.connect();
         }
-
-        Statement st = conn.createStatement();
-        return st.executeUpdate("SHOW TABLES LIKE '" + table.toUpperCase() + "'") == 1;
+        DatabaseMetaData dbm = conn.getMetaData();
+        ResultSet tables = dbm.getTables(null,null,table.toUpperCase(),null);
+        return tables.next();
     }
 
     /**
@@ -310,8 +310,8 @@ public class LibraryDB {
         ResultSet rs = stmt.executeQuery("SELECT book, reader, date_of_rent, date_of_return, returned, rent_id FROM RENTS");
 
         while(rs.next()) {
-            Book book = findBookById(books, rs.getString("book"));
-            Reader reader = findReaderById(readers, rs.getString("reader"));
+            Book book = Library.findBookById(books, rs.getString("book"));
+            Reader reader = Library.findReaderById(readers, rs.getString("reader"));
             LocalDateTime date_of_rent = rs.getTimestamp("date_of_rent").toLocalDateTime();
             LocalDateTime date_of_return = rs.getTimestamp("date_of_return").toLocalDateTime();
             boolean returned = rs.getBoolean("returned");
@@ -336,7 +336,7 @@ public class LibraryDB {
         ResultSet rs = stmt.executeQuery("SELECT rent, date_of_reminder, rentalreminder_id FROM RENTALREMINDERS");
 
         while (rs.next()){
-            Rent rent = findRentById(rents,rs.getString("rent"));
+            Rent rent = Library.findRentById(rents,rs.getString("rent"));
             LocalDateTime date_of_reminder = rs.getTimestamp("date_of_reminder").toLocalDateTime();
             String reminder_id = rs.getString("rentalreminder_id");
             rentalReminders.add(new RentalReminder(rent, date_of_reminder, reminder_id));
@@ -345,39 +345,4 @@ public class LibraryDB {
 
         return rentalReminders;
     }
-
-    /**
-     * Wyszukuje obiekt książki w liście książek po ID książki
-     * @param books lista książek
-     * @param book_id ID wyszukiwanej książki
-     * @return obiekt typu Book z książką
-     */
-    private Book findBookById(final List<Book> books, final String book_id)
-    {
-        return books.stream().filter(book -> book_id.equals(book.getBOOK_ID())).findAny().orElse(null);
-    }
-
-    /**
-     * Wyszukuje obiekt czytelnika w liście czytelników po ID czytelnika
-     * @param readers lista czytelników
-     * @param reader_id ID wyszukiwanego czytelnika
-     * @return obiekt typu Reader z czytelnikiem
-     */
-    private Reader findReaderById(final List<Reader> readers, final String reader_id)
-    {
-        return readers.stream().filter(reader -> reader_id.equals(reader.getREADER_ID())).findAny().orElse(null);
-    }
-
-    /**
-     * Wyszukuje obiekt wypożyczenia w liście wypożyczeń po ID wypożyczenia
-     * @param rents lista wypożyczeń
-     * @param rent_id ID wyszukiwanego wypożyczenia
-     * @return obiekt typu Rent z wypożyczeniem
-     */
-    private Rent findRentById(final List<Rent> rents, final String rent_id)
-    {
-        return rents.stream().filter(rent -> rent_id.equals(rent.getRENT_ID())).findAny().orElse(null);
-    }
-
-
 }

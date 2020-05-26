@@ -10,6 +10,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TabPane;
 import javafx.scene.effect.BoxBlur;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
@@ -17,6 +20,7 @@ import javafx.util.Duration;
 import org.pk.library.controller.Controller;
 
 import java.io.IOException;
+import java.security.Key;
 import java.sql.SQLException;
 
 public class MainController {
@@ -51,6 +55,7 @@ public class MainController {
         readerController.injectMainController(this);
         rentController.injectMainController(this);
         returnController.injectMainController(this);
+        shortcutObserver();
     }
 
     /**
@@ -58,6 +63,7 @@ public class MainController {
      * @param header nagłówek informacji
      * @param message treść informacji
      */
+    @FXML
     void showInfoDialog(String header, String message){
         BoxBlur blur = new BoxBlur(4, 4, 4);
         JFXDialogLayout dialogLayout = new JFXDialogLayout();
@@ -70,12 +76,16 @@ public class MainController {
         button.setButtonType(com.jfoenix.controls.JFXButton.ButtonType.RAISED);
         dialogLayout.setActions(button);
         tabPane.setDisable(true);
+        changeStyleToggleButton.setDisable(true);
         dialog.show();
         dialog.setOnDialogClosed((JFXDialogEvent event1) -> {
             tabPane.setEffect(null);
+            changeStyleToggleButton.setEffect(null);
             tabPane.setDisable(false);
+            changeStyleToggleButton.setDisable(false);
         });
         tabPane.setEffect(blur);
+        changeStyleToggleButton.setEffect(blur);
     }
 
     /**
@@ -111,7 +121,27 @@ public class MainController {
             fadeOut.setToValue(1);
             fadeOut.play();
         });
-
+    }
+    @FXML
+    void shortcutObserver(){
+        mainPane.setOnKeyPressed(e -> {
+            if(new KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_ANY).match(e)){
+                switch (tabPane.getSelectionModel().getSelectedItem().getText()) {
+                    case "Książki":
+                        bookController.findBookField.requestFocus();
+                        break;
+                    case "Czytelnicy":
+                        readerController.findReaderField.requestFocus();
+                        break;
+                    case "Wypożyczenia":
+                        rentController.findRentField.requestFocus();
+                        break;
+                    case "Zwroty":
+                        returnController.returnCalendarView.getSearchField().requestFocus();
+                        break;
+                }
+            }
+        });
     }
 }
 
