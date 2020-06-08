@@ -40,13 +40,13 @@ public class Controller {
     /**
      * Konstruktor kontrolera.
      * Tworzona jest struktura danych biblioteki.
-     * @param connnectDB czy nawiązać połączenie z bazą danych
+     * @param connectDB czy nawiązać połączenie z bazą danych
      * @throws SQLException wyjątek rzucany przez kontroler bazy danych
      * @throws IOException wyjątek IO
      */
-    public Controller(boolean connnectDB) throws IOException, SQLException {
+    public Controller(boolean connectDB) throws IOException, SQLException {
         library = new Library();
-        if (connnectDB) {
+        if (connectDB) {
             libraryDB = new LibraryDB();
             if (!checkExistsRequiredTables()) {
                 libraryDB.dropAndCreateTables();
