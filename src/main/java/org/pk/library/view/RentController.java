@@ -19,6 +19,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * Kontroler GUI obsługujący żądania dotyczące wypożyczeń książek.
+ */
 public class RentController  {
     private MainController mainController;
     @FXML

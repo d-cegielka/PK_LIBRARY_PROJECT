@@ -71,18 +71,6 @@ class LibraryTest {
     }
 
     @Test
-    void sortTitle() {
-        library.sortTitle();
-        assertEquals(book1.getIsbn(), library.getBook(0).getIsbn());
-    }
-
-    @Test
-    void sortAuthor() {
-        library.sortAuthor();
-        assertEquals(book2, library.getBook(0));
-    }
-
-    @Test
     void removeBook() {
         assertEquals(3, library.getNumberOfBooks());
         library.removeBook(book1);

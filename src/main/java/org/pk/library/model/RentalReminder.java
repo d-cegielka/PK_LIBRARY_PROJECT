@@ -3,6 +3,9 @@ package org.pk.library.model;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Klasa reprezentująca przypomnienie o wypożyczeniu ksiązki.
+ */
 public class RentalReminder {
     private final Rent rent;
     private final LocalDateTime dateOfReminder;

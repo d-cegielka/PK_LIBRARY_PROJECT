@@ -5,6 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * Klasa reprezentująca ustawienia aplikacji.
+ */
 public class Settings {
     private static final Settings instance = new Settings();
     private final Properties appSettings;

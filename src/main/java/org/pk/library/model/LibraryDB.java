@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Klasa odpowiedzialna za komunikację z bazą danych.
+ */
 public class LibraryDB {
     private Connection conn;
     private final Settings settings;

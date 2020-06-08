@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>60560b2d-ce10-4924-a2de-a2aa6624f4e1.SCHEMA:srv31876_library</OriginalElement>
+  <nodes>
+    <node x="588.2663772124749" y="-7.0">60560b2d-ce10-4924-a2de-a2aa6624f4e1.TABLE:srv31876_library.READERS</node>
+    <node x="301.739993822838" y="205.10490953656432">60560b2d-ce10-4924-a2de-a2aa6624f4e1.TABLE:srv31876_library.RENTS</node>
+    <node x="526.700632376165" y="435.9666847543019">60560b2d-ce10-4924-a2de-a2aa6624f4e1.TABLE:srv31876_library.BOOKS</node>
+    <node x="-35.0" y="238.10490953656432">60560b2d-ce10-4924-a2de-a2aa6624f4e1.TABLE:srv31876_library.RENTALREMINDERS</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="60560b2d-ce10-4924-a2de-a2aa6624f4e1.TABLE:srv31876_library.RENTALREMINDERS" target="60560b2d-ce10-4924-a2de-a2aa6624f4e1.TABLE:srv31876_library.RENTS">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="60560b2d-ce10-4924-a2de-a2aa6624f4e1.TABLE:srv31876_library.RENTS" target="60560b2d-ce10-4924-a2de-a2aa6624f4e1.TABLE:srv31876_library.BOOKS">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="60560b2d-ce10-4924-a2de-a2aa6624f4e1.TABLE:srv31876_library.RENTS" target="60560b2d-ce10-4924-a2de-a2aa6624f4e1.TABLE:srv31876_library.READERS">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Balloon" zoom="1.0" x="172.5" y="291.5" />
+  <SelectedNodes>
+    <node>60560b2d-ce10-4924-a2de-a2aa6624f4e1.TABLE:srv31876_library.RENTALREMINDERS</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Key columns</Category>
+    <Category>Columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+

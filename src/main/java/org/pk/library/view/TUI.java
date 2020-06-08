@@ -8,7 +8,6 @@ import org.pk.library.model.Reader;
 import org.pk.library.model.Rent;
 import org.pk.library.model.RentalReminder;
 
-import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.SQLException;
@@ -17,6 +16,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Kontroler TUI.
+ */
 public class TUI {
     Controller libraryController;
     private final ColoredPrinter magentaTextColor = new ColoredPrinter.Builder(0, false)
@@ -51,6 +53,9 @@ public class TUI {
         drawMainMenu();
     }
 
+    /**
+     * Klasa wewnętrzna czyszcząca terminal użytkownika.
+     */
     private static class CLS {
         public static void main(String... arg) throws IOException, InterruptedException {
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -638,7 +643,6 @@ public class TUI {
             chooseOption();
         }
 
-        //return Boolean.parseBoolean(String.valueOf(choice));
         return choice == 1;
     }
 

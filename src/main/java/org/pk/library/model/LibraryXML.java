@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Klasa odpowiedzielna za reprezentację danych w formacie XML.
+ */
 public class LibraryXML {
     List<Book> books;
     List<Reader> readers;

@@ -5,7 +5,10 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Book extends RecursiveTreeObject<Book> implements Comparable<Book> {
+/**
+ * Klasa reprezentująca książkę.
+ */
+public class Book extends RecursiveTreeObject<Book> {
     private String isbn;
     private String title;
     private String author;
@@ -36,12 +39,6 @@ public class Book extends RecursiveTreeObject<Book> implements Comparable<Book> 
                 ", publisher='" + publisher + '\'' +
                 ", bookID='" + BOOK_ID + '\'' +
                 '}';
-    }
-
-    @Override
-    public int compareTo(Book o) {
-        int result = this.title.compareTo(o.title);
-        return Integer.compare(result, 0);
     }
 
     @Override

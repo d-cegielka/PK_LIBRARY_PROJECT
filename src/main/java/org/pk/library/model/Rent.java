@@ -6,6 +6,9 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Klasa reprezentująca wypożyczenie książki.
+ */
 public class Rent extends RecursiveTreeObject<Rent> {
     private final Book BOOK;
     private final Reader READER;

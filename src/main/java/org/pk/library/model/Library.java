@@ -2,9 +2,11 @@ package org.pk.library.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Klasa reprezentująca bibliotekę.
+ */
 public class Library {
     /**
      * Lista książek.
@@ -146,27 +148,5 @@ public class Library {
                 ", rents=" + rents +
                 ", rentalReminders=" + rentalReminders +
                 '}';
-    }
-
-    static class titleComparator implements Comparator<Book>{
-        @Override
-        public int compare(Book o1, Book o2) {
-            int result = o1.getTitle().toLowerCase().compareTo(o2.getTitle().toLowerCase());
-            return Integer.compare(result, 0);
-        }
-    }
-    public void sortTitle() {
-        books.sort(new titleComparator());
-    }
-
-    public void sortAuthor() {
-        books.sort((o1, o2) -> {
-            try {
-                int result = o1.getAuthor().compareTo(o2.getAuthor());
-                return Integer.compare(result, 0);
-            } catch(NullPointerException e) {
-                return 1;
-            }
-        });
     }
 }

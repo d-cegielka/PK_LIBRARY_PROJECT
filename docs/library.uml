@@ -8,23 +8,19 @@
     <node x="0.0" y="730.0">org.pk.library.model.Rent</node>
     <node x="452.0" y="730.0">org.pk.library.model.Reader</node>
     <node x="917.0" y="0.0">org.pk.library.model.LibraryDB</node>
-    <node x="972.0" y="1088.0">org.pk.library.view.App</node>
     <node x="830.0" y="730.0">org.pk.library.model.Book</node>
-    <node x="571.0" y="605.0">org.pk.library.model.Library.titleComparator</node>
-    <node x="0.0" y="0.0">org.pk.library.controller.Controller</node>
+    <node x="972.0" y="1088.0">org.pk.library.view.App</node>
     <node x="634.0" y="1088.0">org.pk.library.view.ReaderController</node>
+    <node x="0.0" y="0.0">org.pk.library.controller.Controller</node>
     <node x="317.0" y="1088.0">org.pk.library.view.BookController</node>
     <node x="1141.0" y="730.0">org.pk.library.view.MainController</node>
   </nodes>
   <notes />
-  <edges>
-    <edge source="org.pk.library.model.Library.titleComparator" target="org.pk.library.model.Library">
-      <point x="0.0" y="-26.5" />
-      <point x="0.0" y="277.5" />
-    </edge>
-  </edges>
-  <settings layout="Hierarchic Group" zoom="0.6005396430053964" x="943.006731408536" y="780.7911799267298" />
-  <SelectedNodes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="0.4936329588014981" x="687.5" y="657.5" />
+  <SelectedNodes>
+    <node>org.pk.library.model.Library</node>
+  </SelectedNodes>
   <Categories>
     <Category>Fields</Category>
     <Category>Constructors</Category>

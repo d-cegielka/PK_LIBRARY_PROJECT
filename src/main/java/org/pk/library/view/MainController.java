@@ -32,6 +32,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
 
+/**
+ * Główny kontroler GUI.
+ */
 public class MainController {
     Controller libraryController;
     Settings appSettings;

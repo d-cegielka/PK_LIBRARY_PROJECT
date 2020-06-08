@@ -20,12 +20,6 @@ class BookTest {
     }
 
     @Test
-    void compareTo() {
-        Book testBook1 = new Book("5869782","Kot w Butach", "Perrault Charles","Helion");
-        assertEquals(-1,testBook.compareTo(testBook1));
-    }
-
-    @Test
     void getIsbn() {
         assertEquals("5869782",testBook.getIsbn());
     }

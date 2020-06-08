@@ -21,6 +21,9 @@ import java.time.*;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Kontroler GUI obsługujący żądania dotyczące zwrotów książek.
+ */
 public class ReturnController {
     @FXML
     private JFXTimePicker timeOfReminderField;

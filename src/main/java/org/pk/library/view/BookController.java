@@ -12,6 +12,9 @@ import javafx.scene.control.TreeTableColumn;
 import org.pk.library.model.Book;
 import java.util.Optional;
 
+/**
+ * Kontroler GUI obsługujący żądania dotyczące książek.
+ */
 public class BookController {
     @FXML
     private MainController mainController;

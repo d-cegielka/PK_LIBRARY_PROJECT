@@ -15,6 +15,9 @@ import org.pk.library.model.Reader;
 import java.time.LocalDate;
 import java.util.Optional;
 
+/**
+ * Kontroler GUI obsługujący żądania dotyczące czytelników.
+ */
 public class ReaderController {
     private MainController mainController;
     @FXML

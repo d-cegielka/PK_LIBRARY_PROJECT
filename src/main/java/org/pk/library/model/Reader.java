@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Klasa reprezentująca czytelnika.
+ */
 public class Reader extends RecursiveTreeObject<Reader> {
     private String firstName;
     private String lastName;
