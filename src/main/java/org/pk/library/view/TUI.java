@@ -8,9 +8,12 @@ import org.pk.library.model.Reader;
 import org.pk.library.model.Rent;
 import org.pk.library.model.RentalReminder;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -34,8 +37,8 @@ public class TUI {
     private final ColoredPrinter redTextColor = new ColoredPrinter.Builder(0, false)
             .foreground(FColor.RED)
             .build();
-    private final ColoredPrinter blackTextColor = new ColoredPrinter.Builder(0, false)
-            .foreground(FColor.BLACK)
+    private final ColoredPrinter blueTextColor = new ColoredPrinter.Builder(0, false)
+            .foreground(FColor.BLUE)
             .build();
 
     public TUI() {
@@ -196,8 +199,6 @@ public class TUI {
 
             drawBooksMenu();
         }
-
-
     }
 
     private void drawListOfBooks() {
@@ -246,7 +247,6 @@ public class TUI {
 
     private void drawReadersMenu(){
         clearTerminal();
-
         drawMenu("Czytelnicy", new String[]{"Dodaj czytelnika", "Usun czytelnika","Wyswietl liste czytelnikow","Cofnij"});
         Scanner scanner = new Scanner(System.in);
         char choice = scanner.next().charAt(0);
@@ -359,12 +359,12 @@ public class TUI {
 
     private void drawRentsMenu(){
         clearTerminal();
-
         drawMenu("Wypozyczenia", new String[]{"Dodaj wypozyczenie","Wyswietl liste wypozyczen","Wyswietl liste przypomnien","Cofnij"});
         Scanner scanner = new Scanner(System.in);
         char choice = scanner.next().charAt(0);
         switch(choice) {
             case '1':
+                addRentBook();
                 break;
             case '2':
                 listOfRents();
@@ -383,6 +383,42 @@ public class TUI {
 
     }
 
+    private void addRentBook() {
+        Book rentBook;
+        Reader rentReader;
+        String numOfRentDay;
+        drawListOfBooks();
+        yellowTextColor.print("\n\tWybierz ksiazke (Lp.): ");
+        Scanner scanner = new Scanner(System.in);
+        short choice = scanner.nextShort();
+        if(choice > libraryController.getBooks().size() || choice <= 0) {
+            redTextColor.print("\n\tWybrales ksiazke spoza zakresu!");
+            addRentBook();
+        }
+        rentBook = libraryController.getBooks().get(choice - 1);
+        drawListOfReaders();
+        yellowTextColor.print("\n\tWybierz czytelnika (Lp.): ");
+        choice = scanner.nextShort();
+        if(choice > libraryController.getReaders().size() || choice <= 0) {
+            redTextColor.print("\n\tWybrales czytelnika spoza zakresu!");
+            addRentBook();
+        }
+        rentReader = libraryController.getReaders().get(choice - 1);
+        yellowTextColor.print("\n\tNa ile dni wypozyczana jest ksiazka: ");
+        numOfRentDay = scanner.next();
+        String info = libraryController.addRent(rentBook,rentReader,LocalDateTime.now(),numOfRentDay);
+        if(!info.equals("pomyślnie")){
+            redTextColor.print("\n\t"+info+"\n");
+            if(chooseOption())
+                addRentBook();
+            drawRentsMenu();
+        } else{
+            greenTextColor.print("\n\t"+info);
+            waitForEnter(false);
+            drawBooksMenu();
+        }
+    }
+
     private void listOfRents(){
         clearTerminal();
         List<Rent> rents = libraryController.getRents();
@@ -397,7 +433,11 @@ public class TUI {
             drawTableCell(i + 1, 9);
             drawTableCell(rents.get(i).getREADER().getFirstName(),20);
             drawTableCell(rents.get(i).getREADER().getLastName(),20);
-            drawTableCell(rents.get(i).getBOOK().getTitle(),20);
+            if(rents.get(i).getBOOK().getTitle().length() > 20){
+                drawTableCell(rents.get(i).getBOOK().getTitle().substring(0,16) + "...",20);
+            } else {
+                drawTableCell(rents.get(i).getBOOK().getTitle(),20);
+            }
             drawTableCell(rents.get(i).getDateOfRent(),20);
             drawTableCell(rents.get(i).getDateOfReturn(),20);
             drawTableCell(rents.get(i).isReturned(),15);
@@ -418,52 +458,27 @@ public class TUI {
             waitForEnter(false);
             listOfRents();
         }
-
-    }
-
-    private void drawRentalRemindersMenu(){
-        clearTerminal();
-
-        drawMenu("Przypomnienia", new String[]{"Dodaj przypomnienie","Wyswietl liste przypomnien","Cofnij"});
-        Scanner scanner = new Scanner(System.in);
-        char choice = scanner.next().charAt(0);
-        switch(choice) {
-            case '1':
-                break;
-            case '2':
-                listOfRents();
-                break;
-            case '3':
-                drawMainMenu();
-                break;
-            default:
-                redTextColor.println("\n\tZly wybor!");
-                waitForEnter(false);
-                drawRentsMenu();
-        }
-
     }
 
     private void listOfRentalReminders(){
         clearTerminal();
         List<RentalReminder> rentalReminders = libraryController.getRentalReminders();
-        magentaTextColor.print("\n\t" + "=".repeat(50));
+        magentaTextColor.print("\n\t" + "=".repeat(40));
         yellowTextColor.print(" Lista przypomnien ");
-        magentaTextColor.print("=".repeat(50) + "\n\t|" + " ".repeat(142) + "|" + "\n\t|");
-        //cyanTextColor.print("   ID               Imie os. wyp.               Nazwisko os. wyp.               Tytul ksiazki               Data przypomnienia              ");
-        cyanTextColor.print("    Lp." + " ".repeat(6) + "Imie os. wyp." + " ".repeat(7) + "Nazwisko os. wyp." + " ".repeat(3) + "Tytul ksiazki" + " ".repeat(7) + "Data wypozyczenia" + " ".repeat(3) + "Data zwrotu" + " ".repeat(9) + "Czy zwrocono" + " ".repeat(3));
+        magentaTextColor.print("=".repeat(40) + "\n\t|" + " ".repeat(97) + "|" + "\n\t|");
+        cyanTextColor.print("    Lp." + " ".repeat(6) + "Imie os. wyp." + " ".repeat(7) + "Nazwisko os. wyp." + " ".repeat(3) + "Tytul ksiazki" + " ".repeat(7) + "Data przypomnienia" + " ".repeat(6));
         magentaTextColor.println("|");
         for(int i=0;i<rentalReminders.size();i++) {
-            magentaTextColor.print("\t| ");
-            drawTableCell(i + 1, 4);
-            drawTableCell(rentalReminders.get(i).getRent().getREADER().getFirstName(),15);
-            drawTableCell(rentalReminders.get(i).getRent().getREADER().getLastName(),15);
-            drawTableCell(rentalReminders.get(i).getRent().getBOOK().getTitle(),15);
-            drawTableCell(rentalReminders.get(i).getDateOfReminder(),15);
-            magentaTextColor.print("   |\n");
+            magentaTextColor.print("\t|    ");
+            drawTableCell(i + 1, 9);
+            drawTableCell(rentalReminders.get(i).getRent().getREADER().getFirstName(),20);
+            drawTableCell(rentalReminders.get(i).getRent().getREADER().getLastName(),20);
+            drawTableCell(rentalReminders.get(i).getRent().getBOOK().getTitle(),20);
+            drawTableCell(rentalReminders.get(i).getDateOfReminder(),20);
+            magentaTextColor.print("    |\n");
         }
-        magentaTextColor.println("\t|" + " ".repeat(142) + "|");
-        magentaTextColor.println("\t" + "=".repeat(100));
+        magentaTextColor.println("\t|" + " ".repeat(97) + "|");
+        magentaTextColor.println("\t" + "=".repeat(99));
         yellowTextColor.println("\n\tOpcje:");
         cyanTextColor.print("\t  1) ");
         whiteTextColor.println("Cofnij \n");
@@ -471,7 +486,7 @@ public class TUI {
         Scanner scanner = new Scanner(System.in);
         short choice = scanner.nextShort();
         if(choice == 1)
-            drawRentalRemindersMenu();
+            drawRentsMenu();
         else {
             redTextColor.println("\n\tZly wybor!");
             waitForEnter(false);
@@ -486,35 +501,24 @@ public class TUI {
         Scanner scanner = new Scanner(System.in);
         char choice = scanner.next().charAt(0);
         switch (choice) {
-            /*case '1':
-                yellowTextColor.println("\n\tEnter file path: ");
-                try {
-                    System.out.print("\t");
-                    dashboard.writeToXml(scanner.next());
-                    greenTextColor.println("\n\tSuccesfully exported to XML file!");
-                    waitForEnter(true);
-                } catch (IOException | XMLStreamException e) {
-                    redTextColor.println("\n\tExport failed!\n\t" + e.getMessage());
-                    waitForEnter(false);
-                    drawExportMenu();
+            case '1':
+                yellowTextColor.print("\n\tPodaj nazwe pliku XML do zapisu: ");
+                String message = libraryController.exportDataToXML(Paths.get(scanner.next()).toAbsolutePath().toString());
+                if(message.contains("pomyślnie")){
+                    greenTextColor.println("\n\t" + message);
+                } else {
+                    redTextColor.println("\n\t"+ message);
                 }
-                break;*/
+                waitForEnter(true);
+                drawMainMenu();
+                break;
             case '2':
-                try {
-                    //dashboard.writeToDB();
-
-                    greenTextColor.println("\n\tSuccesfully exported to database!");
-                    waitForEnter(true);
-                } catch (Exception e) {
-                    redTextColor.println("\n\tExport failed!\n\t" + e.getMessage());
-                    waitForEnter(false);
-                    //drawExportMenu();
-                }
+                drawMainMenu();
                 break;
             default:
-                redTextColor.println("\n\tWrong choice!");
+                redTextColor.println("\n\tZly wybor!");
                 waitForEnter(false);
-                //drawExportMenu();
+                drawExportToXMLMenu();
         }
     }
 
@@ -524,28 +528,24 @@ public class TUI {
         Scanner scanner = new Scanner(System.in);
         char choice = scanner.next().charAt(0);
         switch (choice) {
-            /*case '1':
-                yellowTextColor.println("\n\tEnter file path: ");
-                try {
-                    System.out.print("\t");
-                    dashboard.readFromXml(scanner.next());
-                    greenTextColor.println("\n\tSuccesfully imported dashboard data from XML file!");
-                    waitForEnter(true);
-                } catch (IOException | XMLStreamException e) {
-                    redTextColor.println("\n\tImport failed!\n\t" + e.getMessage());
-                    waitForEnter(false);
-                    drawImportMenu();
+            case '1':
+                yellowTextColor.print("\n\tPodaj nazwe pliku XML do zaimportowania: ");
+                String message = libraryController.importDataFromXML(Paths.get(scanner.next()).toAbsolutePath().toString());
+                if(message.contains("pomyślnie")){
+                    greenTextColor.println("\n\t" + message);
+                } else {
+                    redTextColor.println("\n\t"+ message);
                 }
-                break;*/
-            case '2':
-                //dashboard.updateDashboard(chooseDBRecord());
-                greenTextColor.println("\n\tSuccesfully imported dashboard data from database!");
                 waitForEnter(true);
+                drawMainMenu();
+                break;
+            case '2':
+                drawMainMenu();
                 break;
             default:
-                redTextColor.println("\n\tWrong choice!");
+                redTextColor.println("\n\tZly wybor!");
                 waitForEnter(false);
-               // drawImportMenu();
+                drawImportFromXMLMenu();
         }
     }
 
@@ -555,49 +555,50 @@ public class TUI {
                 "\t|                                                                                                          |\n" +
                 "\t|                                                                                                          |\n" +
                 "\t|         ");
-        yellowTextColor.print("/$$$$$$$                      /$$       /$$                                           /$$");
+        yellowTextColor.print("    $$$$$$$\\  $$\\ $$\\       $$\\ $$\\            $$\\               $$\\                     ");
         magentaTextColor.print("        |\n\t|        ");
-        yellowTextColor.print("| $$__  $$                    | $$      | $$                                          | $$");
+        yellowTextColor.print("     $$  __$$\\ \\__|$$ |      $$ |\\__|           $$ |              $$ |                    ");
         magentaTextColor.print("        |\n\t|        ");
-        yellowTextColor.print("| $$  \\ $$  /$$$$$$   /$$$$$$$| $$$$$$$ | $$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$$");
+        yellowTextColor.print("     $$ |  $$ |$$\\ $$$$$$$\\  $$ |$$\\  $$$$$$\\ $$$$$$\\    $$$$$$\\  $$ |  $$\\ $$$$$$\\       ");
         magentaTextColor.print("        |\n\t|        ");
-        yellowTextColor.print("| $$  | $$ |____  $$ /$$_____/| $$__  $$| $$__  $$ /$$__  $$ |____  $$ /$$__  $$ /$$__  $$");
+        yellowTextColor.print("     $$$$$$$\\ |$$ |$$  __$$\\ $$ |$$ |$$  __$$\\\\_$$  _|  $$  __$$\\ $$ | $$  |\\____$$\\      ");
         magentaTextColor.print("        |\n\t|        ");
-        yellowTextColor.print("| $$  | $$  /$$$$$$$|  $$$$$$ | $$  \\ $$| $$  \\ $$| $$  \\ $$  /$$$$$$$| $$  \\__/| $$  | $$");
+        yellowTextColor.print("     $$  __$$\\ $$ |$$ |  $$ |$$ |$$ |$$ /  $$ | $$ |    $$$$$$$$ |$$$$$$  / $$$$$$$ |     ");
         magentaTextColor.print("        |\n\t|        ");
-        yellowTextColor.print("| $$  | $$ /$$__  $$ \\____  $$| $$  | $$| $$  | $$| $$  | $$ /$$__  $$| $$      | $$  | $$");
+        yellowTextColor.print("     $$ |  $$ |$$ |$$ |  $$ |$$ |$$ |$$ |  $$ | $$ |$$\\ $$   ____|$$  _$$< $$  __$$ |     ");
         magentaTextColor.print("        |\n\t|        ");
-        yellowTextColor.print("| $$$$$$$/|  $$$$$$$ /$$$$$$$/| $$  | $$| $$$$$$$/|  $$$$$$/|  $$$$$$$| $$      |  $$$$$$$");
+        yellowTextColor.print("     $$$$$$$  |$$ |$$$$$$$  |$$ |$$ |\\$$$$$$  | \\$$$$  |\\$$$$$$$\\ $$ | \\$$\\\\$$$$$$$ |     ");
         magentaTextColor.print("        |\n\t|        ");
-        yellowTextColor.print("|_______/  \\_______/|_______/ |__/  |__/|_______/  \\______/  \\_______/|__/       \\_______/");
+        yellowTextColor.print("     \\_______/ \\__|\\_______/ \\__|\\__| \\______/   \\____/  \\_______|\\__|  \\__|\\_______|     ");
         magentaTextColor.print("        |\n\t|                                                                                                          |\n" +
-                "\t|                                                                                     ");
-        redTextColor.print("Version 1.0.0");
-        magentaTextColor.print("        |\n" +
+                "\t|                                                                                ");
+        blueTextColor.print("Wersja 1.0");
+        magentaTextColor.print("                |\n" +
+               /* "\t|                                                                                                          |\n" +
+                "\t|                                                                                                          |\n" +
+                "\t|                                                                                                          |\n" +*/
                 "\t|                                                                                                          |\n" +
                 "\t|                                                                                                          |\n" +
-                "\t|                                                                                                          |\n" +
-                "\t|                                                                                                          |\n" +
-                "\t|                                                                                                          |\n" +
-                "\t|                                                                                      ");
-        cyanTextColor.print("*---------------*");
-        magentaTextColor.print("   |\n\t|                                                                                      ");
-        whiteTextColor.print("|A|u|t|o|r|z|y|:|");
-        magentaTextColor.print("   |\n\t|                                                      ");
-        cyanTextColor.print("*-------------------------------* *-----------*");
-        magentaTextColor.print("   |\n\t|                                                        ");
-        whiteTextColor.print("|D|o|m|i|n|i|k| |C|e|g|i|e|l|k|a| |2|2|4|4|7|8|");
-        magentaTextColor.print("     |\n\t|                                                      ");
-        cyanTextColor.print("+-----------------------------------------------+");
-        magentaTextColor.print("   |\n\t|                                                                ");
-        whiteTextColor.print("|K|a|m|i|l| |Z|a|r|y|c|h| |2|2|4|5|4|6|");
-        magentaTextColor.print(" |\n\t|                                                                  ");
-        cyanTextColor.print("+---------+ +---------+ +-----------+");
+                "\t|                                                                      ");
+        cyanTextColor.print("*-------------------------------*");
+        magentaTextColor.print("   |\n\t|                                                                                              ");
+        whiteTextColor.print("Autorzy: ");
+        magentaTextColor.print("   |\n\t|                                                                      ");
+        cyanTextColor.print("+-------------------------------+");
+        magentaTextColor.print("   |\n\t|                                                                      ");
+        whiteTextColor.print("  Dominik Cegielka     |224478|");
+        magentaTextColor.print("     |\n\t|                                                                      ");
+        cyanTextColor.print("+-------------------------------+");
+        magentaTextColor.print("   |\n\t|                                                                      ");
+        whiteTextColor.print("    Kamil Zarych       |224546|");
+        magentaTextColor.print("     |\n\t|                                                                      ");
+        cyanTextColor.print("*-------------------------------*");
         magentaTextColor.println("   |\n" +
                 "\t|                                                                                                          |\n" +
                 "\t+----------------------------------------------------------------------------------------------------------+");
         System.out.println("\n");
         waitForEnter(true);
+        drawMainMenu();
     }
 
     private void waitForEnter(boolean goToMainMenu) {

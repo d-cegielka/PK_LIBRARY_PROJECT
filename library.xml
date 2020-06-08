@@ -2,6 +2,13 @@
 <library>
 	<books>
 		<book>
+			<isbn>5244322</isbn>
+			<title>Masło przygodowe</title>
+			<author>Barbara Stenka</author>
+			<publisher>Helion</publisher>
+			<book_id>0f571dd0-3d4c-4d93-9e03-2285c7036642</book_id>
+		</book>
+			<book>
 			<isbn>5869782</isbn>
 			<title>Harry Potter</title>
 			<author>J.K Rowling</author>
@@ -9,11 +16,60 @@
 			<book_id>0f789467-92b9-4c58-80f0-856338ad8230</book_id>
 		</book>
 			<book>
-			<isbn>5244322</isbn>
-			<title>Masło przygodowe</title>
-			<author>Barbara Stenka</author>
-			<publisher>Helion</publisher>
-			<book_id>0f571dd0-3d4c-4d93-9e03-2285c7036642</book_id>
+			<isbn>885-02-86752-86-1</isbn>
+			<title>Tristram Shandy</title>
+			<author>Ray Bradbury</author>
+			<publisher>DynCorp</publisher>
+			<book_id>20c85d48-dd48-4c25-8b03-b3d5af722741</book_id>
+		</book>
+			<book>
+			<isbn>505-48-34715-51-0</isbn>
+			<title>The Magic Mountain</title>
+			<author>Stephen King</author>
+			<publisher>CarMax</publisher>
+			<book_id>2c4f04d1-ceb6-4628-8bf1-c56b8da2df11</book_id>
+		</book>
+			<book>
+			<isbn>060-00-05653-21-7</isbn>
+			<title>The Scarlet Letter</title>
+			<author>Danielle Steel</author>
+			<publisher>Comcast</publisher>
+			<book_id>33e85c59-b84e-4582-a6ed-9257f90f9069</book_id>
+		</book>
+			<book>
+			<isbn>658-74-40852-32-3</isbn>
+			<title>One Hundred Years of Solitude</title>
+			<author>Stephen King</author>
+			<publisher>Areon Impex</publisher>
+			<book_id>3c17461b-72ad-412e-82f6-ab04b713775d</book_id>
+		</book>
+			<book>
+			<isbn>556-11-23564-07-1</isbn>
+			<title>The Grapes of Wrath</title>
+			<author>Doris Lessing</author>
+			<publisher>DynCorp</publisher>
+			<book_id>48e01c3c-f312-40e0-9f87-4f0989147ff4</book_id>
+		</book>
+			<book>
+			<isbn>205-30-66583-40-2</isbn>
+			<title>Gargantua and Pantagruel</title>
+			<author>Leo Tolstoy</author>
+			<publisher>Biolife Grup</publisher>
+			<book_id>4d3c5caf-7237-47b3-9141-c6403dfebafd</book_id>
+		</book>
+			<book>
+			<isbn>553-48-62104-17-8</isbn>
+			<title>Moby Dick</title>
+			<author>Paulo Coelo</author>
+			<publisher>Coca-Cola Company</publisher>
+			<book_id>531e9042-1d22-4e72-86fc-2cff1cc9ef6a</book_id>
+		</book>
+			<book>
+			<isbn>602-48-40055-62-8</isbn>
+			<title>The Good Soldier</title>
+			<author>William Faulkner</author>
+			<publisher>Telekom</publisher>
+			<book_id>6fa43340-4bef-4ddd-95ff-bc502033cf09</book_id>
 		</book>
 			<book>
 			<isbn>8865433</isbn>
@@ -22,15 +78,111 @@
 			<publisher>PWN</publisher>
 			<book_id>9086bd17-bb6e-4fcc-8f87-d0528d61c13f</book_id>
 		</book>
+			<book>
+			<isbn>246-01-67101-37-1</isbn>
+			<title>Invisible Man</title>
+			<author>Harper Lee</author>
+			<publisher>Team Guard SRL</publisher>
+			<book_id>9ee216df-b7fb-403b-aee6-1c3b065ffe9d</book_id>
+		</book>
+			<book>
+			<isbn>522-52-31102-85-0</isbn>
+			<title>The Flowers of Evil</title>
+			<author>J. R. R. Tolkien</author>
+			<publisher>Carrefour</publisher>
+			<book_id>ac22b306-9343-4d6b-9119-49c18755822c</book_id>
+		</book>
+			<book>
+			<isbn>852-23-64206-88-2</isbn>
+			<title>Anna Karenina</title>
+			<author>Jane Austen</author>
+			<publisher>Facebook</publisher>
+			<book_id>b0ee08d5-2d44-4514-bc24-465aa8020af4</book_id>
+		</book>
+			<book>
+			<isbn>777-82-80644-58-5</isbn>
+			<title>The Sun Also Rises</title>
+			<author>Horatio Alger</author>
+			<publisher>Comodo</publisher>
+			<book_id>bbc3c2e8-6637-4d09-b1b2-9ac2cabbe709</book_id>
+		</book>
+			<book>
+			<isbn>274-88-00452-67-8</isbn>
+			<title>Moby Dick</title>
+			<author>Ralph Waldo Emerson</author>
+			<publisher>ENEL</publisher>
+			<book_id>bc84d9b8-a53f-4da0-9da8-a40acbba247b</book_id>
+		</book>
+			<book>
+			<isbn>332-62-87542-84-6</isbn>
+			<title>Great Expectations</title>
+			<author>F. Scott Fitzgerald</author>
+			<publisher>ENEL</publisher>
+			<book_id>e4042e16-6c31-4022-9bda-aae78f48c7ba</book_id>
+		</book>
+			<book>
+			<isbn>318-01-32555-67-3</isbn>
+			<title>The Flowers of Evil</title>
+			<author>Agatha Christie</author>
+			<publisher>ExxonMobil</publisher>
+			<book_id>ea5bd230-b540-4420-a2f9-96078be8a7e4</book_id>
+		</book>
+			<book>
+			<isbn>303-78-46182-57-4</isbn>
+			<title>Gargantua and Pantagruel</title>
+			<author>Rachel Hollis</author>
+			<publisher>AECOM</publisher>
+			<book_id>ecc7dd2d-1bef-4f4f-a9f4-a189b31a967c</book_id>
+		</book>
 	</books>
 	<readers>
 		<reader>
-			<first_name>Jan</first_name>
-			<last_name>Kowalski</last_name>
-			<date_of_birth>1990-01-12</date_of_birth>
-			<phone_number>666777888</phone_number>
-			<email>jan.kowalski@gmail.com</email>
-			<reader_id>7da9d877-3530-46e8-a2b9-f4731fff5726</reader_id>
+			<first_name>Ricki</first_name>
+			<last_name>Gonet</last_name>
+			<date_of_birth>1986-05-16</date_of_birth>
+			<phone_number>425252528</phone_number>
+			<email>rgonetrq@samsung.com</email>
+			<reader_id>03ed074d-ea0b-4389-bee4-fb749651c613</reader_id>
+		</reader>
+			<reader>
+			<first_name>Clarita</first_name>
+			<last_name>Peasegod</last_name>
+			<date_of_birth>1952-10-22</date_of_birth>
+			<phone_number>96586848</phone_number>
+			<email>cpeasegodrn@e-recht24.de</email>
+			<reader_id>1f7113fa-0656-4298-b5a2-112348a2d3e4</reader_id>
+		</reader>
+			<reader>
+			<first_name>Catharina</first_name>
+			<last_name>Leveritt</last_name>
+			<date_of_birth>1958-04-16</date_of_birth>
+			<phone_number>2525248</phone_number>
+			<email>cleverittrk@cbslocal.com</email>
+			<reader_id>24f31d2c-bfb8-4b56-b8bf-b86e84f4dd87</reader_id>
+		</reader>
+			<reader>
+			<first_name>Theobald</first_name>
+			<last_name>Blazevic</last_name>
+			<date_of_birth>1983-06-06</date_of_birth>
+			<phone_number>46358</phone_number>
+			<email>tblazevicrd@nasa.gov</email>
+			<reader_id>3e343110-dc23-4bd0-804c-63cf54455395</reader_id>
+		</reader>
+			<reader>
+			<first_name>Neala</first_name>
+			<last_name>Hurdiss</last_name>
+			<date_of_birth>1985-07-05</date_of_birth>
+			<phone_number>489876589</phone_number>
+			<email>nhurdissrb@angelfire.com</email>
+			<reader_id>46fa4a95-23e8-414c-91a5-ff6dbf0dfae4</reader_id>
+		</reader>
+			<reader>
+			<first_name>Nikolas</first_name>
+			<last_name>McEllen</last_name>
+			<date_of_birth>1959-12-04</date_of_birth>
+			<phone_number>48686868</phone_number>
+			<email>nmcellenro@ow.ly</email>
+			<reader_id>4dd6a9db-563d-471c-8475-f2a92a1300dd</reader_id>
 		</reader>
 			<reader>
 			<first_name>Adrian</first_name>
@@ -40,21 +192,165 @@
 			<email>adrian.kowalski@gmail.com</email>
 			<reader_id>5101a69a-d32f-4ced-acb3-6b44c959bd99</reader_id>
 		</reader>
+			<reader>
+			<first_name>Loydie</first_name>
+			<last_name>Cremins</last_name>
+			<date_of_birth>1985-12-05</date_of_birth>
+			<phone_number>2525248</phone_number>
+			<email>lcreminsrl@cargocollective.com</email>
+			<reader_id>5512625b-7c86-4b45-9885-51af7262ae13</reader_id>
+		</reader>
+			<reader>
+			<first_name>Gun</first_name>
+			<last_name>Decourt</last_name>
+			<date_of_birth>1955-01-07</date_of_birth>
+			<phone_number>48848456</phone_number>
+			<email>gdecourtrc@sina.com.cn</email>
+			<reader_id>6b8552b7-3f47-4854-8a89-266c4283ae29</reader_id>
+		</reader>
+			<reader>
+			<first_name>Jan</first_name>
+			<last_name>Kowalski</last_name>
+			<date_of_birth>1990-01-12</date_of_birth>
+			<phone_number>666777888</phone_number>
+			<email>jan.kowalski@gmail.com</email>
+			<reader_id>7da9d877-3530-46e8-a2b9-f4731fff5726</reader_id>
+		</reader>
+			<reader>
+			<first_name>Ring</first_name>
+			<last_name>Eaken</last_name>
+			<date_of_birth>1962-08-31</date_of_birth>
+			<phone_number>4252528</phone_number>
+			<email>reakenri@springer.com</email>
+			<reader_id>9c77757a-87f8-481c-af0f-acf9d9baf1de</reader_id>
+		</reader>
+			<reader>
+			<first_name>Sandor</first_name>
+			<last_name>Tattershaw</last_name>
+			<date_of_birth>1969-05-09</date_of_birth>
+			<phone_number>5255248</phone_number>
+			<email>stattershawrm@zdnet.com</email>
+			<reader_id>bc7656b6-0a13-415d-ab6b-3419e6ad8132</reader_id>
+		</reader>
+			<reader>
+			<first_name>Darb</first_name>
+			<last_name>Shorto</last_name>
+			<date_of_birth>1984-09-17</date_of_birth>
+			<phone_number>425258</phone_number>
+			<email>dshortore@vimeo.com</email>
+			<reader_id>cbabf867-c253-43dc-b714-685b6582b216</reader_id>
+		</reader>
+			<reader>
+			<first_name>Hildegaard</first_name>
+			<last_name>Coupar</last_name>
+			<date_of_birth>1960-09-22</date_of_birth>
+			<phone_number>252525248</phone_number>
+			<email>hcouparrr@google.com.br</email>
+			<reader_id>dabd4db9-7d40-4ddd-b368-075694b94a9a</reader_id>
+		</reader>
+			<reader>
+			<first_name>Beatrix</first_name>
+			<last_name>Sorro</last_name>
+			<date_of_birth>1986-04-22</date_of_birth>
+			<phone_number>412528</phone_number>
+			<email>bsorrorf@upenn.edu</email>
+			<reader_id>dac818a3-a651-4e10-89d4-f5342f520739</reader_id>
+		</reader>
+			<reader>
+			<first_name>Tamra</first_name>
+			<last_name>Chatenet</last_name>
+			<date_of_birth>1978-07-29</date_of_birth>
+			<phone_number>252548</phone_number>
+			<email>tchatenetrh@buzzfeed.com</email>
+			<reader_id>e5a758ff-7c8e-4583-9f64-71eafb4f449e</reader_id>
+		</reader>
+			<reader>
+			<first_name>Godiva</first_name>
+			<last_name>Flaunier</last_name>
+			<date_of_birth>1977-10-14</date_of_birth>
+			<phone_number>425228</phone_number>
+			<email>gflaunierrg@miitbeian.gov.cn</email>
+			<reader_id>e65238ab-9384-4b0b-b2fd-c1b39c17969e</reader_id>
+		</reader>
+			<reader>
+			<first_name>Ky</first_name>
+			<last_name>Dumingo</last_name>
+			<date_of_birth>1978-02-16</date_of_birth>
+			<phone_number>4282528</phone_number>
+			<email>kdumingorj@typepad.com</email>
+			<reader_id>ec281180-a19d-4a5b-8122-39ba752157ff</reader_id>
+		</reader>
+			<reader>
+			<first_name>Fee</first_name>
+			<last_name>Shakspeare</last_name>
+			<date_of_birth>1960-08-26</date_of_birth>
+			<phone_number>885248</phone_number>
+			<email>fshakspearerp@alibaba.com</email>
+			<reader_id>ff5c49e1-a99b-4865-b8e8-77ccff5bd7a6</reader_id>
+		</reader>
 	</readers>
 	<rents>
 		<rent>
+			<book_id>33e85c59-b84e-4582-a6ed-9257f90f9069</book_id>
+			<reader_id>ec281180-a19d-4a5b-8122-39ba752157ff</reader_id>
+			<date_of_rent>2020-06-07T17:40</date_of_rent>
+			<date_of_return>2020-06-26T17:40</date_of_return>
+			<returned>false</returned>
+			<rent_id>07ad5432-5751-4122-9de0-069a3cbd1305</rent_id>
+		</rent>
+			<rent>
 			<book_id>0f789467-92b9-4c58-80f0-856338ad8230</book_id>
 			<reader_id>7da9d877-3530-46e8-a2b9-f4731fff5726</reader_id>
-			<date_of_rent>2020-05-26T00:00</date_of_rent>
-			<date_of_return>2020-05-10T02:30:01.000000001</date_of_return>
+			<date_of_rent>2020-06-07T00:00</date_of_rent>
+			<date_of_return>2020-05-10T02:30:01</date_of_return>
 			<returned>false</returned>
 			<rent_id>7da9d877-3530-46e8-a2b9-f4731fff5726</rent_id>
+		</rent>
+			<rent>
+			<book_id>ac22b306-9343-4d6b-9119-49c18755822c</book_id>
+			<reader_id>7da9d877-3530-46e8-a2b9-f4731fff5726</reader_id>
+			<date_of_rent>2020-06-07T17:40</date_of_rent>
+			<date_of_return>2020-06-19T17:40</date_of_return>
+			<returned>false</returned>
+			<rent_id>8442e05e-cdc6-47a3-b81d-da9214136f52</rent_id>
+		</rent>
+			<rent>
+			<book_id>3c17461b-72ad-412e-82f6-ab04b713775d</book_id>
+			<reader_id>cbabf867-c253-43dc-b714-685b6582b216</reader_id>
+			<date_of_rent>2020-06-07T18:40</date_of_rent>
+			<date_of_return>2020-06-22T18:40</date_of_return>
+			<returned>false</returned>
+			<rent_id>9b235122-7096-4269-8513-17fa717699a1</rent_id>
+		</rent>
+			<rent>
+			<book_id>e4042e16-6c31-4022-9bda-aae78f48c7ba</book_id>
+			<reader_id>dac818a3-a651-4e10-89d4-f5342f520739</reader_id>
+			<date_of_rent>2020-06-07T17:40</date_of_rent>
+			<date_of_return>2020-06-28T17:40</date_of_return>
+			<returned>false</returned>
+			<rent_id>b657336a-1891-4299-8a11-6bf0d411c306</rent_id>
+		</rent>
+			<rent>
+			<book_id>2c4f04d1-ceb6-4628-8bf1-c56b8da2df11</book_id>
+			<reader_id>ec281180-a19d-4a5b-8122-39ba752157ff</reader_id>
+			<date_of_rent>2020-06-07T17:40</date_of_rent>
+			<date_of_return>2020-06-28T17:40</date_of_return>
+			<returned>false</returned>
+			<rent_id>e1b94734-ff64-40df-b55f-85205fdc45ff</rent_id>
+		</rent>
+			<rent>
+			<book_id>bc84d9b8-a53f-4da0-9da8-a40acbba247b</book_id>
+			<reader_id>e5a758ff-7c8e-4583-9f64-71eafb4f449e</reader_id>
+			<date_of_rent>2020-06-07T18:40</date_of_rent>
+			<date_of_return>2020-06-16T18:40</date_of_return>
+			<returned>true</returned>
+			<rent_id>edc7c771-e811-4c01-86aa-bc0321d4b932</rent_id>
 		</rent>
 	</rents>
 	<rentalReminders>
 		<rentalReminder>
 			<rent_id>7da9d877-3530-46e8-a2b9-f4731fff5726</rent_id>
-			<date_of_reminder>2020-05-08T02:30:01.000000001</date_of_reminder>
+			<date_of_reminder>2020-05-08T02:30:01</date_of_reminder>
 			<rentalreminder_id>75daf846-c56b-4c8b-8073-074ee34d9004</rentalreminder_id>
 		</rentalReminder>
 	</rentalReminders>

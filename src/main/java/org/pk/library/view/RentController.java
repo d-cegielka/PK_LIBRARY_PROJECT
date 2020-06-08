@@ -165,15 +165,14 @@ public class RentController  {
                 super.updateItem(aBoolean, b);
                 if (aBoolean == null) {
                     super.setText(null);
-                    super.setGraphic(null);
                 } else {
                     if(aBoolean){
                         super.setText("tak");
                     } else{
                         super.setText("nie");
                     }
-                    super.setGraphic(null);
                 }
+                super.setGraphic(null);
             }
         });
 

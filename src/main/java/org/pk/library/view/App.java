@@ -7,32 +7,33 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import java.io.*;
+import java.io.IOException;
 
 /**
- * JavaFX App
+ * JavaFX Library App
  */
 public class App extends Application {
 
-    private static Scene scene;
-
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("main"));
+        Settings appSettings = Settings.getInstance();
+        Scene scene = new Scene(loadFXML());
         stage.setMinWidth(1280);
         stage.setMinHeight(800);
         stage.setScene(scene);
         stage.setTitle("Biblioteka");
-        stage.getIcons().add(new Image(String.valueOf(App.class.getResource("icon.png"))));
+        try {
+            stage.getIcons().add(new Image(appSettings.getIconPath()));
+            stage.setTitle(appSettings.getAppTitle());
+        } catch (Exception e) {
+            stage.getIcons().add(new Image(String.valueOf(App.class.getResource("icon.png"))));
+            stage.setTitle("Biblioteka");
+        }
         stage.show();
     }
 
-   public static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+    private static Parent loadFXML() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("main" + ".fxml"));
         return fxmlLoader.load();
     }
 

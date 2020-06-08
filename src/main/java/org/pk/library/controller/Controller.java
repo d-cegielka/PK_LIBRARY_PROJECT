@@ -2,6 +2,7 @@ package org.pk.library.controller;
 
 import org.pk.library.model.*;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -40,6 +41,7 @@ public class Controller {
      * Konstruktor bezparametrowy kontrolera.
      * Tworzona jest struktura danych biblioteki.
      * @throws SQLException wyjątek rzucany przez kontroler bazy danych
+     * @throws IOException wyjątek IO
      */
     public Controller() throws SQLException, IOException {
         library = new Library();
@@ -475,10 +477,10 @@ public class Controller {
     }
 
     /**
-     * Eksport danych z struktury danych bibloteki(listy) do bazy danych.
+     * Import danych z struktury danych bibloteki(listy) do bazy danych.
      * @return komunikat dla interfejsu użytkownika
      */
-    public final String exportDataFromListsToDB(){
+    public final String importDataFromListsToDB() {
         try {
             libraryDB.dropAndCreateTables();
             for(Book book : getBooks()) {
@@ -501,8 +503,40 @@ public class Controller {
     }
 
     /**
+     * Import danych z pliku XML do struktury danych biblioteki oraz bazy danych.
+     * @param filePath ścieżka do pliku XML
+     * @return komunikat dla interfejsu użytkownika
+     */
+    public final String importDataFromXML(String filePath) {
+        LibraryXML libraryXML = new LibraryXML();
+        try {
+            libraryDB.dropAndCreateTables();
+            library = libraryXML.readDataFromXML(filePath);
+            return importDataFromListsToDB();
+        } catch (SQLException | IOException | XMLStreamException se) {
+            return se.getMessage();
+        }
+    }
+
+    /**
+     * Eksport struktury danych biblioteki do pliku XML.
+     * @param filePath scieżka pliku XML do zapisu
+     * @return komunikat dla interfejsu użytkownika
+     */
+    public final String exportDataToXML(String filePath){
+        LibraryXML libraryXML = new LibraryXML();
+        try {
+            libraryXML.saveDataToXML(library, filePath);
+            return "Dane zostały wyeksportowane pomyślnie! \nŚcieżka do pliku: " + filePath;
+        } catch (XMLStreamException | IOException se) {
+            return se.getMessage();
+        }
+    }
+
+    /**
      * Metoda sprawdzająca czy w bazie danych istnieją wymagane tabele.
      * @return wartość logiczna
+     * @throws SQLException wyjątek rzucany przez kontroler bazy danych
      */
     public boolean checkExistsRequiredTables() throws SQLException {
         return libraryDB.checkIfTableExists("books") &&

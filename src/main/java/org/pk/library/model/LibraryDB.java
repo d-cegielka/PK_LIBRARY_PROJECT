@@ -1,5 +1,7 @@
 package org.pk.library.model;
 
+import org.pk.library.view.Settings;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,8 +14,10 @@ import java.util.List;
 
 public class LibraryDB {
     private Connection conn;
+    private final Settings settings;
 
     public LibraryDB() throws SQLException {
+        settings = Settings.getInstance();
         conn = this.connect();
     }
 
@@ -24,10 +28,11 @@ public class LibraryDB {
      */
     private Connection connect() throws SQLException {
         Connection conn;
-        String URL = "jdbc:mysql://srv31876.seohost.com.pl:3306/srv31876_library?serverTimezone=UTC";
+       /* String URL = "jdbc:mysql://srv31876.seohost.com.pl:3306/srv31876_library?serverTimezone=UTC";
         String user = "srv31876_pklibrary";
-        String password = "WBbYzm0SJC";
-        conn = DriverManager.getConnection(URL, user, password);
+        String password = "WBbYzm0SJC";*/
+        conn = DriverManager.getConnection(settings.getDatabaseURL(),
+                settings.getDatabaseUsername(), settings.getDatabasePassword());
         return conn;
     }
 

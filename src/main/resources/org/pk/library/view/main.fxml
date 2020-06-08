@@ -16,20 +16,19 @@
          <menus>
             <Menu mnemonicParsing="false" text="Plik">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Zmień źródło danych" />
-                  <MenuItem mnemonicParsing="false" text="Eksportuj do XML" />
-                  <MenuItem mnemonicParsing="false" text="Zamknij" />
+                  <MenuItem mnemonicParsing="false" onAction="#importFromXML" text="Importuj z XML" />
+                  <MenuItem mnemonicParsing="false" onAction="#exportToXML" text="Eksportuj do XML" />
+                  <MenuItem mnemonicParsing="false" onAction="#quitApp" text="Zamknij" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Wygląd">
+            <Menu mnemonicParsing="false" text="Ustawienia">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Tryb ciemny" />
-                  <MenuItem mnemonicParsing="false" text="Tryb jasny" />
+                  <MenuItem mnemonicParsing="false" onAction="#changeAppIcon" text="Zmień ikonę programu" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Help">
+            <Menu mnemonicParsing="false" text="Pomoc">
                <items>
-                  <MenuItem mnemonicParsing="false" text="About" />
+                  <MenuItem mnemonicParsing="false" onAction="#about" text="O programie" />
                </items>
             </Menu>
          </menus>

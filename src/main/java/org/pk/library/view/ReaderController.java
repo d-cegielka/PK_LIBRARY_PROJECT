@@ -127,7 +127,7 @@ public class ReaderController {
      * Aktualizacja listy czytelników
      */
     @FXML
-    private void reloadReaderTableView(){
+    void reloadReaderTableView(){
         TreeItem<Reader> readersTreeItem = new RecursiveTreeItem<>(FXCollections.observableArrayList(mainController.libraryController.getReaders()), RecursiveTreeObject::getChildren);
         readersTableView.setRoot(readersTreeItem);
     }

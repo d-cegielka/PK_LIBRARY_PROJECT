@@ -10,7 +10,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import org.pk.library.model.Book;
-
 import java.util.Optional;
 
 public class BookController {
@@ -93,7 +92,7 @@ public class BookController {
 
         booksTableView.setShowRoot(false);
         booksTableView.setEditable(true);
-        booksTableView.getColumns().setAll(titleCol,isbnCol,authorCol,publisherCol);
+        booksTableView.getColumns().setAll(titleCol, isbnCol, authorCol, publisherCol);
 
         findBookField.textProperty().addListener((o, oldVal, newVal) -> booksTableView.setPredicate(bookProp -> {
             final Book book = bookProp.getValue();
@@ -110,10 +109,10 @@ public class BookController {
     /**
      * Aktualizacja listy książęk
      */
-    private void reloadBookTableView(){
+    @FXML
+    void reloadBookTableView(){
         TreeItem<Book> booksTreeItem = new RecursiveTreeItem<>(FXCollections.observableArrayList(mainController.libraryController.getBooks()), RecursiveTreeObject::getChildren);
         booksTableView.setRoot(booksTreeItem);
-
     }
 
     /**

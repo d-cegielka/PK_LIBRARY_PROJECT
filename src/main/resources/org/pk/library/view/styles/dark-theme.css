@@ -83,3 +83,12 @@
 .table-column {
     -fx-alignment: center;
 }
+
+.aboutHeading{
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+
+.jfx-layout-body {
+    -fx-font-size:15px;
+}

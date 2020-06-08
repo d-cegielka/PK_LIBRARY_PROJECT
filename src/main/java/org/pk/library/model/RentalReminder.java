@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class RentalReminder {
     private final Rent rent;
-    private LocalDateTime dateOfReminder;
+    private final LocalDateTime dateOfReminder;
     private final String REMINDER_ID;
 
     public RentalReminder(Rent rent, LocalDateTime dateOfReminder) {
@@ -39,7 +39,4 @@ public class RentalReminder {
         return dateOfReminder;
     }
 
-    public void setDateOfReminder(LocalDateTime dateOfReminder) {
-        this.dateOfReminder = dateOfReminder;
-    }
 }
