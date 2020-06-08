@@ -7,7 +7,6 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 
 <AnchorPane fx:id="mainPane" minHeight="-Infinity" prefHeight="800.0" prefWidth="1280.0" stylesheets="@styles/dark-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pk.library.view.MainController">
@@ -33,7 +32,7 @@
             </Menu>
          </menus>
       </MenuBar>
-      <StackPane fx:id="mainStackPane" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+      <StackPane fx:id="mainStackPane" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
          <TabPane fx:id="tabPane" layoutX="14.0" layoutY="27.0" prefHeight="383.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
          <tabs>
             <Tab text="Książki">
@@ -61,6 +60,5 @@
          <JFXToggleButton fx:id="changeStyleToggleButton" contentDisplay="RIGHT" graphicTextGap="6.0" onAction="#changeStyle" size="5.0" text="Jasny motyw" StackPane.alignment="TOP_RIGHT" />
 
       </StackPane>
-      <HBox layoutX="14.0" layoutY="700.0" prefHeight="30.0" style="-fx-background-color: lightgray;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
    </children>
 </AnchorPane>

@@ -58,10 +58,17 @@ public class MainController {
     @FXML
     private void initialize() {
         try {
-            libraryController = new Controller();
+            libraryController = new Controller(true);
         } catch (SQLException | IOException se) {
-            //showInfoDialog("Inicjalizacja kontrolera biblioteki",se.getMessage());
             System.out.println(se.getMessage());
+            Platform.runLater(() -> showInfoDialog("Brak połączenia z bazą",
+                    "Program nie nawiązał połączenia z bazą danych! Komunikat:\n" + se.getMessage()
+                            +"\n\nAby zachować dane programu zapisz je do pliku XML (Plik -> Eksportuj do XML) przed zamknięciem aplikacji!"));
+            try {
+                libraryController = new Controller(false);
+            } catch (IOException | SQLException e) {
+                System.out.println(se.getMessage());
+            }
         }
         bookController.injectMainController(this);
         readerController.injectMainController(this);
@@ -231,7 +238,8 @@ public class MainController {
         imageView.setFitWidth(64);
         imageView.setPreserveRatio(true);
         dialogLayout.setHeading(imageView,label);
-        dialogLayout.setBody(new Text("Autorzy: \n Dominik Cegiełka 224478 \n Kamil Zarych 224546"));
+        dialogLayout.setBody(new Text("Autorzy: \n Dominik Cegiełka 224478 \n Kamil Zarych 224546 " +
+                "\n\nSkróty klawiszowe: \n CTRL+F - wyszukiwanie obiektów \n TAB - zmiana aktywnego pola formularza "));
         showDialog(blur, dialogLayout);
     }
 

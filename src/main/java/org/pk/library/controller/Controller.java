@@ -38,22 +38,25 @@ public class Controller {
     Pattern emailAddressPattern;
 
     /**
-     * Konstruktor bezparametrowy kontrolera.
+     * Konstruktor kontrolera.
      * Tworzona jest struktura danych biblioteki.
+     * @param connnectDB czy nawiązać połączenie z bazą danych
      * @throws SQLException wyjątek rzucany przez kontroler bazy danych
      * @throws IOException wyjątek IO
      */
-    public Controller() throws SQLException, IOException {
+    public Controller(boolean connnectDB) throws IOException, SQLException {
         library = new Library();
-        libraryDB = new LibraryDB();
-        if(!checkExistsRequiredTables()){
-            libraryDB.dropAndCreateTables();
+        if (connnectDB) {
+            libraryDB = new LibraryDB();
+            if (!checkExistsRequiredTables()) {
+                libraryDB.dropAndCreateTables();
+            }
+            List<Book> books = new ArrayList<>(libraryDB.getBooksFromDB());
+            List<Reader> readers = new ArrayList<>(libraryDB.getReadersFromDB());
+            List<Rent> rents = new ArrayList<>(libraryDB.getRentsFromDB(books, readers));
+            List<RentalReminder> rentalReminders = new ArrayList<>(libraryDB.getRentalRemindersFromDB(rents));
+            library = new Library(books, readers, rents, rentalReminders);
         }
-        List<Book> books = new ArrayList<>(libraryDB.getBooksFromDB());
-        List<Reader> readers = new ArrayList<>(libraryDB.getReadersFromDB());
-        List<Rent> rents = new ArrayList<>(libraryDB.getRentsFromDB(books,readers));
-        List<RentalReminder> rentalReminders = new ArrayList<>(libraryDB.getRentalRemindersFromDB(rents));
-        library = new Library(books,readers,rents,rentalReminders);
         isbnPattern = Pattern.compile("^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$");
         phoneNumberPattern = Pattern.compile("^\\+[0-9]{1,3}[0-9]{4,14}(?:x.+)?$");
         emailAddressPattern = Pattern.compile("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$");

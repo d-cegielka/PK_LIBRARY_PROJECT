@@ -3,21 +3,146 @@
   <ID>JAVA</ID>
   <OriginalElement>org.pk.library</OriginalElement>
   <nodes>
-    <node x="451.0" y="0.0">org.pk.library.model.Library</node>
-    <node x="0.0" y="1088.0">org.pk.library.view.RentController</node>
-    <node x="0.0" y="730.0">org.pk.library.model.Rent</node>
-    <node x="452.0" y="730.0">org.pk.library.model.Reader</node>
-    <node x="917.0" y="0.0">org.pk.library.model.LibraryDB</node>
-    <node x="830.0" y="730.0">org.pk.library.model.Book</node>
-    <node x="972.0" y="1088.0">org.pk.library.view.App</node>
-    <node x="634.0" y="1088.0">org.pk.library.view.ReaderController</node>
-    <node x="0.0" y="0.0">org.pk.library.controller.Controller</node>
-    <node x="317.0" y="1088.0">org.pk.library.view.BookController</node>
-    <node x="1141.0" y="730.0">org.pk.library.view.MainController</node>
+    <node x="567.8741071428572" y="736.0">org.pk.library.model.Library</node>
+    <node x="1008.8741071428572" y="878.0">org.pk.library.view.RentController</node>
+    <node x="791.8303571428571" y="363.0">org.pk.library.model.Rent</node>
+    <node x="1064.0895833333334" y="0.0">org.pk.library.model.Reader</node>
+    <node x="162.87410714285716" y="791.0">org.pk.library.model.LibraryDB</node>
+    <node x="431.37410714285716" y="11.0">org.pk.library.model.Book</node>
+    <node x="1602.38125" y="0.0">org.pk.library.view.App</node>
+    <node x="1264.38125" y="1559.0">org.pk.library.view.ReaderController</node>
+    <node x="397.5803571428571" y="1297.0">org.pk.library.controller.Controller</node>
+    <node x="0.0" y="1548.0">org.pk.library.view.BookController</node>
+    <node x="1056.080357142857" y="2042.0">org.pk.library.view.MainController</node>
   </nodes>
   <notes />
-  <edges />
-  <settings layout="Hierarchic Group" zoom="0.4936329588014981" x="687.5" y="657.5" />
+  <edges>
+    <edge source="org.pk.library.view.ReaderController" target="org.pk.library.view.MainController">
+      <point x="73.25" y="80.5" />
+      <point x="1484.13125" y="2022.0" />
+      <point x="1273.3660714285716" y="2022.0" />
+      <point x="100.28571428571433" y="-146.5" />
+    </edge>
+    <edge source="org.pk.library.view.RentController" target="org.pk.library.model.Book">
+      <point x="-90.66666666666674" y="-113.5" />
+      <point x="1054.2074404761904" y="696.0" />
+      <point x="643.5416666666667" y="696.0" />
+      <point x="643.5416666666667" y="338.0" />
+      <point x="597.6241071428572" y="338.0" />
+      <point x="33.25" y="145.5" />
+    </edge>
+    <edge source="org.pk.library.controller.Controller" target="org.pk.library.model.Library">
+      <point x="101.5" y="-342.5" />
+      <point x="702.0803571428571" y="1272.0" />
+      <point x="778.3741071428572" y="1272.0" />
+      <point x="0.0" y="255.5" />
+    </edge>
+    <edge source="org.pk.library.view.RentController" target="org.pk.library.model.Rent">
+      <point x="0.0" y="-113.5" />
+      <point x="1144.8741071428572" y="696.0" />
+      <point x="1097.080357142857" y="696.0" />
+      <point x="101.75" y="156.5" />
+    </edge>
+    <edge source="org.pk.library.view.ReaderController" target="org.pk.library.model.Reader">
+      <point x="0.0" y="-80.5" />
+      <point x="1410.88125" y="338.0" />
+      <point x="1355.4645833333334" y="338.0" />
+      <point x="124.875" y="156.5" />
+    </edge>
+    <edge source="org.pk.library.view.MainController" target="org.pk.library.view.BookController">
+      <point x="-100.28571428571422" y="-146.5" />
+      <point x="1072.794642857143" y="2022.0" />
+      <point x="68.0" y="2022.0" />
+      <point x="-68.0" y="91.5" />
+    </edge>
+    <edge source="org.pk.library.view.MainController" target="org.pk.library.controller.Controller">
+      <point x="-33.42857142857133" y="-146.5" />
+      <point x="1139.6517857142858" y="2002.0" />
+      <point x="600.5803571428571" y="2002.0" />
+      <point x="0.0" y="342.5" />
+    </edge>
+    <edge source="org.pk.library.model.Library" target="org.pk.library.model.Rent">
+      <point x="0.0" y="-255.5" />
+      <point x="778.3741071428572" y="716.0" />
+      <point x="893.5803571428571" y="716.0" />
+      <point x="-101.75" y="156.5" />
+    </edge>
+    <edge source="org.pk.library.model.Rent" target="org.pk.library.model.Reader">
+      <point x="101.75" y="-156.5" />
+      <point x="1097.080357142857" y="338.0" />
+      <point x="1105.7145833333334" y="338.0" />
+      <point x="-124.875" y="156.5" />
+    </edge>
+    <edge source="org.pk.library.controller.Controller" target="org.pk.library.model.LibraryDB">
+      <point x="-101.5" y="-342.5" />
+      <point x="499.0803571428571" y="1272.0" />
+      <point x="355.37410714285716" y="1272.0" />
+      <point x="0.0" y="200.5" />
+    </edge>
+    <edge source="org.pk.library.view.RentController" target="org.pk.library.model.Reader">
+      <point x="90.66666666666663" y="-113.5" />
+      <point x="1235.5407738095237" y="716.0" />
+      <point x="1280.8333333333333" y="716.0" />
+      <point x="1280.8333333333333" y="338.0" />
+      <point x="1272.2145833333334" y="338.0" />
+      <point x="41.625" y="156.5" />
+    </edge>
+    <edge source="org.pk.library.view.MainController" target="org.pk.library.view.RentController">
+      <point x="33.428571428571445" y="-146.5" />
+      <point x="1206.5089285714284" y="2022.0" />
+      <point x="1184.080357142857" y="2022.0" />
+      <point x="1184.080357142857" y="1272.0" />
+      <point x="1212.8741071428572" y="1272.0" />
+      <point x="68.0" y="113.5" />
+    </edge>
+    <edge source="org.pk.library.view.RentController" target="org.pk.library.view.MainController">
+      <point x="-68.0" y="113.5" />
+      <point x="1076.8741071428572" y="1272.0" />
+      <point x="1173.080357142857" y="1272.0" />
+      <point x="0.0" y="-146.5" />
+    </edge>
+    <edge source="org.pk.library.view.MainController" target="org.pk.library.view.ReaderController">
+      <point x="66.85714285714289" y="-146.5" />
+      <point x="1239.9375" y="2012.0" />
+      <point x="1337.63125" y="2012.0" />
+      <point x="-73.25" y="80.5" />
+    </edge>
+    <edge source="org.pk.library.model.Library" target="org.pk.library.model.Book">
+      <point x="-140.33333333333337" y="-255.5" />
+      <point x="638.0407738095238" y="716.0" />
+      <point x="558.8741071428572" y="716.0" />
+      <point x="558.8741071428572" y="338.0" />
+      <point x="531.1241071428572" y="338.0" />
+      <point x="-33.25" y="145.5" />
+    </edge>
+    <edge source="org.pk.library.view.BookController" target="org.pk.library.model.Book">
+      <point x="0.0" y="-91.5" />
+      <point x="136.0" y="338.0" />
+      <point x="464.62410714285716" y="338.0" />
+      <point x="-99.75" y="145.5" />
+    </edge>
+    <edge source="org.pk.library.model.Rent" target="org.pk.library.model.Book">
+      <point x="-101.75" y="-156.5" />
+      <point x="893.5803571428571" y="338.0" />
+      <point x="664.1241071428572" y="338.0" />
+      <point x="99.75" y="145.5" />
+    </edge>
+    <edge source="org.pk.library.model.Library" target="org.pk.library.model.Reader">
+      <point x="140.33333333333337" y="-255.5" />
+      <point x="918.7074404761905" y="706.0" />
+      <point x="1254.705357142857" y="706.0" />
+      <point x="1254.705357142857" y="338.0" />
+      <point x="1188.9645833333334" y="338.0" />
+      <point x="-41.625" y="156.5" />
+    </edge>
+    <edge source="org.pk.library.view.BookController" target="org.pk.library.view.MainController">
+      <point x="68.0" y="91.5" />
+      <point x="204.0" y="2012.0" />
+      <point x="1106.2232142857142" y="2012.0" />
+      <point x="-66.85714285714278" y="-146.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.6745318352059922" x="559.630911590585" y="350.6274292059968" />
   <SelectedNodes>
     <node>org.pk.library.model.Library</node>
   </SelectedNodes>

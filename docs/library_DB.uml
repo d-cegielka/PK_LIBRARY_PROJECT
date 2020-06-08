@@ -10,11 +10,11 @@
   </nodes>
   <notes />
   <edges>
-    <edge source="60560b2d-ce10-4924-a2de-a2aa6624f4e1.TABLE:srv31876_library.RENTALREMINDERS" target="60560b2d-ce10-4924-a2de-a2aa6624f4e1.TABLE:srv31876_library.RENTS">
+    <edge source="60560b2d-ce10-4924-a2de-a2aa6624f4e1.TABLE:srv31876_library.RENTS" target="60560b2d-ce10-4924-a2de-a2aa6624f4e1.TABLE:srv31876_library.BOOKS">
       <point x="0.0" y="0.0" />
       <point x="0.0" y="0.0" />
     </edge>
-    <edge source="60560b2d-ce10-4924-a2de-a2aa6624f4e1.TABLE:srv31876_library.RENTS" target="60560b2d-ce10-4924-a2de-a2aa6624f4e1.TABLE:srv31876_library.BOOKS">
+    <edge source="60560b2d-ce10-4924-a2de-a2aa6624f4e1.TABLE:srv31876_library.RENTALREMINDERS" target="60560b2d-ce10-4924-a2de-a2aa6624f4e1.TABLE:srv31876_library.RENTS">
       <point x="0.0" y="0.0" />
       <point x="0.0" y="0.0" />
     </edge>
@@ -23,7 +23,7 @@
       <point x="0.0" y="0.0" />
     </edge>
   </edges>
-  <settings layout="Balloon" zoom="1.0" x="172.5" y="291.5" />
+  <settings layout="Balloon" zoom="0.8012820512820513" x="366.5" y="295.0" />
   <SelectedNodes>
     <node>60560b2d-ce10-4924-a2de-a2aa6624f4e1.TABLE:srv31876_library.RENTALREMINDERS</node>
   </SelectedNodes>

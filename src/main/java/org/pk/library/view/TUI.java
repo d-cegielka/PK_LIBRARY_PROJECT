@@ -45,10 +45,16 @@ public class TUI {
 
     public TUI() {
         try {
-            libraryController = new Controller();
+            libraryController = new Controller(true);
         } catch (SQLException | IOException se) {
-            System.out.println("Blad SQL");
+            System.out.println("Blad:");
             System.out.println(se.getMessage());
+            try {
+                libraryController = new Controller(false);
+            } catch (IOException | SQLException e) {
+                System.out.println("Blad:");
+                System.out.println(se.getMessage());
+            }
         }
         drawMainMenu();
     }
