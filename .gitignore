@@ -4,3 +4,4 @@ app.properties
 icon.png
 run.bat
 run_maven.bat
+/release-build/

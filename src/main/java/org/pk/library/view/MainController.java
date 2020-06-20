@@ -231,7 +231,7 @@ public class MainController {
     private void about(){
         BoxBlur blur = new BoxBlur(4, 4, 4);
         JFXDialogLayout dialogLayout = new JFXDialogLayout();
-        Label label = new Label("    \tBIBLIOTEKA v1.0");
+        Label label = new Label("    \t" + appSettings.getAppTitle().toUpperCase() + " v1.0");
         label.setTextFill(Color.color(0.2,0.6,0.8));
         label.getStyleClass().add("aboutHeading");
         ImageView imageView = new ImageView(appSettings.getIconPath());
